@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
+import AppFeature from './components/features/app/App.feature';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppFeature />
   </React.StrictMode>,
   document.getElementById('root')
 );
