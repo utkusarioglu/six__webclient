@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const AppFeature = () => {
   const [content, setContent] = useState('');
-
-  fetch(`http://${window.location.host}:8080`)
-    .then((data) => data.text())
-    .then(setContent);
+  useEffect(() => {
+    fetch(`http://${window.location.host}:8080/api/auth/user`)
+      .then((data) => data.json())
+      .then((json) => setContent(JSON.stringify(json, null, 2)));
+  }, []);
 
   return (
     <div>
-      <p>{content}</p>
+      <pre>{content}</pre>
     </div>
   );
 };
