@@ -24,3 +24,9 @@ yarn-error.log*
 
 # linters
 *.eslintcache
+
+# environment variables
+.env
+
+# logs
+*.log
