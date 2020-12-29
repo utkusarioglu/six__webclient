@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SERVER_PORT } from '../../../config';
 
 const AppFeature = () => {
   const [content, setContent] = useState('');
@@ -10,6 +11,7 @@ const AppFeature = () => {
 
   return (
     <div>
+      <span>Server port: {SERVER_PORT}</span>
       <pre>{content}</pre>
     </div>
   );
