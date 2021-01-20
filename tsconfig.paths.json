@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "six__public-api": ["../public-api/src"],
+      "_base/*": ["src/*"],
+      "_helpers/*": ["src/components/helpers/*"],
+      "_features/*": ["src/components/features/*"],
+      "_views/*": ["src/components/views/*"],
+      "_routes/*": ["src/components/routes/*"],
+      "_layouts/*": ["src/components/layouts/*"],
+      "_store/*": ["src/store/*"],
+      "_services/*": ["src/services/*"]
+    }
+  }
+}
