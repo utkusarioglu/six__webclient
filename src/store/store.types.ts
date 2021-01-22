@@ -1,9 +1,12 @@
 import { ACTION_TYPES, ACTION_STATES } from './store.constants';
+import type { PostReducer } from '_features/posts/Posts.reducer';
 
 /**
  * Collects all the types from all the sources that contribute to the state.
  */
 export default interface RootReducer {
+  posts: PostReducer;
+  // app: AppState;
 }
 
 /*
