@@ -1,11 +1,26 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import AppFeature from './components/features/app/App.feature';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import ReactGa from 'react-ga';
+import AppFeature from '_features/app/App.feature';
+import { darkTheme } from '_base/theme';
+import store from '_store/store';
+import { GA_ID } from '_base/config';
+
+ReactGa.initialize(GA_ID);
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppFeature />
+    <Provider {...{ store }}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline>
+          <AppFeature />
+        </CssBaseline>
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
