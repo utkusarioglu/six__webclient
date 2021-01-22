@@ -15,6 +15,7 @@ const AppFeature = () => {
   return (
     <>
       <Router>
+        <AppBarView />
         <Switch>
           <Route path="/" exact>
             <PostsRoute />
