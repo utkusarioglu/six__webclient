@@ -34,8 +34,9 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
+    "@types/chance": "^1.1.1",
+    "chance": "^1.1.7",
     "react-app-rewired": "^2.1.8"
-    
   },
   "scripts": {
     "start": "react-app-rewired start",
