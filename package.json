@@ -40,8 +40,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "test": "docker exec -it six__webclient sh -c '$(yarn bin)/react-app-rewired test'",
   },
   "eslintConfig": {
     "extends": [
@@ -60,5 +59,20 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "rootDir": ".",
+    "collectCoverageFrom": ["src/**/*.{ts,tsx}"],
+    "coverageDirectory": "<rootDir>/coverage/",
+    "moduleNameMapper": {
+      "_helpers/(.*)": "<rootDir>/src/components/helpers/$1",
+      "_features/(.*)": "<rootDir>/src/components/features/$1",
+      "_views/(.*)": "<rootDir>/src/components/views/$1",
+      "_routes/(.*)": "<rootDir>/src/components/routes/$1",
+      "_layouts/(.*)": "<rootDir>/src/components/layouts/$1",
+      "_store/(.*)": "<rootDir>/src/store/$1.ts",
+      "_services/(.*)": "<rootDir>/src/services/$1",
+      "_base/(.*)": "<rootDir>/src/$1"
+    }
   }
 }
