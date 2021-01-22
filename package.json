@@ -41,6 +41,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "docker exec -it six__webclient sh -c '$(yarn bin)/react-app-rewired test'",
+    "sh": "docker exec -it six__webclient sh"
   },
   "eslintConfig": {
     "extends": [
