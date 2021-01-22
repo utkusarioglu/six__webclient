@@ -1,9 +1,9 @@
+import type { AxiosInstance } from 'axios';
+import type { FSA } from '_store/store.types';
 import axios from 'axios';
 import { API_ENDPOINT } from '_base/config';
 import store from '_store/store';
 import { ACTION_STATES, ACTION_TYPES } from '_store/store.constants';
-import type { AxiosInstance } from 'axios';
-import type { FSA } from '_store/store.types';
 
 class Rest {
   private _axios: AxiosInstance;
