@@ -5,17 +5,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { darkTheme } from '_base/theme';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
+import Timeago from 'react-timeago';
 
 interface PostTopRowViewProps {
   communityLinkString: string;
   posterLinkString: string;
-  timeString: string;
+  createdAt: string;
 }
 
 const PostDetailsRowView: FC<PostTopRowViewProps> = ({
+  createdAt,
   communityLinkString,
   posterLinkString,
-  timeString,
 }) => {
   const classes = useStyles();
 
@@ -23,7 +24,7 @@ const PostDetailsRowView: FC<PostTopRowViewProps> = ({
   const PosterLink = domLinkHelper(posterLinkString);
 
   return (
-    <Container disableGutters className={classes.root}>
+    <Container disableGutters>
       <Link component={CommunityLink} color="textPrimary">
         {communityLinkString}
       </Link>
@@ -41,7 +42,7 @@ const PostDetailsRowView: FC<PostTopRowViewProps> = ({
         color="textSecondary"
         className={classes.topRowText}
       >
-        Posted by
+        by
       </Typography>
       <Link
         color="textSecondary"
@@ -51,7 +52,7 @@ const PostDetailsRowView: FC<PostTopRowViewProps> = ({
         {posterLinkString}
       </Link>
       <Link color="textSecondary" className={classes.topRowText}>
-        {timeString}
+        <Timeago date={createdAt} />
       </Link>
     </Container>
   );
@@ -60,9 +61,6 @@ const PostDetailsRowView: FC<PostTopRowViewProps> = ({
 export default PostDetailsRowView;
 
 const useStyles = makeStyles({
-  root: {
-    // paddingBottom: darkTheme.spacing(1),
-  },
   topRowDot: {
     marginLeft: darkTheme.spacing(1),
     marginRight: darkTheme.spacing(1),
