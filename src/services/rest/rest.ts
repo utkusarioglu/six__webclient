@@ -1,9 +1,9 @@
-import type { AxiosInstance } from 'axios';
-import type { FSA } from '_store/store.types';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { API_ENDPOINT } from '_base/config';
-import store from '_store/store';
-import { ACTION_STATES, ACTION_TYPES } from '_store/store.constants';
+import { updatePosts } from '_slices/posts/posts.slice';
+import { PostGetRes, PostsGetRes } from 'six__public-api';
+import { PostsState } from '_slices/posts/posts.slice.types';
 
 class Rest {
   private _axios: AxiosInstance;
@@ -19,22 +19,26 @@ class Rest {
     this._axios = axios.create(axiosConfig);
   }
 
-  get(route: string, data: any = undefined) {
-    const method = 'GET';
+  getPosts() {
     this._axios
-      .request({
-        method,
-        url: route,
-        data,
-      })
+      .get<null, AxiosResponse<PostsGetRes>>('/posts')
       .then((axiosResponse) => {
-        // !any
-        store.dispatch<FSA<any>>({
-          type: ACTION_TYPES.REST_RESPONSE,
-          state: ACTION_STATES.SUCCESS,
-          payload: axiosResponse.data,
-        });
+        const data: PostsGetRes = axiosResponse.data;
+        updatePosts(data.res);
+      })
+      .catch((e) => {
+        console.log(e);
       });
+  }
+
+  getPostBySlug(postSlug: PostsState['list'][0]['postSlug']) {
+    this._axios
+      .get<null, AxiosResponse<PostGetRes>>(`/post/slug/${postSlug}`)
+      .then((axiosResponse) => {
+        const data: PostGetRes = axiosResponse.data;
+        updatePosts([data.res]);
+      })
+      .catch((e) => console.log(e));
   }
 }
 
