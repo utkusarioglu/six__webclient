@@ -1,6 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      NODE_ENV: 'development' | 'test' | 'production';
       NODE_SERVER_EXPOSED_PORT: string; // number
 
       REACT_APP_SECURE_SCHEMES: 'TRUE' | 'FALSE'; // boolean
