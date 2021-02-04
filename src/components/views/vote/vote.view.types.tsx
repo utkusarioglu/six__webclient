@@ -1,5 +1,3 @@
-import { Post } from 'six__public-api';
+import { PostGetRes } from 'six__public-api';
 
-export interface VoteViewProps {
-  voteCount: Post['voteCount'];
-}
+export type VoteViewProps = Pick<PostGetRes['res'], 'postSlug'>;
