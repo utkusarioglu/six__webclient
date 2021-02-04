@@ -1,4 +1,4 @@
-import { RootState } from '_store/root.reducer';
+import { RootState } from '_store/store';
 
 /**
  * Alias for uuid
