@@ -1,19 +1,14 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { rootReducer } from './root.reducer';
-
-const middleware = [thunk];
-
-/** Used for chrome web dev */
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+import { configureStore } from '@reduxjs/toolkit';
+import postsReducer from '_slices/posts/posts.slice';
 
 /**
  * The actual store for the app
  */
-const store = createStore(
-  rootReducer,
-  {},
-  composeEnhancers(applyMiddleware(...middleware))
-);
+const store = configureStore({
+  reducer: {
+    posts: postsReducer,
+  },
+});
 
 export default store;
+export type RootState = ReturnType<typeof store.getState>;

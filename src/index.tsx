@@ -1,4 +1,5 @@
 import React from 'react';
+import store from '_store/store';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
