@@ -18,19 +18,18 @@ import PostDetailsRowView from '_views/post-details-row/PostDetailsRow.view';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 const PostCardView: FC<PostCardViewProps> = ({
+  createdAt,
   postTitle,
   postBody,
   postSlug,
-  voteCount,
+  postCreatorUsername,
   mediaImagePath,
   communityName,
   commentCount,
 }) => {
   const classes = useStyles();
-  const poster_name = 'someone';
-  const timeString = '1 hour ago';
   const communityLinkString = `r/${communityName}`;
-  const posterLinkString = `u/${poster_name}`;
+  const posterLinkString = `u/${postCreatorUsername}`;
 
   const SlugLink = domLinkHelper(
     `r/${communityName.toLowerCase()}/${postSlug.toLowerCase()}`
@@ -44,7 +43,7 @@ const PostCardView: FC<PostCardViewProps> = ({
             <CardContent className={classes.cardContent}>
               <Container disableGutters className={classes.postDetailsRow}>
                 <PostDetailsRowView
-                  {...{ timeString, communityLinkString, posterLinkString }}
+                  {...{ createdAt, communityLinkString, posterLinkString }}
                 />
               </Container>
               <Typography gutterBottom variant="h5" component="h2">
@@ -63,7 +62,7 @@ const PostCardView: FC<PostCardViewProps> = ({
       </CardActionArea>
       <CardActions className={classes.cardActions}>
         <Container className={classes.cardActionsContainer}>
-          <VoteView {...{ voteCount: voteCount }} />
+          <VoteView {...{ postSlug }} />
           <ShareView />
           <IconButton>
             <ChatBubbleOutlineIcon className={classes.commentIcon} />

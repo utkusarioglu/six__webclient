@@ -6,34 +6,48 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import PostDetailsRowView from '_views/post-details-row/PostDetailsRow.view';
 import { darkTheme } from '_base/theme';
-import { withState } from '_features/post-details/PostDetails.feature';
 import PostDetailsToolbarView from './PostDetailsToolbar.view';
+import { useSelector } from 'react-redux';
+import { getPostBySlug } from '_base/components/slices/posts/posts.slice';
+import rest from '_services/rest/rest';
 
-const PostDetailsView: FC<PostDetailsProps> = ({ post }) => {
+const PostDetailsView: FC<PostDetailsProps> = ({ postSlug }) => {
   const classes = useStyles();
+  const post = useSelector(getPostBySlug(postSlug));
+
+  if (!postSlug) {
+    return <span>something went wrong</span>;
+  }
+
   if (!post) {
+    rest.getPostBySlug(postSlug);
     return <Skeleton variant="rect" height={100} />;
   }
-  const { postTitle, postBody, communityName } = post;
 
-  const poster_name = 'someone';
-  const timeString = '1 hour ago';
+  const {
+    postTitle,
+    postBody,
+    communityName,
+    postCreatorUsername,
+    createdAt,
+  } = post;
+
   const communityLinkString = `r/${communityName}`;
-  const posterLinkString = `u/${poster_name}`;
+  const posterLinkString = `u/${postCreatorUsername}`;
 
   return (
     <>
-      <PostDetailsToolbarView />
+      <PostDetailsToolbarView {...{ postSlug }} />
       <Container className={classes.postDetailsRow}>
         <PostDetailsRowView
-          {...{ timeString, communityLinkString, posterLinkString }}
+          {...{ createdAt, communityLinkString, posterLinkString }}
         />
       </Container>
       <Container>
         <Typography variant="h3">{postTitle}</Typography>
       </Container>
       <Container>
-        <span>{postBody}</span>
+        <Typography>{postBody}</Typography>
       </Container>
     </>
   );
@@ -46,5 +60,4 @@ const useStyles = makeStyles({
   },
 });
 
-// @ts-ignore
-export default withState(PostDetailsView);
+export default PostDetailsView;

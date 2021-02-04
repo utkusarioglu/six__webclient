@@ -1,5 +1,3 @@
-import type { Post } from 'six__public-api';
+import { PostGetRes } from 'six__public-api';
 
-export interface PostDetailsProps {
-  post: Post | null;
-}
+export type PostDetailsProps = Pick<PostGetRes['res'], 'postSlug'>;

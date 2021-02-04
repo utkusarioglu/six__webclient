@@ -1,3 +1,3 @@
-import type { Post } from 'six__public-api';
+import type { PostGetRes } from 'six__public-api';
 
-export type PostCardViewProps = Post;
+export type PostCardViewProps = PostGetRes['res'];
