@@ -6,9 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ReactGa from 'react-ga';
-import AppFeature from '_features/app/App.feature';
+import AppRouter from '_routers/app/App.router';
 import { darkTheme } from '_base/theme';
-import store from '_store/store';
 import { GA_ID } from '_base/config';
 
 ReactGa.initialize(GA_ID);
@@ -18,7 +17,7 @@ ReactDOM.render(
     <Provider {...{ store }}>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline>
-          <AppFeature />
+          <AppRouter />
         </CssBaseline>
       </ThemeProvider>
     </Provider>
