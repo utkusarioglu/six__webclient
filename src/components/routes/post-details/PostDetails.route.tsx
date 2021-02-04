@@ -1,7 +1,7 @@
 import ReactGA from 'react-ga';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
-import PostDetailsView from '_views/post-details/PostDetails.view';
+import PostDetailsLayout from '_layouts/post-details/PostDetails.layout';
 
 interface CommunityRouteParams {
   communitySlug: string;
@@ -20,7 +20,7 @@ const PostDetailsRoute = () => {
           {postSlug} - {communitySlug} - Reddit
         </title>
       </Helmet>
-      <PostDetailsView />
+      <PostDetailsLayout {...{ postSlug, communitySlug }} />
     </>
   );
 };

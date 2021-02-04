@@ -1,6 +1,7 @@
 import ReactGA from 'react-ga';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
+import ProfileLayout from '_layouts/profile/Profile.layout';
 
 interface ProfileRouteParams {
   userSlug: string;
@@ -16,7 +17,7 @@ const ProfileRoute = () => {
       <Helmet>
         <title>{userSlug} - Reddit</title>
       </Helmet>
-      <span>This is where the user profile will be displayed</span>
+      <ProfileLayout />
     </>
   );
 };
