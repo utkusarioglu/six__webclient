@@ -2,7 +2,7 @@ import type { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { API_ENDPOINT } from '_base/config';
 import { updatePosts } from '_slices/posts/posts.slice';
-import { PostGetRes, PostsGetRes } from 'six__public-api';
+import { CommentsGetRes, PostGetRes, PostsGetRes } from 'six__public-api';
 import { PostsState } from '_slices/posts/posts.slice.types';
 
 class Rest {
@@ -39,6 +39,13 @@ class Rest {
         updatePosts([data.res]);
       })
       .catch((e) => console.log(e));
+  }
+
+  getCommentsByPostSlug(postSlug: PostsState['list'][0]['postSlug']) {
+    this._axios.get(`/post/slug/${postSlug}/comments`).then((axiosResponse) => {
+      const data: CommentsGetRes = axiosResponse.data;
+      console.log('comments: \n', data);
+    });
   }
 }
 
