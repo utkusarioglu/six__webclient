@@ -10,6 +10,8 @@ import PostDetailsRoute from '_routes/post-details/PostDetails.route';
 import ProfileRoute from '_routes/profile/Profile.route';
 import SettingsRoute from '_routes/settings/Settings.route';
 import CommunityRoute from '_routes/community/Community.route';
+import LoginRoute from '_base/components/routes/login/Login.route';
+import SignupRoute from '_base/components/routes/signup/Signup.route';
 
 const AppRouter = () => {
   return (
@@ -19,6 +21,14 @@ const AppRouter = () => {
         <Switch>
           <Route path="/" exact>
             <PostFeeRoute />
+          </Route>
+
+          <Route path="/login" exact>
+            <LoginRoute />
+          </Route>
+
+          <Route path="/signup" exact>
+            <SignupRoute />
           </Route>
 
           <Route path="/r/:communitySlug" exact>
