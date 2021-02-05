@@ -1,7 +1,6 @@
-import type { FC } from 'react';
+import type { FC, ReactElement } from 'react';
 import type { PostsViewProps as PostFeedViewProps } from './PostFeed.view.types';
 import { useSelector } from 'react-redux';
-import Skeleton from '@material-ui/lab/Skeleton';
 import PostCardView from '_views/post-card/PostCard.view';
 import { NODE_ENV } from '_base/config';
 import rest from '_services/rest/rest';
@@ -23,7 +22,7 @@ const PostFeedView: FC<PostFeedViewProps> = () => {
 
   if (list.length <= 1) {
     getPosts();
-    return <Skeleton></Skeleton>;
+    return skeletons();
   } else if (postsAge > 10000) {
     getPosts();
   }
@@ -31,9 +30,24 @@ const PostFeedView: FC<PostFeedViewProps> = () => {
   return (
     <div>
       {list &&
-        list.map((post) => <PostCardView {...{ key: post.id, ...post }} />)}
+        list.map((post) => (
+          <PostCardView {...{ key: post.id, asSkeleton: false, ...post }} />
+        ))}
     </div>
   );
 };
 
 export default PostFeedView;
+
+function skeletons(): ReactElement<any, any>[] {
+  return Array(3)
+    .fill(null)
+    .map((_, idx) => (
+      <PostCardView
+        {...{
+          key: idx,
+          asSkeleton: true,
+        }}
+      />
+    ));
+}

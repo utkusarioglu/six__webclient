@@ -1,63 +1,87 @@
 import type { FC } from 'react';
 import type { PostDetailsProps } from './PostDetails.view.types';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import PostDetailsRowView from '_views/post-details-row/PostDetailsRow.view';
-import { darkTheme } from '_base/theme';
 import PostDetailsToolbarView from './PostDetailsToolbar.view';
 import { useSelector } from 'react-redux';
+import { NODE_ENV } from '_base/config';
 import { getPostBySlug } from '_base/components/slices/posts/posts.slice';
 import rest from '_services/rest/rest';
 
 const PostDetailsView: FC<PostDetailsProps> = ({ postSlug }) => {
   const classes = useStyles();
   const post = useSelector(getPostBySlug(postSlug));
+  let asSkeleton = !post;
 
   if (!postSlug) {
     return <span>something went wrong</span>;
   }
 
+  const getPost = (postSlug: string) => {
+    if (NODE_ENV === 'development') {
+      setTimeout(() => {
+        rest.getPostBySlug(postSlug);
+      }, 1000);
+    } else {
+      rest.getPostBySlug(postSlug);
+    }
+  };
+
   if (!post) {
-    rest.getPostBySlug(postSlug);
+    getPost(postSlug);
     return <Skeleton variant="rect" height={100} />;
   }
 
   const {
-    postTitle,
-    postBody,
-    communityName,
-    postCreatorUsername,
-    createdAt,
+    postTitle = '',
+    postBody = '',
+    createdAt = '',
+    communityUrl = '',
+    communityStylizedUrl = '',
+    creatorUrl = '',
+    creatorStylizedUrl = '',
   } = post;
-
-  const communityLinkString = `r/${communityName}`;
-  const posterLinkString = `u/${postCreatorUsername}`;
 
   return (
     <>
-      <PostDetailsToolbarView {...{ postSlug }} />
+      <PostDetailsToolbarView {...{ asSkeleton, postSlug }} />
       <Container className={classes.postDetailsRow}>
         <PostDetailsRowView
-          {...{ createdAt, communityLinkString, posterLinkString }}
+          {...{
+            asSkeleton,
+            createdAt,
+            communityUrl,
+            communityStylizedUrl,
+            creatorUrl,
+            creatorStylizedUrl,
+          }}
         />
       </Container>
-      <Container>
-        <Typography variant="h3">{postTitle}</Typography>
+      <Container className={classes.postDetailsTitleContainer}>
+        <Typography variant="h4">
+          {asSkeleton ? <Skeleton /> : postTitle}
+        </Typography>
       </Container>
       <Container>
-        <Typography>{postBody}</Typography>
+        <Typography>{asSkeleton ? <Skeleton /> : postBody}</Typography>
       </Container>
     </>
   );
 };
 
-const useStyles = makeStyles({
-  postDetailsRow: {
-    paddingTop: darkTheme.spacing(2),
-    paddingBottom: darkTheme.spacing(2),
-  },
-});
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    postDetailsRow: {
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
+    },
+    postDetailsTitleContainer: {
+      marginBottom: theme.spacing(2),
+    },
+  })
+);
 
 export default PostDetailsView;

@@ -10,10 +10,14 @@ import { darkTheme } from '_base/theme';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { getPostTitle } from '_slices/posts/posts.slice';
 import { useSelector } from 'react-redux';
+import { AsSkeleton } from '_base/@types/material-ui';
+import Skeleton from '@material-ui/lab/Skeleton';
 
-type PostDetailsToolbarViewProps = Pick<PostGetRes['res'], 'postSlug'>;
+type PostDetailsToolbarViewProps = AsSkeleton &
+  Pick<PostGetRes['res'], 'postSlug'>;
 
 const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
+  asSkeleton,
   postSlug,
 }) => {
   const classes = useStyles();
@@ -23,21 +27,27 @@ const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
 
   return (
     <Toolbar className={classes.root}>
-      <VoteView {...{ postSlug }} />
-      <Typography className={classes.title} noWrap={true}>
-        {postTitle}
-      </Typography>
+      {asSkeleton ? (
+        <Skeleton variant="rect" />
+      ) : (
+        <>
+          <VoteView {...{ postSlug }} />
+          <Typography className={classes.title} noWrap={true}>
+            {postTitle}
+          </Typography>
 
-      <IconButton
-        edge="end"
-        aria-label="account of current user"
-        // aria-controls={menuId}
-        aria-haspopup="true"
-        color="inherit"
-        component={HomeDomLink}
-      >
-        <CloseIcon color="primary" />
-      </IconButton>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            // aria-controls={menuId}
+            aria-haspopup="true"
+            color="inherit"
+            component={HomeDomLink}
+          >
+            <CloseIcon color="primary" />
+          </IconButton>
+        </>
+      )}
     </Toolbar>
   );
 };

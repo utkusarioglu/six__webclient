@@ -1,23 +1,27 @@
+import type { PostGetRes } from 'six__public-api';
 import type { FC } from 'react';
+import type { AsSkeleton } from '_base/@types/material-ui';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
 import { darkTheme } from '_base/theme';
-import type { Post } from 'six__public-api';
-import { makeStyles } from '@material-ui/core/styles';
 
-type PostCardMediaViewProps = Pick<
-  Post,
-  'postTitle' | 'postBody' | 'mediaImagePath'
->;
+type PostCardMediaViewProps = AsSkeleton &
+  Pick<PostGetRes['res'], 'postTitle' | 'postBody' | 'mediaImagePath'>;
 
 const PostCardMediaView: FC<PostCardMediaViewProps> = ({
+  asSkeleton,
   postTitle,
   postBody,
   mediaImagePath,
 }) => {
   const classes = useStyles();
-  if (mediaImagePath) {
+
+  if (asSkeleton) {
+    return <Skeleton width="100%" height="100px" variant="rect" />;
+  } else if (mediaImagePath) {
     return (
       <Grid item className={classes.cardActionGridItem}>
         <CardMedia

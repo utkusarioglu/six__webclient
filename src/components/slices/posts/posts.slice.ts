@@ -1,7 +1,13 @@
-import type { PostsState, UpdatePosts, UpvotePost } from './posts.slice.types';
+import type {
+  PostsState,
+  UpdatePosts,
+  UpvotePost,
+  PostExpanded,
+} from './posts.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import store from '_store/store';
 import { Selector } from '_base/@types/helpers';
+import { PostsGetRes } from 'six__public-api';
 
 const initialState: PostsState = {
   lastUpdate: 0,
@@ -13,9 +19,28 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     updatePosts: (_, action) => {
+      const received: PostsGetRes['res'] = action.payload;
+      const expanded: PostExpanded[] = received.map((post) => {
+        const { communityName, creatorUsername, postSlug } = post;
+
+        const communitySlug = communityName.toLowerCase();
+        const creatorSlug = creatorUsername.toLowerCase();
+
+        return {
+          ...post,
+          communitySlug,
+          creatorSlug,
+          communityUrl: `r/${communitySlug}`,
+          communityStylizedUrl: `r/${communityName}`,
+          creatorUrl: `u/${creatorSlug}`,
+          creatorStylizedUrl: `u/${creatorUsername}`,
+          postUrl: `r/${communitySlug}/${postSlug}`,
+        };
+      });
+
       return {
         lastUpdate: Date.now(),
-        list: action.payload,
+        list: expanded,
       };
     },
 
