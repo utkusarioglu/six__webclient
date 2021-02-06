@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import postRepoReducer from '_base/components/slices/post-repo/posts-repo.slice';
 import commentsReducer from '_slices/comments/comments.slice';
 import userReducer from '_slices/user/user.slice';
+import postReducer from '_slices/post/post.slice';
 
 /**
  * The actual store for the app
  */
 const store = configureStore({
   reducer: {
+    post: postReducer,
     postRepo: postRepoReducer,
     comments: commentsReducer,
     user: userReducer,
