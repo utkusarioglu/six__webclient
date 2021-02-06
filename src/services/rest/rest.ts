@@ -1,14 +1,14 @@
 import type { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { API_ENDPOINT } from '_base/config';
-import { updatePosts } from '_slices/posts/posts.slice';
+import { updatePostRepo } from '_slices/post-repo/posts-repo.slice';
 import {
   CommentsGetRes,
   PostGetRes,
   PostsGetRes,
   UserLoginPostRes,
 } from 'six__public-api';
-import { PostsState } from '_slices/posts/posts.slice.types';
+import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { updateComments } from '_slices/comments/comments.slice';
 import { updateUser } from '_slices/user/user.slice';
 
@@ -31,7 +31,7 @@ class Rest {
       .get<null, AxiosResponse<PostsGetRes>>('/posts')
       .then((axiosResponse) => {
         const data: PostsGetRes = axiosResponse.data;
-        updatePosts(data.res);
+        updatePostRepo(data.res);
       })
       .catch((e) => {
         console.log(e);

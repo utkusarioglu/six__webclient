@@ -3,40 +3,25 @@ import type {
   UpdatePosts,
   UpvotePost,
   PostExpanded,
-} from './posts.slice.types';
+} from './posts-repo.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import store from '_store/store';
 import { Selector } from '_base/@types/helpers';
 import { PostsGetRes } from 'six__public-api';
+import { expandPost } from '_helpers/post/expandPost';
 
 const initialState: PostsState = {
   lastUpdate: 0,
   list: [],
 };
 
-const postsSlice = createSlice({
-  name: 'posts',
+const postRepoSlice = createSlice({
+  name: 'postRepo',
   initialState,
   reducers: {
     updatePosts: (_, action) => {
       const received: PostsGetRes['res'] = action.payload;
-      const expanded: PostExpanded[] = received.map((post) => {
-        const { communityName, creatorUsername, postSlug } = post;
-
-        const communitySlug = communityName.toLowerCase();
-        const creatorSlug = creatorUsername.toLowerCase();
-
-        return {
-          ...post,
-          communitySlug,
-          creatorSlug,
-          communityUrl: `r/${communitySlug}`,
-          communityStylizedUrl: `r/${communityName}`,
-          creatorUrl: `u/${creatorSlug}`,
-          creatorStylizedUrl: `u/${creatorUsername}`,
-          postUrl: `r/${communitySlug}/${postSlug}`,
-        };
-      });
+      const expanded: PostExpanded[] = received.map((post) => expandPost(post));
 
       return {
         lastUpdate: Date.now(),
@@ -62,19 +47,21 @@ const postsSlice = createSlice({
   },
 });
 
-export default postsSlice.reducer;
+export default postRepoSlice.reducer;
 
-export const updatePosts: UpdatePosts = (posts) =>
-  store.dispatch(postsSlice.actions.updatePosts(posts));
+export const updatePostRepo: UpdatePosts = (posts) =>
+  store.dispatch(postRepoSlice.actions.updatePosts(posts));
 
 export const upvotePost: UpvotePost = (postSlug) =>
-  store.dispatch(postsSlice.actions.upvotePost(postSlug));
+  store.dispatch(postRepoSlice.actions.upvotePost(postSlug));
 
-export const getPostsList: Selector<PostsState['list']> = (state) =>
-  state.posts.list;
+export const getPostRepo: Selector<PostsState['list']> = (state) =>
+  state.postRepo.list;
 
-export const getPostsAge: Selector<PostsState['lastUpdate']> = (state) => {
-  return Date.now() - state.posts.lastUpdate;
+export const getPostRepoLastUpdate: Selector<PostsState['lastUpdate']> = (
+  state
+) => {
+  return Date.now() - state.postRepo.lastUpdate;
 };
 
 type VoteStats = Pick<PostsState['list'][0], 'likeCount' | 'dislikeCount'> & {
@@ -86,7 +73,7 @@ type GetPostVotes = (
 ) => Selector<VoteStats>;
 
 export const getPostVotes: GetPostVotes = (postSlug) => (state) => {
-  const post = state.posts.list.find((post) => post.postSlug === postSlug);
+  const post = state.postRepo.list.find((post) => post.postSlug === postSlug);
 
   if (!post)
     return {
@@ -111,7 +98,7 @@ export const getPostBySlug: (
 ) => Selector<SelectPost> = (postSlug) => (state) => {
   if (!postSlug || postSlug.length === 0) return null;
 
-  const post = state.posts.list.find((post) => post.postSlug === postSlug);
+  const post = state.postRepo.list.find((post) => post.postSlug === postSlug);
 
   if (!post) return null;
 
@@ -123,7 +110,7 @@ export const getPostTitle: (
 ) => Selector<PostsState['list'][0]['postTitle'] | null> = (postSlug) => (
   state
 ) => {
-  const post = state.posts.list.find((post) => post.postSlug === postSlug);
+  const post = state.postRepo.list.find((post) => post.postSlug === postSlug);
 
   if (!post) return null;
 

@@ -9,6 +9,11 @@ export interface PostsState {
  * Expands the received post object with properties required by some components
  */
 export type PostExpanded = PostGetRes['res'] & {
+  receivedAt: number; // epoch
+  // used to check whether post can be displayed on screen, useful
+  // in some scenarios
+  allowView: boolean;
+
   communityUrl: string;
   communityStylizedUrl: string;
   communitySlug: string;

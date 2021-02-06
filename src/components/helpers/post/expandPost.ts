@@ -1,4 +1,4 @@
-import { PostExpanded } from '../../slices/posts-repo/posts-repo.slice.types';
+import { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
 import { PostGetRes } from 'six__public-api';
 
 /**
