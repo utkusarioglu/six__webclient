@@ -57,3 +57,8 @@ export const clearPost = () => {
 type GetPost = Selector<RootState, PostState>;
 
 export const getPost: GetPost = (state) => state.post;
+
+/**
+ * Can be used for skeletons
+ */
+export const emptyPost = initialState;
