@@ -2,8 +2,8 @@ import { useState, useEffect, ReactNode, useMemo } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import Cookies from 'js-cookie';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
+import cookies from '_services/cookies/cookies';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -75,7 +75,7 @@ function StartupSnacksView() {
               color="primary"
               size="small"
               onClick={() => {
-                Cookies.set('cookies-consented', 'true');
+                cookies.setCookieConsent(true);
                 setOpen(false);
               }}
             >
@@ -140,14 +140,10 @@ function StartupSnacksView() {
   );
 
   useEffect(() => {
-    const cookiesAllowed =
-      Cookies.getJSON('cookies-consented') || false || skipCookieConsent;
+    const cookiesAllowed = cookies.getCookieConsent() || skipCookieConsent;
 
     const loggedIn =
-      Cookies.getJSON('logged-in') ||
-      false ||
-      skipCookieConsent ||
-      skipLoginSnack;
+      cookies.getLoggedIn() || skipCookieConsent || skipLoginSnack;
 
     let snackPosition = [cookiesAllowed, loggedIn].indexOf(false);
     snackPosition = disableSnacks ? -1 : snackPosition;
@@ -181,7 +177,6 @@ function StartupSnacksView() {
         }}
         open={open}
         autoHideDuration={6000}
-        // onClose={handleClose}
         onExited={handleExited}
         message={messageInfo ? messageInfo.message : undefined}
         action={messageInfo ? messageInfo.actions : undefined}
