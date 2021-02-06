@@ -43,7 +43,7 @@ const PostDetailsForeheadView: FC<PostTopRowViewProps> = ({
         </Skeleton>
       ) : (
         <Avatar className={classes.avatar}>
-          {communityName && communityName[0]}
+          {communityName[0].toUpperCase()}
         </Avatar>
       )}
 
