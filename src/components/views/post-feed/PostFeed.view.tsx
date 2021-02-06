@@ -2,25 +2,17 @@ import type { FC, ReactElement } from 'react';
 import type { PostsViewProps as PostFeedViewProps } from './PostFeed.view.types';
 import { useSelector } from 'react-redux';
 import PostCardView from '_views/post-card/PostCard.view';
-import { NODE_ENV } from '_base/config';
 import rest from '_services/rest/rest';
 import { getPostsAge, getPostsList } from '_slices/posts/posts.slice';
+import { delayIfDev } from '_helpers/dev/delayIfDev';
 
 const PostFeedView: FC<PostFeedViewProps> = () => {
   const postsAge = useSelector(getPostsAge);
   const list = useSelector(getPostsList);
+  const getPosts = () => delayIfDev(() => rest.getPosts());
 
-  const getPosts = () => {
-    if (NODE_ENV === 'development') {
-      setTimeout(() => {
-        rest.getPosts();
-      }, 1000);
-    } else {
-      rest.getPosts();
-    }
-  };
-
-  if (list.length <= 1) {
+  // THis is faulty logic
+  if (list.length <= 0) {
     getPosts();
     return skeletons();
   } else if (postsAge > 10000) {

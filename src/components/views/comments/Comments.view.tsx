@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import rest from '_services/rest/rest';
+import { delayIfDev } from '_helpers/dev/delayIfDev';
 
 // ! post slug  shoudl come from the store type, cannot be a string
 type CommentsViewProps = {
@@ -7,7 +8,10 @@ type CommentsViewProps = {
 };
 
 const CommentsView: FC<CommentsViewProps> = ({ postSlug }) => {
-  rest.getCommentsByPostSlug(postSlug);
+  // this is faulty logic.. the post may not have any comments yet
+  if (!comments.length) {
+    delayIfDev(() => rest.getCommentsByPostSlug(postSlug));
+  }
 
   return (
     <>

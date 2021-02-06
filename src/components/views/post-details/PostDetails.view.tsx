@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container';
 import PostDetailsRowView from '_views/post-details-row/PostDetailsRow.view';
 import PostDetailsToolbarView from './PostDetailsToolbar.view';
 import { useSelector } from 'react-redux';
-import { NODE_ENV } from '_base/config';
+import { delayIfDev } from '_helpers/dev/delayIfDev';
 import { getPostBySlug } from '_base/components/slices/posts/posts.slice';
 import rest from '_services/rest/rest';
 
@@ -20,18 +20,10 @@ const PostDetailsView: FC<PostDetailsProps> = ({ postSlug }) => {
     return <span>something went wrong</span>;
   }
 
-  const getPost = (postSlug: string) => {
-    if (NODE_ENV === 'development') {
-      setTimeout(() => {
-        rest.getPostBySlug(postSlug);
-      }, 1000);
-    } else {
-      rest.getPostBySlug(postSlug);
-    }
-  };
+  const getPost = () => delayIfDev(() => rest.getPostBySlug(postSlug));
 
   if (!post) {
-    getPost(postSlug);
+    getPost();
     return <Skeleton variant="rect" height={100} />;
   }
 
