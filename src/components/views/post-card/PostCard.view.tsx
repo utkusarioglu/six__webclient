@@ -11,25 +11,26 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import VoteView from '_views/vote/vote.view';
+import PostCardVoteView from '_views/post-card-vote/vote.view';
 import ShareView from '_views/share/Share.view';
 import PostCardMediaView from './PostCardMedia.view';
-import PostDetailsRowView from '_views/post-details-row/PostDetailsRow.view';
+import PostDetailsForeheadView from '_views/post-details-forehead/PostDetailsForehead.view';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 const PostCardView: FC<PostCardViewProps> = ({
   asSkeleton,
-  createdAt = '',
-  postTitle = '',
-  postBody = '',
-  postSlug = '',
-  mediaImagePath = '',
-  commentCount = 0,
-  communityUrl = '',
-  communityStylizedUrl = '',
-  creatorUrl = '',
-  creatorStylizedUrl = '',
-  postUrl = '',
+  createdAt,
+  postTitle,
+  postBody,
+  postSlug,
+  mediaImagePath,
+  commentCount,
+  communityUrl,
+  communityStylizedUrl,
+  creatorUrl,
+  creatorStylizedUrl,
+  postUrl,
+  communityName,
 }) => {
   const classes = useStyles();
   const PostDetailsLink = domLinkHelper(postUrl);
@@ -41,10 +42,11 @@ const PostCardView: FC<PostCardViewProps> = ({
           <Grid item className={classes.cardActionGridItem}>
             <CardContent className={classes.cardContent}>
               <Container disableGutters className={classes.postDetailsRow}>
-                <PostDetailsRowView
+                <PostDetailsForeheadView
                   {...{
                     asSkeleton,
                     createdAt,
+                    communityName,
                     communityUrl,
                     communityStylizedUrl,
                     creatorUrl,
@@ -82,7 +84,7 @@ const PostCardView: FC<PostCardViewProps> = ({
             />
           ) : (
             <>
-              <VoteView {...{ postSlug }} />
+              <PostCardVoteView {...{ postSlug }} />
               <ShareView />
               <IconButton>
                 <ChatBubbleOutlineIcon className={classes.commentIcon} />

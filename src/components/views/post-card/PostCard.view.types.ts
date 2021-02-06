@@ -15,6 +15,7 @@ export type PostCardViewProps = Partial<
     | 'communityStylizedUrl'
     | 'creatorUrl'
     | 'creatorStylizedUrl'
+    | 'communityName'
   >
 > &
   AsSkeleton;

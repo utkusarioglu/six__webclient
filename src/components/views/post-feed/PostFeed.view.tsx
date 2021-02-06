@@ -3,12 +3,16 @@ import type { PostsViewProps as PostFeedViewProps } from './PostFeed.view.types'
 import { useSelector } from 'react-redux';
 import PostCardView from '_views/post-card/PostCard.view';
 import rest from '_services/rest/rest';
-import { getPostsAge, getPostsList } from '_slices/posts/posts.slice';
+import {
+  getPostRepoLastUpdate,
+  getPostRepo,
+} from '_slices/post-repo/posts-repo.slice';
+import { emptyPost } from '_slices/post/post.slice';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 
 const PostFeedView: FC<PostFeedViewProps> = () => {
-  const postsAge = useSelector(getPostsAge);
-  const list = useSelector(getPostsList);
+  const postsAge = useSelector(getPostRepoLastUpdate);
+  const list = useSelector(getPostRepo);
   const getPosts = () => delayIfDev(() => rest.getPosts());
 
   // THis is faulty logic
@@ -39,6 +43,7 @@ function skeletons(): ReactElement<any, any>[] {
         {...{
           key: idx,
           asSkeleton: true,
+          ...emptyPost,
         }}
       />
     ));

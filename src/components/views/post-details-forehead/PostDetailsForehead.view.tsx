@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Timeago from 'react-timeago';
 import { AsSkeleton } from '_base/@types/material-ui';
-import type { PostExpanded } from '_slices/posts/posts.slice.types';
+import type { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
 
 type PostTopRowViewProps = AsSkeleton &
   Pick<
@@ -18,15 +18,17 @@ type PostTopRowViewProps = AsSkeleton &
     | 'createdAt'
     | 'creatorUrl'
     | 'creatorStylizedUrl'
+    | 'communityName'
   >;
 
-const PostDetailsRowView: FC<PostTopRowViewProps> = ({
+const PostDetailsForeheadView: FC<PostTopRowViewProps> = ({
   asSkeleton,
   createdAt,
   communityUrl,
   communityStylizedUrl,
   creatorUrl,
   creatorStylizedUrl,
+  communityName,
 }) => {
   const classes = useStyles();
 
@@ -40,7 +42,9 @@ const PostDetailsRowView: FC<PostTopRowViewProps> = ({
           <Avatar className={classes.avatar} />
         </Skeleton>
       ) : (
-        <Avatar className={classes.avatar}>d</Avatar>
+        <Avatar className={classes.avatar}>
+          {communityName && communityName[0]}
+        </Avatar>
       )}
 
       {asSkeleton ? (
@@ -85,7 +89,7 @@ const PostDetailsRowView: FC<PostTopRowViewProps> = ({
   );
 };
 
-export default PostDetailsRowView;
+export default PostDetailsForeheadView;
 
 const useStyles = makeStyles((theme) => {
   const topRowFont = {

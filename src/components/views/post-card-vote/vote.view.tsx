@@ -9,9 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withUnit } from '_helpers/withUnit/withUnit';
 import { useSelector } from 'react-redux';
-import { getPostVotes } from '_slices/posts/posts.slice';
+import { getPostVotes } from '_base/components/slices/post-repo/posts-repo.slice';
 
-const VoteView: FC<VoteViewProps> = ({ postSlug }) => {
+const PostCardVoteView: FC<VoteViewProps> = ({ postSlug }) => {
   const classes = useStyles();
   const { likeCount, dislikeCount, voteCount } = useSelector(
     getPostVotes(postSlug)
@@ -50,4 +50,4 @@ export const useStyles = makeStyles({
   },
 });
 
-export default VoteView;
+export default PostCardVoteView;
