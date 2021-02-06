@@ -2,8 +2,15 @@ import type { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { API_ENDPOINT } from '_base/config';
 import { updatePosts } from '_slices/posts/posts.slice';
-import { CommentsGetRes, PostGetRes, PostsGetRes } from 'six__public-api';
+import {
+  CommentsGetRes,
+  PostGetRes,
+  PostsGetRes,
+  UserLoginPostRes,
+} from 'six__public-api';
 import { PostsState } from '_slices/posts/posts.slice.types';
+import { updateComments } from '_slices/comments/comments.slice';
+import { updateUser } from '_slices/user/user.slice';
 
 class Rest {
   private _axios: AxiosInstance;
@@ -44,8 +51,19 @@ class Rest {
   getCommentsByPostSlug(postSlug: PostsState['list'][0]['postSlug']) {
     this._axios.get(`/post/slug/${postSlug}/comments`).then((axiosResponse) => {
       const data: CommentsGetRes = axiosResponse.data;
-      console.log('comments: \n', data);
+      updateComments(data.res);
     });
+  }
+
+  // !any
+  tryLogin(data: any) {
+    this._axios
+      .post(`/login`, data)
+      .then((axiosResponse) => {
+        const data: UserLoginPostRes = axiosResponse.data;
+        updateUser(data);
+      })
+      .catch((e) => console.log(e));
   }
 }
 
