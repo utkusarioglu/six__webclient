@@ -57,7 +57,7 @@ const PostDetailsView: FC<PostDetailsProps> = ({ postSlug }) => {
           {asSkeleton ? <Skeleton /> : postTitle}
         </Typography>
       </Container>
-      <Container>
+      <Container className={classes.postBody}>
         <Typography>{asSkeleton ? <Skeleton /> : postBody}</Typography>
       </Container>
     </>
@@ -72,6 +72,9 @@ const useStyles = makeStyles((theme) =>
     },
     postDetailsTitleContainer: {
       marginBottom: theme.spacing(2),
+    },
+    postBody: {
+      marginBottom: theme.spacing(3),
     },
   })
 );

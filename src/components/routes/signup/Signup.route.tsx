@@ -1,5 +1,7 @@
+import SignupLayout from '_layouts/signup/Signup.layout';
+
 const SignupRoute = () => {
-  return <span>This is where you use formik</span>;
+  return <SignupLayout />;
 };
 
 export default SignupRoute;
