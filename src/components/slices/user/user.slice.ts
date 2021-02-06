@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-
+import { createSlice, Selector } from '@reduxjs/toolkit';
+import cookies from '_services/cookies/cookies';
 import { SuccessfulUserLoginRes, UserLoginPostRes } from 'six__public-api';
-import store from '_base/store/store';
+import store, { RootState } from '_base/store/store';
 
 type UserExpanded = SuccessfulUserLoginRes & {
   userSlug: string;
@@ -43,6 +43,11 @@ type UpdateUser = (user: UserLoginPostRes) => void;
 
 export const updateUser: UpdateUser = (user) => {
   if (user.res.loggedIn) {
+    cookies.setLoggedIn(true);
     store.dispatch(userSlice.actions.updateUser(user.res));
   }
 };
+
+type GetLoggedIn = Selector<RootState, UserState['loggedIn']>;
+
+export const getLoggedIn: GetLoggedIn = (state) => state.user.loggedIn;
