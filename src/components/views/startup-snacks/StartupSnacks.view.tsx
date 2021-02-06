@@ -29,8 +29,22 @@ export interface State {
   messageInfo?: SnackbarMessage;
 }
 
+function isAtDisabledPath(): boolean {
+  switch (window.location.pathname.slice(1)) {
+    case 'login':
+    case 'signup':
+    case 'profile':
+    case 'settings':
+      return true;
+
+    default:
+      return false;
+  }
+}
+
 function StartupSnacksView() {
   const classes = useStyles();
+  const disableSnacks = isAtDisabledPath();
 
   const [open, setOpen] = useState(true);
   const [skipCookieConsent, setSkipCookieConsent] = useState(false);
@@ -128,13 +142,15 @@ function StartupSnacksView() {
   useEffect(() => {
     const cookiesAllowed =
       Cookies.getJSON('cookies-consented') || false || skipCookieConsent;
+
     const loggedIn =
       Cookies.getJSON('logged-in') ||
       false ||
       skipCookieConsent ||
       skipLoginSnack;
 
-    const snackPosition = [cookiesAllowed, loggedIn].indexOf(false);
+    let snackPosition = [cookiesAllowed, loggedIn].indexOf(false);
+    snackPosition = disableSnacks ? -1 : snackPosition;
 
     if (snackPosition !== -1) {
       setOpen(true);
@@ -142,7 +158,14 @@ function StartupSnacksView() {
     } else {
       setOpen(false);
     }
-  }, [messageInfo, open, snackPack, skipCookieConsent, skipLoginSnack]);
+  }, [
+    messageInfo,
+    open,
+    snackPack,
+    skipCookieConsent,
+    skipLoginSnack,
+    disableSnacks,
+  ]);
 
   const handleExited = () => {
     setMessageInfo(undefined);
