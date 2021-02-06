@@ -11,6 +11,7 @@ import {
 import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { updateComments } from '_slices/comments/comments.slice';
 import { updateUser } from '_slices/user/user.slice';
+import { setPost } from '_slices/post/post.slice';
 
 class Rest {
   private _axios: AxiosInstance;
@@ -43,7 +44,8 @@ class Rest {
       .get<null, AxiosResponse<PostGetRes>>(`/post/slug/${postSlug}`)
       .then((axiosResponse) => {
         const data: PostGetRes = axiosResponse.data;
-        updatePosts([data.res]);
+        setPost(data.res);
+        // updatePostsRepo([data.res]);
       })
       .catch((e) => console.log(e));
   }
