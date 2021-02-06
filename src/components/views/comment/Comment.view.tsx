@@ -1,20 +1,22 @@
-import type { FC } from 'react';
+import type { FC, CSSProperties } from 'react';
 import type { SliceComment } from '_slices/comments/comments.slice.types';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
 import Container from '@material-ui/core/Container';
 import Timeago from 'react-timeago';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 type CommentViewProps = SliceComment;
 
 const CommentView: FC<CommentViewProps> = ({
+  asSkeleton,
   body,
   createdAt,
-  creatorSlug,
+  creatorUsername,
   creatorStylizedUrl,
   creatorUrl,
   parentId,
@@ -22,31 +24,46 @@ const CommentView: FC<CommentViewProps> = ({
   const classes = useStyles();
   const CreatorLink = domLinkHelper(creatorUrl);
   const avatarSize = parentId !== null ? '25px' : '35px';
+  const avatarStyle: CSSProperties = {
+    width: avatarSize,
+    height: avatarSize,
+  };
 
   return (
-    <Paper variant="outlined" className={classes.root}>
-      <Avatar
-        style={{
-          width: avatarSize,
-          height: avatarSize,
-        }}
-      >
-        {creatorSlug[0]}
-      </Avatar>
+    <Paper elevation={0} className={classes.root}>
+      {asSkeleton ? (
+        <Skeleton variant="circle" style={avatarStyle}>
+          <Avatar style={avatarStyle} />
+        </Skeleton>
+      ) : (
+        <Avatar style={avatarStyle}>{creatorUsername[0].toUpperCase()}</Avatar>
+      )}
+
       <Container>
         <Container disableGutters className={classes.hud}>
-          <Link
-            color="textPrimary"
-            component={CreatorLink}
-            className={classes.hudItem}
-          >
-            {creatorStylizedUrl}
-          </Link>
-          <Link color="textSecondary">
-            <Timeago date={createdAt} />
-          </Link>
+          {asSkeleton ? (
+            <Skeleton width="100%" />
+          ) : (
+            <>
+              <Link
+                color="textPrimary"
+                component={CreatorLink}
+                className={classes.hudItem}
+              >
+                {creatorStylizedUrl}
+              </Link>
+              <Link color="textSecondary">
+                <Timeago date={createdAt} />
+              </Link>
+            </>
+          )}
         </Container>
-        <Typography className={classes.body}>{body}</Typography>
+
+        {asSkeleton ? (
+          <Skeleton height="50px" />
+        ) : (
+          <Typography className={classes.body}>{body}</Typography>
+        )}
       </Container>
     </Paper>
   );
