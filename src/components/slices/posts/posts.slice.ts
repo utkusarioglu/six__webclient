@@ -81,9 +81,11 @@ type VoteStats = Pick<PostsState['list'][0], 'likeCount' | 'dislikeCount'> & {
   voteCount: number;
 };
 
-export const getPostVotes: (
+type GetPostVotes = (
   postId: PostsState['list'][0]['id']
-) => Selector<VoteStats> = (postSlug) => (state) => {
+) => Selector<VoteStats>;
+
+export const getPostVotes: GetPostVotes = (postSlug) => (state) => {
   const post = state.posts.list.find((post) => post.postSlug === postSlug);
 
   if (!post)
