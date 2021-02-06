@@ -9,7 +9,7 @@ import {
   UserLoginPostRes,
 } from 'six__public-api';
 import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
-import { updateComments } from '_slices/comments/comments.slice';
+import { setComments } from '_slices/comments/comments.slice';
 import { updateUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
 
@@ -53,7 +53,7 @@ class Rest {
   getCommentsByPostSlug(postSlug: PostsState['list'][0]['postSlug']) {
     this._axios.get(`/post/slug/${postSlug}/comments`).then((axiosResponse) => {
       const data: CommentsGetRes = axiosResponse.data;
-      updateComments(data.res);
+      setComments(data.res);
     });
   }
 
