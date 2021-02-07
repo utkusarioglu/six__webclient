@@ -4,6 +4,7 @@ import { API_ENDPOINT } from '_base/config';
 import { updatePostRepo } from '_slices/post-repo/posts-repo.slice';
 import {
   CommentsGetRes,
+  CommunitiesGetRes,
   PostGetRes,
   PostsGetRes,
   UserLoginPostRes,
@@ -78,6 +79,13 @@ class Rest {
         setUser(data);
       })
       .catch(console.log);
+  }
+
+  getCommunities() {
+    this._axios.get('/communities').then((axiosResponse) => {
+      const data: CommunitiesGetRes = axiosResponse.data;
+      console.log(data);
+    });
   }
 }
 
