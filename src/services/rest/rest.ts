@@ -7,6 +7,7 @@ import {
   PostGetRes,
   PostsGetRes,
   UserLoginPostRes,
+  UserSignupPostRes,
 } from 'six__public-api';
 import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { setComments } from '_slices/comments/comments.slice';
@@ -66,6 +67,17 @@ class Rest {
         setUser(data);
       })
       .catch((e) => console.log(e));
+  }
+
+  signup(data: any) {
+    this._axios
+      .post('/signup', data)
+      .then((axiosResponse) => {
+        const data: UserSignupPostRes = axiosResponse.data;
+        console.log(data);
+        setUser(data);
+      })
+      .catch(console.log);
   }
 }
 
