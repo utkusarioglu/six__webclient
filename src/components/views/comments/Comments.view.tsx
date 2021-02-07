@@ -26,7 +26,7 @@ const CommentsView: FC<CommentsViewProps> = ({ postSlug }) => {
 
   // this is faulty logic.. the post may not have any comments yet
   if (!receivedAt) {
-    delayIfDev(() => rest.getCommentsByPostSlug(postSlug), 4000);
+    delayIfDev(() => rest.getCommentsByPostSlug(postSlug), 2);
   }
 
   if (receivedAt && !comments.length) {

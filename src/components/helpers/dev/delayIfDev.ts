@@ -1,10 +1,13 @@
 import { NODE_ENV } from '_base/config';
 
-export function delayIfDev<T>(callback: () => T, delay: number = 2000): void {
+export function delayIfDev<T>(
+  callback: () => T,
+  delayMultiplier: number = 1
+): void {
   if (NODE_ENV === 'development') {
     setTimeout(() => {
       callback();
-    }, delay);
+    }, delayMultiplier * 1000);
   } else {
     callback();
   }
