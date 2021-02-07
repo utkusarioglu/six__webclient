@@ -10,18 +10,22 @@ import {
 } from '_slices/post-repo/posts-repo.slice';
 import { emptyPost } from '_slices/post/post.slice';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 const PostFeedView: FC<PostFeedViewProps> = () => {
   const postsAge = useSelector(getPostRepoLastUpdate);
   const { updatedAt, list: posts } = useSelector(getPostRepo);
   const getPosts = () => delayIfDev(() => rest.getPosts());
+  const CommunitiesLink = domLinkHelper('/communities');
 
   // THis is faulty logic
   if (!updatedAt) {
     getPosts();
     return skeletons();
   } else if (postsAge > 10000) {
+    // instead show a prompt to the user
     getPosts();
   }
 
@@ -29,7 +33,10 @@ const PostFeedView: FC<PostFeedViewProps> = () => {
     return (
       <Container>
         <Typography>There isn't anything new...</Typography>
-        <Typography>You need to follow more communities</Typography>
+        <Typography>
+          You need to follow more communities.{' '}
+          <Link component={CommunitiesLink}>Click here</Link>
+        </Typography>
       </Container>
     );
   }
