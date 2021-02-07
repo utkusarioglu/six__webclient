@@ -55,8 +55,7 @@ export const updatePostRepo: UpdatePosts = (posts) =>
 export const upvotePost: UpvotePost = (postSlug) =>
   store.dispatch(postRepoSlice.actions.upvotePost(postSlug));
 
-export const getPostRepo: Selector<PostsState['list']> = (state) =>
-  state.postRepo.list;
+export const getPostRepo: Selector<PostsState> = (state) => state.postRepo;
 
 export const getPostRepoLastUpdate: Selector<PostsState['updatedAt']> = (
   state
