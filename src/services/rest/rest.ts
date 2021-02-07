@@ -10,7 +10,7 @@ import {
 } from 'six__public-api';
 import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { setComments } from '_slices/comments/comments.slice';
-import { updateUser } from '_slices/user/user.slice';
+import { setUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
 
 class Rest {
@@ -63,7 +63,7 @@ class Rest {
       .post(`/login`, data)
       .then((axiosResponse) => {
         const data: UserLoginPostRes = axiosResponse.data;
-        updateUser(data);
+        setUser(data);
       })
       .catch((e) => console.log(e));
   }

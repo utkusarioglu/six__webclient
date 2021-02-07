@@ -20,7 +20,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUser: (_, action) => {
+    setUser: (_, action) => {
       const received: SuccessfulUserLoginRes = action.payload;
       const { username } = received;
       const userSlug = username.toLowerCase();
@@ -41,10 +41,10 @@ export default userSlice.reducer;
 
 type UpdateUser = (user: UserLoginPostRes) => void;
 
-export const updateUser: UpdateUser = (user) => {
+export const setUser: UpdateUser = (user) => {
   if (user.res.loggedIn) {
     cookies.setLoggedIn(true);
-    store.dispatch(userSlice.actions.updateUser(user.res));
+    store.dispatch(userSlice.actions.setUser(user.res));
   }
 };
 
