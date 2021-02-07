@@ -23,6 +23,8 @@ export type PostExpanded = PostGetRes['res'] & {
   creatorUrl: string;
   creatorSlug: string;
   creatorStylizedUrl: string;
+
+  voteCount: number;
 };
 
 export type UpdatePosts = (posts: PostsGetRes['res']) => void;

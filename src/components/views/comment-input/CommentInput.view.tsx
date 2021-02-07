@@ -44,7 +44,7 @@ const CommentInputView: FC<CommentInputViewProps> = ({
     setFocused(false);
   };
 
-  const inputOnFocus = (e: any) => {
+  const inputOnFocus = () => {
     setFocused(true);
   };
 

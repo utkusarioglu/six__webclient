@@ -9,6 +9,7 @@ export type SliceComment = CommentsGetRes['res'][0] &
     creatorSlug: string;
     creatorUrl: string; // url
     creatorStylizedUrl: string;
+    voteCount: number;
   };
 
 /**

@@ -18,7 +18,7 @@ const commentsSlice = createSlice({
       const received: CommentsGetRes['res'] = payload;
 
       const expanded: SliceComment[] = received.map((comment) => {
-        const { creatorUsername } = comment;
+        const { creatorUsername, likeCount, dislikeCount } = comment;
         const creatorSlug = creatorUsername.toLowerCase();
 
         return {
@@ -27,6 +27,7 @@ const commentsSlice = createSlice({
           creatorStylizedUrl: `u/${creatorUsername}`,
           creatorUrl: `u/${creatorSlug}`,
           asSkeleton: false,
+          voteCount: likeCount - dislikeCount,
         };
       });
 
@@ -70,6 +71,7 @@ export const emptyComment: SliceComment = {
   body: '',
   likeCount: 0,
   dislikeCount: 0,
+  voteCount: 0,
   postSlug: '',
   creatorUsername: '',
   creatorSlug: '',

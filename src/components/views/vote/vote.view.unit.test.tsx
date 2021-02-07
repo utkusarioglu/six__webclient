@@ -1,5 +1,5 @@
 import { createMount } from '@material-ui/core/test-utils';
-import PostCardVoteView from './vote.view';
+import VoteView from './vote.view';
 import { VoteViewProps } from './vote.view.types';
 import Chance from 'chance';
 
@@ -20,7 +20,7 @@ describe('VoteView', () => {
           dislikeCount: chance.integer(),
         };
 
-        const wrapper = render(<PostCardVoteView {...props} />);
+        const wrapper = render(<VoteView {...props} />);
         expect(wrapper.prop('likeCount')).toEqual(props.likeCount);
         expect(wrapper.prop('dislikeCount')).toEqual(props.dislikeCount);
         expect(
@@ -35,7 +35,7 @@ describe('VoteView', () => {
       dislikeCount: chance.integer(),
     };
 
-    const wrapper = render(<PostCardVoteView {...props} />);
+    const wrapper = render(<VoteView {...props} />);
 
     const propTitle = wrapper
       .find('[data-testid="tooltip"]')

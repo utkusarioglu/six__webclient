@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
-import PostCardVoteView from '_base/components/views/post-card-vote/vote.view';
+import VoteView from '_base/components/views/vote/vote.view';
 import { darkTheme } from '_base/theme';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { getPost } from '_slices/post/post.slice';
@@ -21,7 +21,11 @@ const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
   postSlug,
 }) => {
   const classes = useStyles();
-  const { postTitle } = useSelector(getPost);
+  const { postTitle, likeCount, dislikeCount, voteCount } = useSelector(
+    getPost
+  );
+
+  const voteFunction = (voteType: number) => alert(`toolbar vote ${voteType}`);
 
   const HomeDomLink = domLinkHelper('/');
 
@@ -31,7 +35,15 @@ const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
         <Skeleton variant="rect" />
       ) : (
         <>
-          <PostCardVoteView {...{ postSlug }} />
+          <VoteView
+            {...{
+              mode: 'post',
+              likeCount,
+              dislikeCount,
+              voteCount,
+              voteFunction,
+            }}
+          />
           <Typography className={classes.title} noWrap={true}>
             {postTitle}
           </Typography>

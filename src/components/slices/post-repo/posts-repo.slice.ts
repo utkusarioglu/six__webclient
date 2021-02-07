@@ -75,19 +75,20 @@ type GetPostVotes = (
 export const getPostVotes: GetPostVotes = (postSlug) => (state) => {
   const post = state.postRepo.list.find((post) => post.postSlug === postSlug);
 
-  if (!post)
+  if (!post) {
     return {
       likeCount: 1,
       dislikeCount: 0,
       voteCount: 0,
     };
+  }
 
-  const { likeCount, dislikeCount } = post;
+  const { likeCount, dislikeCount, voteCount } = post;
 
   return {
     likeCount,
     dislikeCount,
-    voteCount: likeCount - dislikeCount,
+    voteCount,
   };
 };
 

@@ -1,6 +1,6 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
 import store, { RootState } from '_base/store/store';
-import { PostExpanded } from '../post-repo/posts-repo.slice.types';
+import { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
 import { PostGetRes } from 'six__public-api';
 import { expandPost } from '_helpers/post/expandPost';
 
@@ -30,6 +30,7 @@ const initialState: PostState = {
   creatorUrl: '',
   creatorSlug: '',
   creatorStylizedUrl: '',
+  voteCount: 0,
 };
 
 const postSlice = createSlice({

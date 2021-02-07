@@ -5,21 +5,29 @@ import Paper from '@material-ui/core/Paper';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import Timeago from 'react-timeago';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
+import VoteView from '../vote/vote.view';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import IconButton from '@material-ui/core/IconButton';
 
 type CommentViewProps = SliceComment;
 
 const CommentView: FC<CommentViewProps> = ({
   asSkeleton,
+  id,
   body,
   createdAt,
   creatorUsername,
   creatorStylizedUrl,
   creatorUrl,
   parentId,
+  likeCount,
+  voteCount,
+  dislikeCount,
 }) => {
   const classes = useStyles();
   const CreatorLink = domLinkHelper(creatorUrl);
@@ -28,6 +36,11 @@ const CommentView: FC<CommentViewProps> = ({
     width: avatarSize,
     height: avatarSize,
   };
+
+  const voteFunction: (voteType: number) => void = (voteType) =>
+    alert(`vote: ${voteType}`);
+
+  const replyFunction = () => alert(`reply to: ${id}`);
 
   return (
     <Paper elevation={0} className={classes.root}>
@@ -64,6 +77,32 @@ const CommentView: FC<CommentViewProps> = ({
         ) : (
           <Typography className={classes.body}>{body}</Typography>
         )}
+
+        {asSkeleton ? (
+          <Skeleton />
+        ) : (
+          <Container disableGutters className={classes.actions}>
+            <Grid container direction="row">
+              <VoteView
+                {...{
+                  mode: 'comment',
+                  likeCount,
+                  dislikeCount,
+                  voteCount,
+                  voteFunction,
+                }}
+              />
+
+              <IconButton size="small" onClick={replyFunction}>
+                <ChatBubbleOutlineIcon
+                  className={classes.commentIcon}
+                  fontSize="small"
+                />
+                <Typography noWrap>Reply</Typography>
+              </IconButton>
+            </Grid>
+          </Container>
+        )}
       </Container>
     </Paper>
   );
@@ -89,6 +128,14 @@ const useStyles = makeStyles((theme) =>
     },
     body: {
       marginTop: theme.spacing(0.5),
+    },
+    actions: {
+      marginTop: theme.spacing(0.2),
+      marginBottom: theme.spacing(-0.2),
+      marginLeft: theme.spacing(-0.5), //! magic number, comes from arrow svg image shape
+    },
+    commentIcon: {
+      marginRight: theme.spacing(1),
     },
   })
 );

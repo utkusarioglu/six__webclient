@@ -11,7 +11,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import PostCardVoteView from '_views/post-card-vote/vote.view';
+import VoteView from '_base/components/views/vote/vote.view';
 import ShareView from '_views/share/Share.view';
 import PostCardMediaView from './PostCardMedia.view';
 import PostDetailsForeheadView from '_views/post-details-forehead/PostDetailsForehead.view';
@@ -22,7 +22,6 @@ const PostCardView: FC<PostCardViewProps> = ({
   createdAt,
   postTitle,
   postBody,
-  postSlug,
   mediaImagePath,
   commentCount,
   communityUrl,
@@ -31,9 +30,14 @@ const PostCardView: FC<PostCardViewProps> = ({
   creatorStylizedUrl,
   postUrl,
   communityName,
+  likeCount,
+  dislikeCount,
+  voteCount,
 }) => {
   const classes = useStyles();
-  const PostDetailsLink = domLinkHelper(postUrl);
+  const PostDetailsLink = domLinkHelper(postUrl as string);
+
+  const voteFunction = (voteType: number) => alert(`card vote: ${voteType}`);
 
   return (
     <Card className={classes.root}>
@@ -83,14 +87,27 @@ const PostCardView: FC<PostCardViewProps> = ({
               className={classes.cardActionsSkeleton}
             />
           ) : (
-            <>
-              <PostCardVoteView {...{ postSlug }} />
-              <ShareView />
-              <IconButton>
-                <ChatBubbleOutlineIcon className={classes.commentIcon} />
-                <Typography noWrap>{commentCount}</Typography>
-              </IconButton>
-            </>
+            <Container>
+              <Grid container>
+                <VoteView
+                  {...{
+                    mode: 'post',
+                    likeCount,
+                    dislikeCount,
+                    voteCount,
+                    voteFunction,
+                  }}
+                />
+                <ShareView />
+                <IconButton size="small">
+                  <ChatBubbleOutlineIcon
+                    className={classes.commentIcon}
+                    fontSize="small"
+                  />
+                  <Typography noWrap>{commentCount}</Typography>
+                </IconButton>
+              </Grid>
+            </Container>
           )}
         </Container>
       </CardActions>
@@ -106,8 +123,6 @@ export const useStyles = makeStyles((theme) =>
     cardActions: {
       overflowX: 'auto',
       overflowY: 'hidden',
-      padding: 0,
-      paddingTop: theme.spacing(2),
     },
     cardActionsContainer: {
       paddingLeft: 0,
@@ -118,9 +133,9 @@ export const useStyles = makeStyles((theme) =>
       margin: 0,
     },
     cardActionsSkeleton: {
-      marginTop: theme.spacing(1),
+      marginTop: theme.spacing(2),
       marginLeft: theme.spacing(2),
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
     },
     cardActionGridItem: {
       width: '100%',

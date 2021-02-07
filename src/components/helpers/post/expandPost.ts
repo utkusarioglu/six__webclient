@@ -9,7 +9,13 @@ import { PostGetRes } from 'six__public-api';
  * @returns expanded post object that multiple components use
  */
 export function expandPost(raw: PostGetRes['res']): PostExpanded {
-  const { communityName, creatorUsername, postSlug } = raw;
+  const {
+    communityName,
+    creatorUsername,
+    postSlug,
+    likeCount,
+    dislikeCount,
+  } = raw;
 
   const communitySlug = communityName.toLowerCase();
   const creatorSlug = creatorUsername.toLowerCase();
@@ -25,5 +31,6 @@ export function expandPost(raw: PostGetRes['res']): PostExpanded {
     creatorUrl: `u/${creatorSlug}`,
     creatorStylizedUrl: `u/${creatorUsername}`,
     postUrl: `r/${communitySlug}/${postSlug}`,
+    voteCount: likeCount - dislikeCount,
   };
 }

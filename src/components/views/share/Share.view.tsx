@@ -57,8 +57,12 @@ export default function ShareView() {
   return (
     <div>
       <>
-        <IconButton aria-label="share" onClick={toggleDrawer(true)}>
-          <ShareIcon />
+        <IconButton
+          aria-label="share"
+          onClick={toggleDrawer(true)}
+          size="small"
+        >
+          <ShareIcon fontSize="small" />
         </IconButton>
         <Drawer anchor="bottom" open={isOpen} onClose={toggleDrawer(false)}>
           <ListContent />

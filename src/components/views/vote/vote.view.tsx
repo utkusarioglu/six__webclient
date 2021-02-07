@@ -4,18 +4,21 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import KeyboardArrowUpOutlinedIcon from '@material-ui/icons/KeyboardArrowUpOutlined';
+import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withUnit } from '_helpers/withUnit/withUnit';
-import { useSelector } from 'react-redux';
-import { getPostVotes } from '_base/components/slices/post-repo/posts-repo.slice';
 
-const PostCardVoteView: FC<VoteViewProps> = ({ postSlug }) => {
+const VoteView: FC<VoteViewProps> = ({
+  likeCount,
+  dislikeCount,
+  voteCount,
+  voteFunction,
+  mode,
+}) => {
   const classes = useStyles();
-  const { likeCount, dislikeCount, voteCount } = useSelector(
-    getPostVotes(postSlug)
-  );
 
   const tooltipTitle = [
     withUnit(likeCount, 'like'),
@@ -26,14 +29,31 @@ const PostCardVoteView: FC<VoteViewProps> = ({ postSlug }) => {
     <Tooltip title={tooltipTitle} data-testid="tooltip">
       <Grid container className={classes.vote}>
         <Grid item>
-          <IconButton aria-label="delete">
-            <ArrowDropUpIcon />
+          <IconButton
+            aria-label="up vote"
+            onClick={() => voteFunction(1)}
+            size="small"
+            edge="start"
+          >
+            {mode === 'post' ? (
+              <ArrowDropUpIcon />
+            ) : (
+              <KeyboardArrowUpOutlinedIcon />
+            )}
             <Typography data-testid="vote-count">{voteCount}</Typography>
           </IconButton>
         </Grid>
         <Grid item>
-          <IconButton aria-label="delete">
-            <ArrowDropDownIcon />
+          <IconButton
+            aria-label="down vote"
+            onClick={() => voteFunction(-1)}
+            size="small"
+          >
+            {mode === 'post' ? (
+              <ArrowDropDownIcon />
+            ) : (
+              <KeyboardArrowDownOutlinedIcon />
+            )}
           </IconButton>
         </Grid>
       </Grid>
@@ -50,4 +70,4 @@ export const useStyles = makeStyles({
   },
 });
 
-export default PostCardVoteView;
+export default VoteView;
