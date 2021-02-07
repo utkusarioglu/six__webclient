@@ -14,6 +14,7 @@ import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { setComments } from '_slices/comments/comments.slice';
 import { setUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
+import { setCommunities } from '_slices/communities/communities.slice';
 
 class Rest {
   private _axios: AxiosInstance;
@@ -84,7 +85,7 @@ class Rest {
   getCommunities() {
     this._axios.get('/communities').then((axiosResponse) => {
       const data: CommunitiesGetRes = axiosResponse.data;
-      console.log(data);
+      setCommunities(data);
     });
   }
 }

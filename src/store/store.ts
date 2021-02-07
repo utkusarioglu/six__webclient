@@ -3,6 +3,7 @@ import postRepoReducer from '_base/components/slices/post-repo/posts-repo.slice'
 import commentsReducer from '_slices/comments/comments.slice';
 import userReducer from '_slices/user/user.slice';
 import postReducer from '_slices/post/post.slice';
+import communitiesReducer from '_slices/communities/communities.slice';
 
 /**
  * The actual store for the app
@@ -13,6 +14,7 @@ const store = configureStore({
     postRepo: postRepoReducer,
     comments: commentsReducer,
     user: userReducer,
+    communities: communitiesReducer,
   },
 });
 
