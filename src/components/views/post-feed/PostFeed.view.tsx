@@ -4,10 +4,7 @@ import Container from '@material-ui/core/Container';
 import { useSelector } from 'react-redux';
 import PostCardView from '_views/post-card/PostCard.view';
 import rest from '_services/rest/rest';
-import {
-  getPostRepoLastUpdate,
-  getPostRepo,
-} from '_slices/post-repo/posts-repo.slice';
+import { getPostRepo } from '_slices/post-repo/posts-repo.slice';
 import { emptyPost } from '_slices/post/post.slice';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import Typography from '@material-ui/core/Typography';
@@ -15,7 +12,6 @@ import Link from '@material-ui/core/Link';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 const PostFeedView: FC<PostFeedViewProps> = () => {
-  const postsAge = useSelector(getPostRepoLastUpdate);
   const { updatedAt, list: posts } = useSelector(getPostRepo);
   const getPosts = () => delayIfDev(() => rest.getPosts());
   const CommunitiesLink = domLinkHelper('/communities');
@@ -24,7 +20,7 @@ const PostFeedView: FC<PostFeedViewProps> = () => {
   if (!updatedAt) {
     getPosts();
     return skeletons();
-  } else if (postsAge > 10000) {
+  } else if (Date.now() - updatedAt > 10000) {
     // instead show a prompt to the user
     getPosts();
   }
