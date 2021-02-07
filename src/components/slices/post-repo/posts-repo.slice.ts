@@ -63,9 +63,10 @@ export const getPostRepoLastUpdate: Selector<PostsState['updatedAt']> = (
   return Date.now() - state.postRepo.updatedAt;
 };
 
-type VoteStats = Pick<PostsState['list'][0], 'likeCount' | 'dislikeCount'> & {
-  voteCount: number;
-};
+type VoteStats = Pick<
+  PostsState['list'][0],
+  'likeCount' | 'dislikeCount' | 'voteCount'
+>;
 
 type GetPostVotes = (
   postId: PostsState['list'][0]['id']
