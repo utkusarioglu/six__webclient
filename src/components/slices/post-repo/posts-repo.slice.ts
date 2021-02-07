@@ -11,7 +11,7 @@ import { PostsGetRes } from 'six__public-api';
 import { expandPost } from '_helpers/post/expandPost';
 
 const initialState: PostsState = {
-  lastUpdate: 0,
+  updatedAt: 0,
   list: [],
 };
 
@@ -24,7 +24,7 @@ const postRepoSlice = createSlice({
       const expanded: PostExpanded[] = received.map((post) => expandPost(post));
 
       return {
-        lastUpdate: Date.now(),
+        updatedAt: Date.now(),
         list: expanded,
       };
     },
@@ -58,10 +58,10 @@ export const upvotePost: UpvotePost = (postSlug) =>
 export const getPostRepo: Selector<PostsState['list']> = (state) =>
   state.postRepo.list;
 
-export const getPostRepoLastUpdate: Selector<PostsState['lastUpdate']> = (
+export const getPostRepoLastUpdate: Selector<PostsState['updatedAt']> = (
   state
 ) => {
-  return Date.now() - state.postRepo.lastUpdate;
+  return Date.now() - state.postRepo.updatedAt;
 };
 
 type VoteStats = Pick<PostsState['list'][0], 'likeCount' | 'dislikeCount'> & {

@@ -1,7 +1,7 @@
 import { PostGetRes, PostsGetRes } from 'six__public-api';
 
 export interface PostsState {
-  lastUpdate: number;
+  updatedAt: number;
   list: PostExpanded[];
 }
 
