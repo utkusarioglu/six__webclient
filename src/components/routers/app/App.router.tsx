@@ -14,6 +14,7 @@ import StartupSnacksView from '_base/components/views/startup-snacks/StartupSnac
 import LoginRoute from '_base/components/routes/login/Login.route';
 import SignupRoute from '_base/components/routes/signup/Signup.route';
 import CommunitiesRoute from '_base/components/routes/communities/Communities.route';
+import LogoutRoute from '_base/components/routes/logout/Logout.route';
 
 const AppRouter = () => {
   return (
@@ -31,6 +32,10 @@ const AppRouter = () => {
 
           <Route path="/signup" exact>
             <SignupRoute />
+          </Route>
+
+          <Route path="/logout" exact>
+            <LogoutRoute />
           </Route>
 
           <Route path="/communities" exact>
