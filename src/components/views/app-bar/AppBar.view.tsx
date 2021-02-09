@@ -21,47 +21,44 @@ const AppBarView = () => {
   const HomeDomLink = domLinkHelper('/');
 
   return (
-    <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            component={HomeDomLink}
-            edge="start"
-            aria-label="reddit button"
-            // aria-controls={menuId}
-            aria-haspopup="true"
-            // onClick={handleProfileMenuOpen}
-            color="inherit"
-          >
-            <RedditIcon />
-            <Typography className={classes.title} variant="h6" noWrap>
-              Reddit
-            </Typography>
-          </IconButton>
+    <AppBar position="static" className={classes.root}>
+      <Toolbar>
+        <IconButton
+          component={HomeDomLink}
+          edge="start"
+          aria-label="reddit button"
+          // aria-controls={menuId}
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <RedditIcon />
+          <Typography className={classes.title} variant="h6" noWrap>
+            Reddit
+          </Typography>
+        </IconButton>
 
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
           </div>
-          <UserMenuView />
-        </Toolbar>
-      </AppBar>
-    </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </div>
+        <UserMenuView />
+      </Toolbar>
+    </AppBar>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    grow: {
+    root: {
       flexGrow: 1,
     },
     title: {
