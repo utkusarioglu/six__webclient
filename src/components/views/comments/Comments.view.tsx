@@ -50,10 +50,12 @@ const CommentsView: FC<CommentsViewProps> = ({ postSlug }) => {
         }}
       />
       {!!receivedAt
-        ? comments.map((comment) => <CommentView {...comment} />)
+        ? comments.map((comment) => (
+            <CommentView {...{ key: comment.id, ...comment }} />
+          ))
         : Array(3)
             .fill(null)
-            .map((_) => <CommentView {...emptyComment} />)}
+            .map((_, key) => <CommentView {...{ key, ...emptyComment }} />)}
     </Container>
   );
 };
