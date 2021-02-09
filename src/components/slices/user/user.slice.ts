@@ -9,18 +9,26 @@ type UserExpanded = SuccessfulUserLoginRes & {
   userStylizedUrl: string;
 };
 
-type Visitor = { loggedIn: boolean };
+type Visitor = {
+  username: string;
+  loggedIn: boolean;
+};
 type UserState = UserExpanded | Visitor;
 
-const initialState: UserState = {
+export const emptyUser: UserState = {
   loggedIn: false,
+  username: 'visitor',
 };
+
+const initialState: UserState = emptyUser;
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     setUser: (_, action) => {
+      // TODO there is a better logic implementation here, in which UserExpanded could be only created while loggedIn is true
+      // this would remove the need for having username as a property in initial state
       const received: SuccessfulUserLoginRes = action.payload;
       const { username } = received;
       const userSlug = username.toLowerCase();
@@ -39,12 +47,15 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-type UpdateUser = (user: UserLoginPostRes) => void;
+type UpdateUser = (user: UserLoginPostRes['res']) => void;
 
 export const setUser: UpdateUser = (user) => {
-  if (user.res.loggedIn) {
+  if (user.loggedIn) {
     cookies.setLoggedIn(true);
-    store.dispatch(userSlice.actions.setUser(user.res));
+    store.dispatch(userSlice.actions.setUser(user));
+  } else {
+    cookies.setLoggedIn(false);
+    store.dispatch(userSlice.actions.setUser(emptyUser));
   }
 };
 
