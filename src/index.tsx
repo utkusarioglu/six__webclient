@@ -9,8 +9,11 @@ import ReactGa from 'react-ga';
 import AppRouter from '_routers/app/App.router';
 import { darkTheme } from '_base/theme';
 import { GA_ID } from '_base/config';
+import rest from '_services/rest/rest';
 
 ReactGa.initialize(GA_ID);
+
+rest.getSession();
 
 ReactDOM.render(
   <React.StrictMode>
