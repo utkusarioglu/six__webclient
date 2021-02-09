@@ -6,11 +6,21 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import rest from '_services/rest/rest';
+import { useSelector } from 'react-redux';
+import { getUser } from '_slices/user/user.slice';
+import { useHistory } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 
 type LoginFormViewProps = {};
 
 const LoginFormView: FC<LoginFormViewProps> = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const user = useSelector(getUser);
+
+  if (user.loggedIn) {
+    setTimeout(() => history.push('/'), 1000);
+  }
 
   return (
     <Formik
@@ -29,10 +39,7 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
       }}
       onSubmit={(values, { setSubmitting }) => {
         rest.tryLogin(values);
-        setTimeout(() => {
-          // alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        user.loggedIn && setSubmitting(false);
       }}
     >
       {({
@@ -44,47 +51,50 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
         handleSubmit,
         isSubmitting,
       }) => (
-        <form onSubmit={handleSubmit} className={classes.root}>
-          <Container>
-            <Grid container direction="column">
-              <TextField
-                className={classes.input}
-                label="email"
-                variant="filled"
-                type="email"
-                name="email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-                error={!!(errors.email && touched.email)}
-                helperText={errors.email && touched.email && errors.email}
-              />
-              <TextField
-                className={classes.input}
-                label="password"
-                variant="filled"
-                type="password"
-                name="password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-                error={!!(errors.password && touched.password)}
-                helperText={
-                  errors.password && touched.password && errors.password
-                }
-              />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                size="large"
-                variant="contained"
-                color="primary"
-              >
-                Submit
-              </Button>
-            </Grid>
-          </Container>
-        </form>
+        <>
+          <form onSubmit={handleSubmit} className={classes.root}>
+            <Container>
+              <Grid container direction="column">
+                <TextField
+                  className={classes.input}
+                  label="email"
+                  variant="filled"
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  error={!!(errors.email && touched.email)}
+                  helperText={errors.email && touched.email && errors.email}
+                />
+                <TextField
+                  className={classes.input}
+                  label="password"
+                  variant="filled"
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  error={!!(errors.password && touched.password)}
+                  helperText={
+                    errors.password && touched.password && errors.password
+                  }
+                />
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  size="large"
+                  variant="contained"
+                  color="primary"
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Container>
+          </form>
+          {user.loggedIn && <Typography>Success!</Typography>}
+        </>
       )}
     </Formik>
   );
