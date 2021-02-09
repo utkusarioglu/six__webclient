@@ -9,7 +9,9 @@ import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';
 import { getUser } from '_slices/user/user.slice';
 import { useHistory } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 type LoginFormViewProps = {};
 
@@ -24,7 +26,7 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
 
   return (
     <Formik
-      initialValues={{ email: '', password: '' }}
+      initialValues={{ email: '', password: '', rememberMe: true }}
       validate={(values) => {
         // !any
         const errors: any = {};
@@ -90,6 +92,18 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
                 >
                   Submit
                 </Button>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="rememberMe"
+                      checked={values.rememberMe}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      color="primary"
+                    />
+                  }
+                  label="Remember me"
+                />
               </Grid>
             </Container>
           </form>
