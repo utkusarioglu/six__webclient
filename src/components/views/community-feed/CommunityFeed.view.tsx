@@ -26,7 +26,9 @@ const CommunityFeedView = () => {
     <>
       {communities &&
         communities.map((community) => (
-          <CommunityCardView {...{ asSkeleton: false, ...community }} />
+          <CommunityCardView
+            {...{ key: community.id, asSkeleton: false, ...community }}
+          />
         ))}
     </>
   );
@@ -37,10 +39,10 @@ function skeletons() {
     <>
       {Array(3)
         .fill(null)
-        .map((_, idx) => (
+        .map((_, key) => (
           <CommunityCardView
             {...{
-              key: idx,
+              key,
               asSkeleton: true,
               ...emptyCommunity,
             }}
