@@ -19,10 +19,10 @@ const communitiesSlice = createSlice({
   initialState,
   reducers: {
     setCommunities: (_, action) => {
-      const received: CommunitiesGetRes = action.payload;
+      const received: CommunitiesGetRes['res'] = action.payload;
       return {
         updatedAt: Date.now(),
-        list: received.res,
+        list: received,
       };
     },
   },
