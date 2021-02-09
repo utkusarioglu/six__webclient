@@ -29,6 +29,8 @@ const postRepoSlice = createSlice({
       };
     },
 
+    clearPostRepo: () => initialState,
+
     upvotePost: (state, action) => {
       const altered = state.list.find((post) => post.id === action.payload);
 
@@ -51,6 +53,10 @@ export default postRepoSlice.reducer;
 
 export const updatePostRepo: UpdatePosts = (posts) =>
   store.dispatch(postRepoSlice.actions.updatePosts(posts));
+
+export const clearPostRepo = () => {
+  store.dispatch(postRepoSlice.actions.clearPostRepo());
+};
 
 export const upvotePost: UpvotePost = (postSlug) =>
   store.dispatch(postRepoSlice.actions.upvotePost(postSlug));
