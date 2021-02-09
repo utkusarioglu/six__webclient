@@ -60,5 +60,8 @@ export const setUser: UpdateUser = (user) => {
 };
 
 type GetLoggedIn = Selector<RootState, UserState['loggedIn']>;
+type GetUser = Selector<RootState, UserState>;
 
 export const getLoggedIn: GetLoggedIn = (state) => state.user.loggedIn;
+
+export const getUser: GetUser = (state) => state.user;
