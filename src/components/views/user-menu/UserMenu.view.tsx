@@ -1,27 +1,114 @@
+import type { MouseEvent, KeyboardEvent } from 'react';
 import { useState } from 'react';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import Popover from '@material-ui/core/Popover';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import { getLoggedIn } from '_slices/user/user.slice';
+import { useSelector } from 'react-redux';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
-export default function UserMenuView() {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+const RightDrawerMenuView = () => {
+  const classes = useStyles();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const isLoggedIn = useSelector(getLoggedIn);
+
+  const toggleDrawer = (open: boolean) => (
+    event: KeyboardEvent | MouseEvent
+  ) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      ((event as KeyboardEvent).key === 'Tab' ||
+        (event as KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
+
+    setIsDrawerOpen(open);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const list = () => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-  const currentUserName = 'current-user';
-  const ProfileLink = domLinkHelper(`/u/${currentUserName}`);
-  const SettingsLink = domLinkHelper('/u/settings');
+      <List>
+        <ListItem button component={domLinkHelper('/communities')}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Communities" />
+        </ListItem>
+      </List>
+
+      <Divider />
+
+      <List>
+        {isLoggedIn ? (
+          <>
+            <ListItem button component={domLinkHelper('/profile')}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItem>
+            <ListItem button component={domLinkHelper('/settings')}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
+            </ListItem>
+            <ListItem button component={domLinkHelper('/logout')}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
+          </>
+        ) : (
+          <>
+            <ListItem button component={domLinkHelper('/signup')}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign up" />
+            </ListItem>
+            <ListItem button component={domLinkHelper('/login')}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItem>
+          </>
+        )}
+      </List>
+    </div>
+  );
+
+  const anchor = 'right';
 
   return (
     <div>
@@ -31,40 +118,31 @@ export default function UserMenuView() {
         // aria-controls={menuId}
         aria-haspopup="true"
         color="inherit"
-        onClick={handleClick}
+        onClick={toggleDrawer(true)}
       >
-        <AccountCircle />
+        {isLoggedIn ? <AccountCircle /> : <MenuIcon />}
       </IconButton>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
+      <SwipeableDrawer
+        anchor={anchor}
+        open={isDrawerOpen}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
       >
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose} component={ProfileLink}>
-            Profile
-          </MenuItem>
-          <MenuItem onClick={handleClose} component={SettingsLink}>
-            Settings
-          </MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
-        </Menu>
-      </Popover>
+        {list()}
+      </SwipeableDrawer>
     </div>
   );
-}
+};
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    list: {
+      width: 250,
+    },
+    // fullList: {
+    //   width: 'auto',
+    // },
+  })
+);
+
+export default RightDrawerMenuView;
