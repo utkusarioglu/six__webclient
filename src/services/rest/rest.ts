@@ -1,7 +1,10 @@
 import type { AxiosInstance, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { API_ENDPOINT } from '_base/config';
-import { updatePostRepo } from '_slices/post-repo/posts-repo.slice';
+import {
+  clearPostRepo,
+  updatePostRepo,
+} from '_slices/post-repo/posts-repo.slice';
 import {
   CommentsGetRes,
   CommunitiesGetRes,
@@ -9,6 +12,8 @@ import {
   PostsGetRes,
   UserLoginPostRes,
   UserSignupPostRes,
+  UserSessionGetRes,
+  UserLogoutPostRes,
 } from 'six__public-api';
 import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { setComments } from '_slices/comments/comments.slice';
@@ -66,7 +71,8 @@ class Rest {
       .post(`/login`, data)
       .then((axiosResponse) => {
         const data: UserLoginPostRes = axiosResponse.data;
-        setUser(data);
+        setUser(data.res);
+        clearPostRepo();
       })
       .catch((e) => console.log(e));
   }
@@ -76,16 +82,36 @@ class Rest {
       .post('/signup', data)
       .then((axiosResponse) => {
         const data: UserSignupPostRes = axiosResponse.data;
-        console.log(data);
-        setUser(data);
+        setUser(data.res);
       })
       .catch(console.log);
+  }
+
+  logout() {
+    this._axios
+      .post('/logout')
+      .then((response) => {
+        const data: UserLogoutPostRes = response.data;
+
+        // @ts-ignore
+        setUser(data);
+        clearPostRepo();
+      })
+      .catch(console.error);
   }
 
   getCommunities() {
     this._axios.get('/communities').then((axiosResponse) => {
       const data: CommunitiesGetRes = axiosResponse.data;
-      setCommunities(data);
+      setCommunities(data.res);
+    });
+  }
+
+  getSession() {
+    this._axios.get('/session').then((response) => {
+      const data: UserSessionGetRes = response.data;
+      // @ts-ignore
+      setUser(data.res);
     });
   }
 }
