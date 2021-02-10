@@ -68,6 +68,11 @@ class Rest {
     return this._requestCounter.toString();
   }
 
+  // !any
+  handleError(data: any): void {
+    console.error('Server returned error: \n', data);
+  }
+
   getPosts() {
     this._axios
       .get<null, AxiosResponse<PostsGetRes>>('/posts')
