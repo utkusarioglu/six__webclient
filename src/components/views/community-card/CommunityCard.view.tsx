@@ -10,16 +10,32 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { useSelector } from 'react-redux';
+import { getUser } from '_slices/user/user.slice';
+import rest from '_services/rest/rest';
 
 type CommunityCardViewProps = AsSkeleton &
-  Pick<CommunityExpanded, 'name' | 'description'>;
+  Pick<CommunityExpanded, 'name' | 'description' | 'id'>;
 
 const CommunityCardView: FC<CommunityCardViewProps> = ({
   asSkeleton,
+  id,
   name,
   description,
 }) => {
   const classes = useStyles();
+  const user = useSelector(getUser);
+
+  const subscribeOnClick = () => {
+    if (user.loggedIn) {
+      // @ts-ignore
+      console.log('subscribing', user.id, 'to', id);
+      // @ts-ignore
+      rest.userCommunitySubscription(user.id, id, 'subscribe');
+    } else {
+      alert("you aren't logged in");
+    }
+  };
 
   return (
     <Card className={classes.root}>
@@ -52,7 +68,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
             <Button size="small" color="primary">
               Visit
             </Button>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" onClick={subscribeOnClick}>
               Subscribe
             </Button>
           </>
