@@ -35,6 +35,31 @@ class Rest {
     this._axios = axios.create(axiosConfig);
   }
 
+  /**
+   * Prepares an endpoint to which the app will connect. The method also ensures
+   * type safety through the generics
+   *
+   * @generics
+   * @param Endpoint endpoint string literal from public api
+   * @param Params types for the parameters that will be placed as request params
+   * and will be accessed by the express server with `req.params`
+   *
+   * @param endpoint endpoint to format skeleton to which the connection will be made
+   * @param params params that shall be placed into the skeleton
+   */
+  private prepareEndpoint<Endpoint extends string, Params>(
+    endpoint: Endpoint,
+    params: Params
+  ): string {
+    let preparedEndpoint: string = '';
+
+    Object.entries(params).forEach(([strRepresentation, param]) => {
+      preparedEndpoint = endpoint.replace(`:${strRepresentation}`, param);
+    });
+
+    return preparedEndpoint;
+  }
+
   getPosts() {
     this._axios
       .get<null, AxiosResponse<PostsGetRes>>('/posts')
