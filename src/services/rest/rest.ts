@@ -23,6 +23,7 @@ import { setCommunities } from '_slices/communities/communities.slice';
 
 class Rest {
   private _axios: AxiosInstance;
+  private _requestCounter: number = 0;
 
   /**
    * Creates axios instance with the
