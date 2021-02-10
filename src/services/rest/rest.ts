@@ -117,16 +117,17 @@ class Rest {
       .catch(this.handleError);
   }
 
-  // !any
-  tryLogin(data: any) {
+  userCommunitySubscription(
+    userId: string,
+    communityId: string,
+    action: 'subscribe' | 'unsubscribe'
+  ) {
     this._axios
-      .post(`/login`, data)
-      .then((axiosResponse) => {
-        const data: UserLoginPostRes = axiosResponse.data;
-        setUser(data.res);
-        clearPostRepo();
+      .post(`/user/${userId}/${action}/${communityId}`)
+      .then((response) => {
+        console.log(response);
       })
-      .catch((e) => console.log(e));
+      .catch(this.handleError);
   }
 
   signup(data: any) {
