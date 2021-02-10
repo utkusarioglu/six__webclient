@@ -102,6 +102,16 @@ class Rest {
       .catch(this.handleError);
   }
 
+  getCommunities() {
+    this._axios
+      .get('/communities')
+      .then((axiosResponse) => {
+        const data: CommunitiesGetRes = axiosResponse.data;
+        setCommunities(data.res);
+      })
+      .catch(this.handleError);
+  }
+
   /**
    * Retrieves the comments for a single post by the post slug
    *
