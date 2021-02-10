@@ -60,6 +60,14 @@ class Rest {
     return preparedEndpoint;
   }
 
+  /**
+   * Creates a unique request id to be used in each request to the server
+   */
+  createRequestId(): string {
+    this._requestCounter++;
+    return this._requestCounter.toString();
+  }
+
   getPosts() {
     this._axios
       .get<null, AxiosResponse<PostsGetRes>>('/posts')
