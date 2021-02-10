@@ -73,6 +73,9 @@ class Rest {
     console.error('Server returned error: \n', data);
   }
 
+  /**
+   * Retrieves Posts for post repo
+   */
   getPosts() {
     this._axios
       .get<null, AxiosResponse<PostsGetRes>>('/posts')
@@ -80,11 +83,14 @@ class Rest {
         const data: PostsGetRes = axiosResponse.data;
         updatePostRepo(data.res);
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch(this.handleError);
   }
 
+  /**
+   * Retrieves a single post by its slug
+   *
+   * @param postSlug slug for the post to be retrieved
+   */
   getPostBySlug(postSlug: PostsState['list'][0]['postSlug']) {
     this._axios
       .get<null, AxiosResponse<PostGetRes>>(`/post/slug/${postSlug}`)
@@ -93,14 +99,22 @@ class Rest {
         setPost(data.res);
         // updatePostsRepo([data.res]);
       })
-      .catch((e) => console.log(e));
+      .catch(this.handleError);
   }
 
+  /**
+   * Retrieves the comments for a single post by the post slug
+   *
+   * @param postSlug slug of the post for which the comments will be retrieved
+   */
   getCommentsByPostSlug(postSlug: PostsState['list'][0]['postSlug']) {
-    this._axios.get(`/post/slug/${postSlug}/comments`).then((axiosResponse) => {
-      const data: CommentsGetRes = axiosResponse.data;
-      setComments(data.res);
-    });
+    this._axios
+      .get(`/post/slug/${postSlug}/comments`)
+      .then((axiosResponse) => {
+        const data: CommentsGetRes = axiosResponse.data;
+        setComments(data.res);
+      })
+      .catch(this.handleError);
   }
 
   // !any
