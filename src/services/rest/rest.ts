@@ -338,6 +338,31 @@ class Rest {
       })
       .catch(this.handleError);
   }
+
+  saveComment(data: CommentEndpoint['_save']['_v1']['_post']['_req']['Body']) {
+    type Method = CommentEndpoint['_save']['_v1'];
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/comment/save/:requestId', {
+          requestId,
+        }),
+        data
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          console.log('comment post response: \n', data);
+        }
+        return data;
+      })
+      .catch(this.handleError);
+  }
 }
 
 export default new Rest();
