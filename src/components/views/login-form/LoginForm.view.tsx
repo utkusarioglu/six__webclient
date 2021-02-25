@@ -23,7 +23,7 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
   const history = useHistory();
   const user = useSelector(getUser);
 
-  if (user.loggedIn) {
+  if (user.state === 'logged-in') {
     setTimeout(() => history.push('/'), 1000);
   }
 
@@ -118,7 +118,7 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
             </Container>
           </form>
           <Container>
-            {user.loggedIn && <Typography>Success!</Typography>}
+            {user.state === 'logged-in' && <Typography>Success!</Typography>}
 
             <Typography>
               Are you looking for{' '}
