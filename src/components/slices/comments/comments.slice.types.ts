@@ -1,10 +1,12 @@
-import { CommentsGetRes } from 'six__public-api';
+import type { PostEndpoint } from 'six__public-api';
 import { AsSkeleton } from '_base/@types/material-ui';
+
+export type Comment = PostEndpoint['_comments']['_v1']['_get']['_res']['Success']['body'][0];
 
 /**
  * Shape of the comment object in the comments store
  */
-export type SliceComment = CommentsGetRes['res'][0] &
+export type SliceComment = Comment &
   AsSkeleton & {
     creatorSlug: string;
     creatorUrl: string; // url

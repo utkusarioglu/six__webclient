@@ -11,6 +11,7 @@ import {
   CommunityEndpoint,
   SuccessfulUserLoginRes,
   CommunityActionTypes,
+  CommentEndpoint,
 } from 'six__public-api';
 import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { setComments } from '_slices/comments/comments.slice';
@@ -170,10 +171,10 @@ class Rest {
   /**
    * Retrieves the comments for a single post by the post slug
    *
-   * @param postSlug slug of the post for which the comments will be retrieved
+   * @param postId slug of the post for which the comments will be retrieved
    */
-  getCommentsByPostSlug(postSlug: PostsState['list'][0]['postSlug']) {
-    type Method = PostEndpoint['_post_comment']['_v1'];
+  getCommentsByPostId(postId: PostsState['list'][0]['postId']) {
+    type Method = PostEndpoint['_comments']['_v1'];
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_get']['_req']['Params'];
@@ -183,10 +184,10 @@ class Rest {
     return this._axios
       .get<Response>(
         this.prepareEndpoint<Endpoint, Params>(
-          '/post/comments/:postSlug/:requestId',
+          '/post/:postId/comments/:requestId',
           {
             requestId,
-            postSlug,
+            postId,
           }
         )
       )
@@ -203,7 +204,7 @@ class Rest {
   }
 
   userCommunitySubscription(
-    username: SuccessfulUserLoginRes['IncludeAndAuto']['username'],
+    username: SuccessfulUserLoginRes['username'],
     communityId: CommunityEndpoint['_single']['_v1']['_get']['_res']['Success']['body']['id'],
     actionType: CommunityActionTypes
   ) {
@@ -231,8 +232,6 @@ class Rest {
       })
       .catch(this.handleError);
   }
-
-  // !any
 
   logout() {
     type Method = UserEndpoint['_logout']['_v1'];
