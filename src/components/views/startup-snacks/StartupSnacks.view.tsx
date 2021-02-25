@@ -4,6 +4,8 @@ import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import cookies from '_services/cookies/cookies';
+import { useSelector } from 'react-redux';
+import { getLoggedIn } from '_slices/user/user.slice';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -45,6 +47,7 @@ function isAtDisabledPath(): boolean {
 function StartupSnacksView() {
   const classes = useStyles();
   const disableSnacks = isAtDisabledPath();
+  const isLoggedIn = useSelector(getLoggedIn);
 
   const [open, setOpen] = useState(true);
   const [skipCookieConsent, setSkipCookieConsent] = useState(false);
@@ -142,8 +145,7 @@ function StartupSnacksView() {
   useEffect(() => {
     const cookiesAllowed = cookies.getCookieConsent() || skipCookieConsent;
 
-    const loggedIn =
-      cookies.getLoggedIn() || skipCookieConsent || skipLoginSnack;
+    const loggedIn = isLoggedIn || skipCookieConsent || skipLoginSnack;
 
     let snackPosition = [cookiesAllowed, loggedIn].indexOf(false);
     snackPosition = disableSnacks ? -1 : snackPosition;
@@ -161,6 +163,7 @@ function StartupSnacksView() {
     skipCookieConsent,
     skipLoginSnack,
     disableSnacks,
+    isLoggedIn,
   ]);
 
   const handleExited = () => {

@@ -28,10 +28,8 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
 
   const subscribeOnClick = () => {
     if (user.loggedIn) {
-      // @ts-ignore
-      console.log('subscribing', user.id, 'to', id);
-      // @ts-ignore
-      rest.userCommunitySubscription(user.id, id, 'subscribe');
+      console.log('subscribing', user.username, 'to', id);
+      rest.userCommunitySubscription(user.username, id, 'subscribe');
     } else {
       alert("you aren't logged in");
     }

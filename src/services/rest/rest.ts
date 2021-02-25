@@ -1,4 +1,4 @@
-import type { AxiosInstance, AxiosResponse } from 'axios';
+import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { API_ENDPOINT } from '_base/config';
 import {
@@ -6,14 +6,11 @@ import {
   updatePostRepo,
 } from '_slices/post-repo/posts-repo.slice';
 import {
-  CommentsGetRes,
-  CommunitiesGetRes,
-  PostGetRes,
-  PostsGetRes,
-  UserLoginPostRes,
-  UserSignupPostRes,
-  UserSessionGetRes,
-  UserLogoutPostRes,
+  UserEndpoint,
+  PostEndpoint,
+  CommunityEndpoint,
+  SuccessfulUserLoginRes,
+  CommunityActionTypes,
 } from 'six__public-api';
 import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { setComments } from '_slices/comments/comments.slice';
@@ -50,14 +47,19 @@ class Rest {
    */
   private prepareEndpoint<Endpoint extends string, Params>(
     endpoint: Endpoint,
-    params: Params
+    params?: Params
   ): string {
-    let preparedEndpoint: string = '';
+    let preparedEndpoint: string = endpoint;
 
-    Object.entries(params).forEach(([strRepresentation, param]) => {
-      preparedEndpoint = endpoint.replace(`:${strRepresentation}`, param);
-    });
-
+    if (params) {
+      Object.entries(params).forEach(([strRepresentation, param]) => {
+        preparedEndpoint = preparedEndpoint.replace(
+          `:${strRepresentation}`,
+          param
+        );
+      });
+    }
+    console.log(preparedEndpoint);
     return preparedEndpoint;
   }
 
@@ -78,11 +80,27 @@ class Rest {
    * Retrieves Posts for post repo
    */
   getPosts() {
-    this._axios
-      .get<null, AxiosResponse<PostsGetRes>>('/posts')
-      .then((axiosResponse) => {
-        const data: PostsGetRes = axiosResponse.data;
-        updatePostRepo(data.res);
+    type Method = PostEndpoint['_list']['_v1'];
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/posts/:requestId', {
+          requestId,
+        })
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          updatePostRepo(data.body);
+        }
+
+        return data;
       })
       .catch(this.handleError);
   }
@@ -93,22 +111,58 @@ class Rest {
    * @param postSlug slug for the post to be retrieved
    */
   getPostBySlug(postSlug: PostsState['list'][0]['postSlug']) {
-    this._axios
-      .get<null, AxiosResponse<PostGetRes>>(`/post/slug/${postSlug}`)
-      .then((axiosResponse) => {
-        const data: PostGetRes = axiosResponse.data;
-        setPost(data.res);
-        // updatePostsRepo([data.res]);
+    type Method = PostEndpoint['_single']['_v1'];
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+    console.log('requestId', requestId);
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>(
+          '/post/slug/:postSlug/:requestId',
+          {
+            postSlug,
+            requestId,
+          }
+        )
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          setPost(data.body);
+        }
+
+        return data;
       })
       .catch(this.handleError);
   }
 
   getCommunities() {
-    this._axios
-      .get('/communities')
-      .then((axiosResponse) => {
-        const data: CommunitiesGetRes = axiosResponse.data;
-        setCommunities(data.res);
+    type Method = CommunityEndpoint['_list']['_v1'];
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/communities/:requestId', {
+          requestId,
+        })
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          setCommunities(data.body);
+        }
+
+        return data;
       })
       .catch(this.handleError);
   }
@@ -119,64 +173,171 @@ class Rest {
    * @param postSlug slug of the post for which the comments will be retrieved
    */
   getCommentsByPostSlug(postSlug: PostsState['list'][0]['postSlug']) {
-    this._axios
-      .get(`/post/slug/${postSlug}/comments`)
-      .then((axiosResponse) => {
-        const data: CommentsGetRes = axiosResponse.data;
-        setComments(data.res);
+    type Method = PostEndpoint['_post_comment']['_v1'];
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>(
+          '/post/comments/:postSlug/:requestId',
+          {
+            requestId,
+            postSlug,
+          }
+        )
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          setComments(data.body);
+        }
+
+        return data;
       })
       .catch(this.handleError);
   }
 
   userCommunitySubscription(
-    userId: string,
-    communityId: string,
-    action: 'subscribe' | 'unsubscribe'
+    username: SuccessfulUserLoginRes['IncludeAndAuto']['username'],
+    communityId: CommunityEndpoint['_single']['_v1']['_get']['_res']['Success']['body']['id'],
+    actionType: CommunityActionTypes
   ) {
-    this._axios
-      .post(`/user/${userId}/${action}/${communityId}`)
+    type Method = UserEndpoint['_user_community_subscription']['_alter']['_v1'];
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>(
+          'user/:username/:actionType/:communityId/:requestId',
+          {
+            requestId,
+            username,
+            communityId,
+            actionType,
+          }
+        )
+      )
       .then((response) => {
         console.log(response);
       })
       .catch(this.handleError);
   }
 
-  signup(data: any) {
-    this._axios
-      .post('/signup', data)
-      .then((axiosResponse) => {
-        const data: UserSignupPostRes = axiosResponse.data;
-        setUser(data.res);
-      })
-      .catch(console.log);
-  }
+  // !any
 
   logout() {
-    this._axios
-      .post('/logout')
-      .then((response) => {
-        const data: UserLogoutPostRes = response.data;
+    type Method = UserEndpoint['_logout']['_v1'];
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
 
-        // @ts-ignore
-        setUser(data);
-        clearPostRepo();
+    const requestId = this.createRequestId();
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/logout/v1/:requestId', {
+          requestId,
+        })
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          setUser(data.body);
+          clearPostRepo();
+        }
+
+        return data;
       })
-      .catch(console.error);
+      .catch(this.handleError);
   }
 
-  getCommunities() {
-    this._axios.get('/communities').then((axiosResponse) => {
-      const data: CommunitiesGetRes = axiosResponse.data;
-      setCommunities(data.res);
-    });
+  login(requestInput: UserEndpoint['_login']['_v1']['_post']['_req']['Body']) {
+    type Method = UserEndpoint['_login']['_v1'];
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/login/v1/:requestId', {
+          requestId,
+        }),
+        requestInput
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          setUser(data.body);
+          clearPostRepo();
+        }
+
+        return data;
+      })
+      .catch(this.handleError);
+  }
+
+  signup(data: UserEndpoint['_signup']['_v1']['_post']['_req']['Body']) {
+    type Method = UserEndpoint['_signup']['_v1'];
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/signup/v1/:requestId', {
+          requestId,
+        }),
+        data
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          setUser(data.body);
+        }
+
+        return data;
+      })
+      .catch(this.handleError);
   }
 
   getSession() {
-    this._axios.get('/session').then((response) => {
-      const data: UserSessionGetRes = response.data;
-      // @ts-ignore
-      setUser(data.res);
-    });
+    type Method = UserEndpoint['_session']['_v1'];
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/session/v1/:requestId', {
+          requestId,
+        })
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          setUser(data.body);
+        }
+
+        return data;
+      })
+      .catch(this.handleError);
   }
 }
 

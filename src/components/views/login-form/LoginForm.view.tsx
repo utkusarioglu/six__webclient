@@ -12,6 +12,9 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { delayIfDev } from '_base/components/helpers/dev/delayIfDev';
+import domLinkHelper from '_helpers/dom-link/DomLink.helper';
+import Link from '@material-ui/core/Link';
 
 type LoginFormViewProps = {};
 
@@ -39,9 +42,16 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
         }
         return errors;
       }}
-      onSubmit={(values, { setSubmitting }) => {
-        rest.tryLogin(values);
-        user.loggedIn && setSubmitting(false);
+      onSubmit={(values, { setSubmitting, setErrors }) => {
+        rest.login(values).then((response) => {
+          delayIfDev(() => {
+            console.log(response);
+            if (response && response.state === 'fail') {
+              setErrors(response.errors);
+            }
+            setSubmitting(false);
+          });
+        });
       }}
     >
       {({
@@ -83,15 +93,6 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
                     errors.password && touched.password && errors.password
                   }
                 />
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -104,10 +105,26 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
                   }
                   label="Remember me"
                 />
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  size="large"
+                  variant="contained"
+                  color="primary"
+                >
+                  Submit
+                </Button>
               </Grid>
             </Container>
           </form>
-          {user.loggedIn && <Typography>Success!</Typography>}
+          <Container>
+            {user.loggedIn && <Typography>Success!</Typography>}
+
+            <Typography>
+              Are you looking for{' '}
+              <Link component={domLinkHelper('/signup')}>sign up</Link>?
+            </Typography>
+          </Container>
         </>
       )}
     </Formik>

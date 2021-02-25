@@ -1,10 +1,8 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
 import store, { RootState } from '_base/store/store';
 import { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
-import { PostGetRes } from 'six__public-api';
+import { PostEndpoint } from 'six__public-api';
 import { expandPost } from '_helpers/post/expandPost';
-
-// type NoPost = { allowView: boolean };
 
 type PostState = PostExpanded;
 
@@ -46,10 +44,12 @@ const postSlice = createSlice({
 
 export default postSlice.reducer;
 
-type SetPost = (post: PostGetRes['res']) => void;
+type SetPost = (
+  postBody: PostEndpoint['_single']['_v1']['_get']['_res']['Success']['body']
+) => void;
 
-export const setPost: SetPost = (post) =>
-  store.dispatch(postSlice.actions.setPost(post));
+export const setPost: SetPost = (postBody) =>
+  store.dispatch(postSlice.actions.setPost(postBody));
 
 export const clearPost = () => {
   store.dispatch(postSlice.actions.clearPost());

@@ -1,6 +1,5 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
-import cookies from '_services/cookies/cookies';
-import { SuccessfulUserLoginRes, UserLoginPostRes } from 'six__public-api';
+import { SuccessfulUserLoginRes, UserEndpoint } from 'six__public-api';
 import store, { RootState } from '_base/store/store';
 
 type UserExpanded = SuccessfulUserLoginRes & {
@@ -10,14 +9,15 @@ type UserExpanded = SuccessfulUserLoginRes & {
 };
 
 type Visitor = {
-  username: string;
+  // username: string;
   loggedIn: boolean;
 };
+
 type UserState = UserExpanded | Visitor;
 
 export const emptyUser: UserState = {
   loggedIn: false,
-  username: 'visitor',
+  // username: 'visitor',
 };
 
 const initialState: UserState = emptyUser;
@@ -27,9 +27,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (_, action) => {
-      // TODO there is a better logic implementation here, in which UserExpanded could be only created while loggedIn is true
-      // this would remove the need for having username as a property in initial state
+      //  TODO there is a better logic implementation here, in which UserExpanded could be only created while loggedIn is true
+      //  this would remove the need for having username as a property in initial
       const received: SuccessfulUserLoginRes = action.payload;
+      if (!received.loggedIn) {
+        return emptyUser;
+      }
+
       const { username } = received;
       const userSlug = username.toLowerCase();
 
@@ -47,20 +51,19 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-type UpdateUser = (user: UserLoginPostRes['res']) => void;
+type SetUser = (
+  user: UserEndpoint['Login']['v1']['Post']['Res']['Success']['body']
+) => void;
+type GetLoggedIn = Selector<RootState, UserState['loggedIn']>;
+type GetUser = Selector<RootState, UserState>;
 
-export const setUser: UpdateUser = (user) => {
+export const setUser: SetUser = (user) => {
   if (user.loggedIn) {
-    cookies.setLoggedIn(true);
     store.dispatch(userSlice.actions.setUser(user));
   } else {
-    cookies.setLoggedIn(false);
     store.dispatch(userSlice.actions.setUser(emptyUser));
   }
 };
-
-type GetLoggedIn = Selector<RootState, UserState['loggedIn']>;
-type GetUser = Selector<RootState, UserState>;
 
 export const getLoggedIn: GetLoggedIn = (state) => state.user.loggedIn;
 
