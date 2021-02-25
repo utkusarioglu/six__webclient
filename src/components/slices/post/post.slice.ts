@@ -56,8 +56,10 @@ export const clearPost = () => {
 };
 
 type GetPost = Selector<RootState, PostState>;
+type GetPostId = Selector<RootState, PostState['id']>;
 
 export const getPost: GetPost = (state) => state.post;
+export const getPostId: GetPostId = (state) => state.post.id;
 
 /**
  * Can be used for skeletons
