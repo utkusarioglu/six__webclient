@@ -7,7 +7,7 @@ module.exports = function override(config) {
       _config: path.resolve(__dirname, 'src/config.ts'),
       _types: path.resolve(__dirname, 'src/@types'),
       _helpers: path.resolve(__dirname, 'src/components/helpers'),
-      _slices: path.resolve(__dirname, 'src/components/slices'),
+      _slices: path.resolve(__dirname, 'src/slices'),
       _views: path.resolve(__dirname, 'src/components/views'),
       _routes: path.resolve(__dirname, 'src/components/routes'),
       _routers: path.resolve(__dirname, 'src/components/routers'),

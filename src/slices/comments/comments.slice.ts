@@ -1,5 +1,10 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
-import { CommentsState, SliceComment, Comment } from './comments.slice.types';
+import {
+  CommentsState,
+  SliceComment,
+  Comment,
+  CommentSaveBody,
+} from './comments.slice.types';
 import store from '_store/store';
 import type { RootState } from '_store/store';
 import { uuid } from '_types/helpers';
@@ -40,13 +45,35 @@ const commentsSlice = createSlice({
       };
     },
 
-    pushComment: (state, { payload }) => {
-      const received: Comment = payload;
+    pushIsSubmittingComment: (state, { payload }) => {
+      const received: CommentSaveBody = payload;
 
-      const expanded: SliceComment = expandComment(received);
+      const expanded: SliceComment = expandComment({
+        ...received,
+        id: '',
+        createdAt: '',
+        likeCount: 1,
+        dislikeCount: 0,
+        state: 'is-submitting',
+      });
+
       return {
         ...state,
-        list: [...state.list, expanded],
+        list: [expanded, ...state.list],
+      };
+    },
+
+    replaceIsSubmittingComment: (state, { payload }) => {
+      const received: Comment = payload;
+      const submittedMessages = state.list.filter(
+        (comment) => comment.state !== 'is-submitting'
+      );
+
+      const expanded = expandComment(received);
+
+      return {
+        ...state,
+        list: [expanded, ...submittedMessages],
       };
     },
 
@@ -57,7 +84,8 @@ const commentsSlice = createSlice({
 export default commentsSlice.reducer;
 
 type UpdateComments = (comments: Comment[]) => void;
-type PushComment = (comment: Comment) => void;
+type PushIsSubmittingComment = (comment: CommentSaveBody) => void;
+type ReplaceIsSubmittingComment = (comment: Comment) => void;
 type ClearComments = () => void;
 type GetCommentsForPost = (postId: uuid) => Selector<RootState, SliceComment[]>;
 type GetComments = Selector<RootState, CommentsState>;
@@ -65,8 +93,12 @@ type GetComments = Selector<RootState, CommentsState>;
 export const setComments: UpdateComments = (comments) =>
   store.dispatch(commentsSlice.actions.setComments(comments));
 
-export const pushComment: PushComment = (comment) =>
-  store.dispatch(commentsSlice.actions.pushComment(comment));
+export const pushIsSubmittingComment: PushIsSubmittingComment = (comment) =>
+  store.dispatch(commentsSlice.actions.pushIsSubmittingComment(comment));
+
+export const replaceIsSubmittingComment: ReplaceIsSubmittingComment = (
+  comment
+) => store.dispatch(commentsSlice.actions.replaceIsSubmittingComment(comment));
 
 export const clearComments: ClearComments = () => {
   store.dispatch(commentsSlice.actions.clearComments());
@@ -99,6 +131,8 @@ export const emptyComment: SliceComment = {
   creatorSlug: '',
   creatorUrl: '',
   creatorStylizedUrl: '',
+
+  state: 'submitted',
 
   asSkeleton: true,
 };

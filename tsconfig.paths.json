@@ -6,7 +6,7 @@
       "_config": ["src/config.ts"],
       "_types/*": ["src/@types/*"],
       "_helpers/*": ["src/components/helpers/*"],
-      "_slices/*": ["src/components/slices/*"],
+      "_slices/*": ["src/slices/*"],
       "_views/*": ["src/components/views/*"],
       "_routes/*": ["src/components/routes/*"],
       "_routers/*": ["src/components/routers/*"],
