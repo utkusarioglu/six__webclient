@@ -17,7 +17,10 @@ import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';
 import { getUser } from '_slices/user/user.slice';
 import { getPost } from '_slices/post/post.slice';
-import { pushComment } from '_slices/comments/comments.slice';
+import {
+  pushIsSubmittingComment,
+  replaceIsSubmittingComment,
+} from '_slices/comments/comments.slice';
 import { CommentEndpoint } from 'six__public-api';
 import CommentLoginFirstView from './CommentLoginFirst.view';
 import { Formik } from 'formik';
@@ -37,7 +40,7 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
     return <CommentLoginFirstView />;
   }
 
-  const { id: userId, userUrl, username } = user;
+  const { id: userId, userUrl, username: creatorUsername } = user;
   const UserProfileLink = domLinkHelper(userUrl);
 
   const formOnFocus = () => {
@@ -75,23 +78,25 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
             body: values.commentBody,
           };
 
-          pushComment({
+          pushIsSubmittingComment({
             ...comment,
-            id: '',
-            createdAt: '',
-            likeCount: 1,
-            dislikeCount: 0,
-            creatorUsername: username,
+            creatorUsername,
             postSlug,
           });
 
           rest.saveComment(comment).then((response) => {
             delayIfDev(() => {
-              if (response && response.state === 'fail') {
-                setErrors(response.errors);
+              if (response) {
+                if (response.state === 'fail') {
+                  setErrors(response.errors);
+                } else {
+                  setValues(formInitialValues);
+                  setCommentInputFocused(false);
+
+                  replaceIsSubmittingComment(response.body);
+                  console.log(response.body);
+                }
               } else {
-                setValues(formInitialValues);
-                setCommentInputFocused(false);
               }
 
               setSubmitting(false);
@@ -120,7 +125,8 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
                 <Skeleton />
               ) : (
                 <>
-                  Comment as <Link component={UserProfileLink}>{username}</Link>
+                  Comment as{' '}
+                  <Link component={UserProfileLink}>{creatorUsername}</Link>
                 </>
               )}
             </Typography>
