@@ -27,7 +27,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
   const user = useSelector(getUser);
 
   const subscribeOnClick = () => {
-    if (user.loggedIn) {
+    if (user.state === 'logged-in') {
       console.log('subscribing', user.username, 'to', id);
       rest.userCommunitySubscription(user.username, id, 'subscribe');
     } else {
@@ -66,9 +66,11 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
             <Button size="small" color="primary">
               Visit
             </Button>
-            <Button size="small" color="primary" onClick={subscribeOnClick}>
-              Subscribe
-            </Button>
+            {user.state === 'logged-in' && (
+              <Button size="small" color="primary" onClick={subscribeOnClick}>
+                Subscribe
+              </Button>
+            )}
           </>
         )}
       </CardActions>

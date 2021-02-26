@@ -13,7 +13,7 @@ const LogoutView = () => {
     rest.logout();
   }, []);
 
-  if (!user.loggedIn) {
+  if (user.state === 'visitor') {
     setTimeout(() => history.push('/'), 1000);
   }
 
