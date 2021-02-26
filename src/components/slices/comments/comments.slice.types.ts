@@ -1,5 +1,5 @@
 import type { PostEndpoint } from 'six__public-api';
-import { AsSkeleton } from '_base/@types/material-ui';
+import { AsSkeleton } from '_types/material-ui';
 
 export type Comment = PostEndpoint['_comments']['_v1']['_get']['_res']['Success']['body'][0];
 

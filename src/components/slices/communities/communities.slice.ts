@@ -1,6 +1,6 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
 import type { CommunitiesGetRes } from 'six__public-api';
-import store, { RootState } from '_base/store/store';
+import store, { RootState } from '_store/store';
 
 export type CommunityExpanded = CommunitiesGetRes['res'][0];
 

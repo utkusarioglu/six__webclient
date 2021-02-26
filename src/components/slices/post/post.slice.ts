@@ -1,5 +1,5 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
-import store, { RootState } from '_base/store/store';
+import store, { RootState } from '_store/store';
 import { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
 import { PostEndpoint } from 'six__public-api';
 import { expandPost } from '_helpers/post/expandPost';

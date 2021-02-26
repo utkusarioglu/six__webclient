@@ -6,7 +6,7 @@ import type {
 } from './posts-repo.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import store from '_store/store';
-import { Selector } from '_base/@types/helpers';
+import { Selector } from '_types/helpers';
 import { PostsGetRes } from 'six__public-api';
 import { expandPost } from '_helpers/post/expandPost';
 

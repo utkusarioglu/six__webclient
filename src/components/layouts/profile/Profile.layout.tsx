@@ -1,4 +1,4 @@
-import ProfileBottomNavigationView from '_base/components/views/profile-bottom-navigation/ProfileBottomNavigation.view';
+import ProfileBottomNavigationView from '_views/profile-bottom-navigation/ProfileBottomNavigation.view';
 
 const ProfileLayout = () => {
   // this value should be a string literal union

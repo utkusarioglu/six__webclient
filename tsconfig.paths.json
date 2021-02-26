@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "six__public-api": ["../public-api/src"],
-      "_base/*": ["src/*"],
+      "_config": ["src/config.ts"],
+      "_types/*": ["src/@types/*"],
       "_helpers/*": ["src/components/helpers/*"],
       "_slices/*": ["src/components/slices/*"],
       "_views/*": ["src/components/views/*"],

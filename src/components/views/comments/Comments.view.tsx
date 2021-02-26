@@ -11,7 +11,7 @@ import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommentView from '_views/comment/Comment.view';
 import Container from '@material-ui/core/Container';
 import CommentInputView from '_views/comment-input/CommentInput.view';
-import { getPostId } from '_base/components/slices/post/post.slice';
+import { getPostId } from '_slices/post/post.slice';
 import NoCommentsYetView from './NoCommentsYet.view';
 
 // ! post slug  should come from the store type, cannot be a string

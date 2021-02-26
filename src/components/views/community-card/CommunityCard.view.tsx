@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { CommunityExpanded } from '_slices/communities/communities.slice';
-import type { AsSkeleton } from '_base/@types/material-ui';
+import type { AsSkeleton } from '_types/material-ui';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';

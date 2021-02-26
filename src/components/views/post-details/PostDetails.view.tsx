@@ -5,7 +5,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import PostDetailsForeheadView from '_base/components/views/post-details-forehead/PostDetailsForehead.view';
+import PostDetailsForeheadView from '_views/post-details-forehead/PostDetailsForehead.view';
 import PostDetailsToolbarView from './PostDetailsToolbar.view';
 import { useSelector } from 'react-redux';
 import { delayIfDev } from '_helpers/dev/delayIfDev';

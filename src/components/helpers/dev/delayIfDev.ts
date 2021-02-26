@@ -1,4 +1,4 @@
-import { NODE_ENV } from '_base/config';
+import { NODE_ENV } from '_config';
 
 export function delayIfDev<T>(
   callback: () => T,

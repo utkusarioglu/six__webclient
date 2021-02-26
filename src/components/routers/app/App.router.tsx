@@ -4,17 +4,17 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import AppBarView from '_base/components/views/app-bar/AppBar.view';
-import PostFeeRoute from '_base/components/routes/post-feed/PostFeed.route';
+import AppBarView from '_views/app-bar/AppBar.view';
+import PostFeeRoute from '_routes/post-feed/PostFeed.route';
 import PostDetailsRoute from '_routes/post-details/PostDetails.route';
 import ProfileRoute from '_routes/profile/Profile.route';
 import SettingsRoute from '_routes/settings/Settings.route';
 import CommunityRoute from '_routes/community/Community.route';
-import StartupSnacksView from '_base/components/views/startup-snacks/StartupSnacks.view';
-import LoginRoute from '_base/components/routes/login/Login.route';
-import SignupRoute from '_base/components/routes/signup/Signup.route';
-import CommunitiesRoute from '_base/components/routes/communities/Communities.route';
-import LogoutRoute from '_base/components/routes/logout/Logout.route';
+import StartupSnacksView from '_views/startup-snacks/StartupSnacks.view';
+import LoginRoute from '_routes/login/Login.route';
+import SignupRoute from '_routes/signup/Signup.route';
+import CommunitiesRoute from '_routes/communities/Communities.route';
+import LogoutRoute from '_routes/logout/Logout.route';
 
 const AppRouter = () => {
   return (

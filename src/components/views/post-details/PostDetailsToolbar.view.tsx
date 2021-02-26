@@ -4,13 +4,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/core/styles';
-import VoteView from '_base/components/views/vote/vote.view';
-import { darkTheme } from '_base/theme';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
+import VoteView from '_views/vote/vote.view';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { getPost } from '_slices/post/post.slice';
 import { useSelector } from 'react-redux';
-import { AsSkeleton } from '_base/@types/material-ui';
+import { AsSkeleton } from '_types/material-ui';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 type PostDetailsToolbarViewProps = AsSkeleton &
@@ -64,13 +63,15 @@ const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
   );
 };
 
-const useStyles = makeStyles({
-  root: {
-    backgroundColor: darkTheme.palette.background.paper,
-  },
-  title: {
-    flexGrow: 1,
-  },
-});
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      backgroundColor: theme.palette.background.paper,
+    },
+    title: {
+      flexGrow: 1,
+    },
+  })
+);
 
 export default PostDetailsToolbarView;

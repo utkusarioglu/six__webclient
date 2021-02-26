@@ -1,6 +1,6 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
-import { API_ENDPOINT } from '_base/config';
+import { API_ENDPOINT } from '_config';
 import {
   clearPostRepo,
   updatePostRepo,

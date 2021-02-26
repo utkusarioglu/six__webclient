@@ -7,7 +7,7 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Timeago from 'react-timeago';
-import { AsSkeleton } from '_base/@types/material-ui';
+import { AsSkeleton } from '_types/material-ui';
 import type { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
 
 type PostTopRowViewProps = AsSkeleton &

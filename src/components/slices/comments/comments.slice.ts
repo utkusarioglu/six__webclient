@@ -1,8 +1,8 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
 import { CommentsState, SliceComment, Comment } from './comments.slice.types';
-import store from '_base/store/store';
-import type { RootState } from '_base/store/store';
-import { uuid } from '_base/@types/helpers';
+import store from '_store/store';
+import type { RootState } from '_store/store';
+import { uuid } from '_types/helpers';
 
 const initialState: CommentsState = {
   receivedAt: 0,

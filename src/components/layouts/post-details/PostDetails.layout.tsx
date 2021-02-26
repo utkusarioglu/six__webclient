@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import CommentsView from '_base/components/views/comments/Comments.view';
+import CommentsView from '_views/comments/Comments.view';
 import PostDetailsView from '_views/post-details/PostDetails.view';
 
 //! these props are connected to the router slug, this connection should be established

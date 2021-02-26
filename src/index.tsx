@@ -7,8 +7,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ReactGa from 'react-ga';
 import AppRouter from '_routers/app/App.router';
-import { darkTheme } from '_base/theme';
-import { GA_ID } from '_base/config';
+import { darkTheme } from './theme';
+import { GA_ID } from '_config';
 import rest from '_services/rest/rest';
 
 ReactGa.initialize(GA_ID);

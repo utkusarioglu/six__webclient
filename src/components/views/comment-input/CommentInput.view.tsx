@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
-import { AsSkeleton } from '_base/@types/material-ui';
+import { AsSkeleton } from '_types/material-ui';
 import Skeleton from '@material-ui/lab/Skeleton';
 import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';

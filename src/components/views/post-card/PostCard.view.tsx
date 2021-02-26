@@ -11,7 +11,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import VoteView from '_base/components/views/vote/vote.view';
+import VoteView from '_views/vote/vote.view';
 import ShareView from '_views/share/Share.view';
 import PostCardMediaView from './PostCardMedia.view';
 import PostDetailsForeheadView from '_views/post-details-forehead/PostDetailsForehead.view';

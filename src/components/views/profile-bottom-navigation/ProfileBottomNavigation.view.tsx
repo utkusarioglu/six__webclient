@@ -6,7 +6,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import PersonIcon from '@material-ui/icons/Person';
 import NoteIcon from '@material-ui/icons/Note';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import domLinkHelper from '_base/components/helpers/dom-link/DomLink.helper';
+import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 interface ProfileBottomNavigationViewProps {
   tabChangeFunction: (newValue: string) => void;

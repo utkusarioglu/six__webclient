@@ -8,7 +8,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import rest from '_services/rest/rest';
 import type { UserSignupPostReq } from 'six__public-api';
 import { Overwrite } from 'utility-types';
-import { delayIfDev } from '_base/components/helpers/dev/delayIfDev';
+import { delayIfDev } from '_helpers/dev/delayIfDev';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';

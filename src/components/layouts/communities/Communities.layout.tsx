@@ -1,4 +1,4 @@
-import CommunityFeedView from '_base/components/views/community-feed/CommunityFeed.view';
+import CommunityFeedView from '_views/community-feed/CommunityFeed.view';
 
 const CommunitiesLayout = () => {
   return <CommunityFeedView />;

@@ -1,5 +1,5 @@
-import type { AsSkeleton } from '_base/@types/material-ui';
-import { RootState } from '_base/store/store';
+import type { AsSkeleton } from '_types/material-ui';
+import { RootState } from '_store/store';
 
 export type PostCardViewProps = Pick<
   RootState['postRepo']['list'][0],
