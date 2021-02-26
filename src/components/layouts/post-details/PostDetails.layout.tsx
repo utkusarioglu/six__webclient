@@ -15,7 +15,7 @@ const PostDetailsLayout: FC<PostDetailsLayoutProps> = ({
   return (
     <>
       <PostDetailsView {...{ communitySlug, postSlug }} />
-      <CommentsView {...{ postSlug }} />
+      <CommentsView />
     </>
   );
 };

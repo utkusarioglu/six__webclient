@@ -11,53 +11,48 @@ import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommentView from '_views/comment/Comment.view';
 import Container from '@material-ui/core/Container';
 import CommentInputView from '_views/comment-input/CommentInput.view';
-import { Typography } from '@material-ui/core';
+import { getPostId } from '_base/components/slices/post/post.slice';
+import NoCommentsYetView from './NoCommentsYet.view';
 
 // ! post slug  should come from the store type, cannot be a string
-type CommentsViewProps = {
-  postSlug: string;
-};
+type CommentsViewProps = {};
 
-const CommentsView: FC<CommentsViewProps> = ({ postSlug }) => {
+const CommentsView: FC<CommentsViewProps> = () => {
   const { receivedAt, list: comments } = useSelector(getComments);
-
+  const postId = useSelector(getPostId);
   /** clears comment list when the user navigates away  */
   useEffect(() => clearComments, []);
 
-  // this is faulty logic.. the post may not have any comments yet
-  if (!receivedAt) {
-    delayIfDev(() => rest.getCommentsByPostSlug(postSlug), 2);
+  if (!receivedAt && postId !== '') {
+    delayIfDev(() => rest.getCommentsByPostId(postId), 2);
   }
 
-  if (receivedAt && !comments.length) {
-    return (
-      <Container>
-        <Typography>
-          Looks like there are no comments for this post yet.
-        </Typography>
-        <Typography>You can be the first one to say "First!!1!"</Typography>
-      </Container>
-    );
-  }
-
-  return (
+  const commentsList = !comments.length ? (
+    <NoCommentsYetView />
+  ) : (
     <Container>
-      <CommentInputView
-        {...{
-          username: 'utkuSarioglu',
-          userUrl: 'u/utkusarioglu',
-          asSkeleton: !comments.length,
-        }}
-      />
-      {!!receivedAt
-        ? comments.map((comment) => (
-            <CommentView {...{ key: comment.id, ...comment }} />
-          ))
-        : Array(3)
-            .fill(null)
-            .map((_, key) => <CommentView {...{ key, ...emptyComment }} />)}
+      {comments.map((comment) => (
+        <CommentView {...{ key: comment.id, ...comment }} />
+      ))}
     </Container>
   );
+
+  return (
+    <>
+      <CommentInputView {...{ asSkeleton: !receivedAt }} />
+      {!receivedAt ? <CommentSkeletons /> : commentsList}
+    </>
+  );
 };
+
+const CommentSkeletons = () => (
+  <Container>
+    {Array(3)
+      .fill(null)
+      .map((_, key) => (
+        <CommentView {...{ key, ...emptyComment }} />
+      ))}
+  </Container>
+);
 
 export default CommentsView;
