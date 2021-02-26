@@ -12,7 +12,7 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { delayIfDev } from '_base/components/helpers/dev/delayIfDev';
+import { delayIfDev } from '_helpers/dev/delayIfDev';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Link from '@material-ui/core/Link';
 
@@ -45,7 +45,6 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
       onSubmit={(values, { setSubmitting, setErrors }) => {
         rest.login(values).then((response) => {
           delayIfDev(() => {
-            console.log(response);
             if (response && response.state === 'fail') {
               setErrors(response.errors);
             }
