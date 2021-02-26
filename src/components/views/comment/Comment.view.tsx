@@ -28,6 +28,7 @@ const CommentView: FC<CommentViewProps> = ({
   likeCount,
   voteCount,
   dislikeCount,
+  state,
 }) => {
   const classes = useStyles();
   const CreatorLink = domLinkHelper(creatorUrl);
@@ -43,7 +44,11 @@ const CommentView: FC<CommentViewProps> = ({
   const replyFunction = () => alert(`reply to: ${id}`);
 
   return (
-    <Paper elevation={0} className={classes.root}>
+    <Paper
+      elevation={0}
+      className={classes.root}
+      style={{ opacity: state === 'submitted' ? 1 : 0.5 }}
+    >
       {asSkeleton ? (
         <Skeleton variant="circle" style={avatarStyle}>
           <Avatar style={avatarStyle} />
