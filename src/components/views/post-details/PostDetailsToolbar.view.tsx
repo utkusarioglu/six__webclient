@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import type { PostGetRes } from 'six__public-api';
+import type { PostEndpoint } from 'six__public-api';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,7 +13,10 @@ import { AsSkeleton } from '_types/material-ui';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 type PostDetailsToolbarViewProps = AsSkeleton &
-  Pick<PostGetRes['res'], 'postSlug'>;
+  Pick<
+    PostEndpoint['_single']['_v1']['_get']['_res']['Success']['body'],
+    'postSlug'
+  >;
 
 const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
   asSkeleton,
