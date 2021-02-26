@@ -248,7 +248,7 @@ class Rest {
       )
       .then(({ data }) => {
         if (data.state === 'fail') {
-          return this.handleError(data);
+          this.handleError(data);
         } else {
           setUser(data.body);
           clearPostRepo();
@@ -329,7 +329,7 @@ class Rest {
       )
       .then(({ data }) => {
         if (data.state === 'fail') {
-          return this.handleError(data);
+          this.handleError(data);
         } else {
           setUser(data.body);
         }
@@ -355,7 +355,7 @@ class Rest {
       )
       .then(({ data }) => {
         if (data.state === 'fail') {
-          return this.handleError(data);
+          this.handleError(data);
         } else {
           console.log('comment post response: \n', data);
         }
