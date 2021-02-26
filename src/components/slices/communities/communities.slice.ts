@@ -1,8 +1,10 @@
 import { createSlice, Selector } from '@reduxjs/toolkit';
-import type { CommunitiesGetRes } from 'six__public-api';
+import type { CommunityEndpoint } from 'six__public-api';
 import store, { RootState } from '_store/store';
 
-export type CommunityExpanded = CommunitiesGetRes['res'][0];
+type CommunitiesGetRes = CommunityEndpoint['_list']['_v1']['_get']['_res']['Success']['body'];
+
+export type CommunityExpanded = CommunitiesGetRes[0];
 
 type CommunitiesSlice = {
   updatedAt: number; // epoch
@@ -19,7 +21,7 @@ const communitiesSlice = createSlice({
   initialState,
   reducers: {
     setCommunities: (_, action) => {
-      const received: CommunitiesGetRes['res'] = action.payload;
+      const received: CommunitiesGetRes = action.payload;
       return {
         updatedAt: Date.now(),
         list: received,
@@ -30,7 +32,7 @@ const communitiesSlice = createSlice({
 
 export default communitiesSlice.reducer;
 
-type SetCommunities = (communities: CommunitiesGetRes['res']) => void;
+type SetCommunities = (communities: CommunitiesGetRes) => void;
 type GetCommunities = Selector<RootState, CommunitiesSlice>;
 
 export const setCommunities: SetCommunities = (communities) =>
