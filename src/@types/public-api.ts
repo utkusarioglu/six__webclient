@@ -4,7 +4,7 @@ import {
   CommunityEndpoint,
   CommentEndpoint,
   CommunityActionTypes,
-  SuccessfulUserLoginRes,
+  UserLoginResSuccessful,
 } from 'six__public-api';
 
 export type PostEndpoint_list = PostEndpoint['_list']['_v1'];
@@ -20,7 +20,7 @@ export type UserEndpoint_signup = UserEndpoint['_signup']['_v1'];
 export type UserEndpoint_session = UserEndpoint['_session']['_v1'];
 export type UserSessionRes = UserEndpoint_session['_get']['_res']['Success']['body'];
 export type UserSignupPostReq = UserEndpoint_signup['_post']['_req']['Body'];
-export type { SuccessfulUserLoginRes };
+export type { UserLoginResSuccessful };
 
 export type CommunityEndpoint_list = CommunityEndpoint['_list']['_v1'];
 export type CommunityEndpoint_single = CommunityEndpoint['_single']['_v1'];

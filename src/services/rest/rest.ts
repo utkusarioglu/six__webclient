@@ -1,6 +1,6 @@
 import {
   CommunityActionTypes,
-  SuccessfulUserLoginRes,
+  UserLoginResSuccessful,
 } from '_types/public-api';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
@@ -215,7 +215,7 @@ class Rest {
   }
 
   userCommunitySubscription(
-    username: SuccessfulUserLoginRes['username'],
+    username: UserLoginResSuccessful['username'],
     communityId: CommunityEndpoint_single['_get']['_res']['Success']['body']['id'],
     actionType: CommunityActionTypes
   ) {
