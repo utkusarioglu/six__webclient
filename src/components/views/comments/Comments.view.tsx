@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';
-import { getComments, clearComments } from '_slices/comments/comments.slice';
+import { selectComments, clearComments } from '_slices/comments/comments.slice';
 import { emptyComment } from '_slices/comments/comments.slice.constants';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommentView from '_views/comment/Comment.view';
@@ -15,7 +15,7 @@ import NoCommentsYetView from './NoCommentsYet.view';
 type CommentsViewProps = {};
 
 const CommentsView: FC<CommentsViewProps> = () => {
-  const { receivedAt, list: comments } = useSelector(getComments);
+  const { receivedAt, list: comments } = useSelector(selectComments);
   const postId = useSelector(getPostId);
   /** clears comment list when the user navigates away  */
   useEffect(() => clearComments, []);

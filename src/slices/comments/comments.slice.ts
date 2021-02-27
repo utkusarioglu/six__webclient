@@ -3,16 +3,16 @@ import type {
   PushIsSubmittingComment,
   ReplaceIsSubmittingComment,
   ClearComments,
-  GetCommentsForPost,
-  GetComments,
+  SelectCommentsForPost,
+  SelectComments,
 } from './comments.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import { StoreComment, Comment, CommentSaveBody } from './comments.slice.types';
-import store from '_store/store';
+import { dispatch } from '_store/store';
 import { initialState } from './comments.slice.constants';
 import { expandComment } from './comments.slice.logic';
 
-const commentsSlice = createSlice({
+const { actions, reducer } = createSlice({
   name: 'comments',
   initialState,
   reducers: {
@@ -65,24 +65,24 @@ const commentsSlice = createSlice({
   },
 });
 
-export default commentsSlice.reducer;
+export default reducer;
 
 export const setComments: UpdateComments = (comments) =>
-  store.dispatch(commentsSlice.actions.setComments(comments));
+  dispatch(actions.setComments(comments));
 
 export const pushIsSubmittingComment: PushIsSubmittingComment = (comment) =>
-  store.dispatch(commentsSlice.actions.pushIsSubmittingComment(comment));
+  dispatch(actions.pushIsSubmittingComment(comment));
 
 export const replaceIsSubmittingComment: ReplaceIsSubmittingComment = (
   comment
-) => store.dispatch(commentsSlice.actions.replaceIsSubmittingComment(comment));
+) => dispatch(actions.replaceIsSubmittingComment(comment));
 
 export const clearComments: ClearComments = () => {
-  store.dispatch(commentsSlice.actions.clearComments());
+  dispatch(actions.clearComments());
 };
 
-export const getCommentsByPostSlug: GetCommentsForPost = (postSlug) => (
+export const selectCommentsByPostSlug: SelectCommentsForPost = (postSlug) => (
   state
 ) => state.comments.list.filter((comment) => comment.postSlug === postSlug);
 
-export const getComments: GetComments = (state) => state.comments;
+export const selectComments: SelectComments = (state) => state.comments;

@@ -39,7 +39,7 @@ export type UpdateComments = (comments: Comment[]) => void;
 export type PushIsSubmittingComment = (comment: CommentSaveBody) => void;
 export type ReplaceIsSubmittingComment = (comment: Comment) => void;
 export type ClearComments = () => void;
-export type GetCommentsForPost = (
+export type SelectCommentsForPost = (
   postId: uuid
 ) => Selector<RootState, StoreComment[]>;
-export type GetComments = Selector<RootState, CommentsState>;
+export type SelectComments = Selector<RootState, CommentsState>;
