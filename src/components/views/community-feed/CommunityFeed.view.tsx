@@ -1,8 +1,6 @@
 import { useSelector } from 'react-redux';
-import {
-  getCommunities,
-  emptyCommunity,
-} from '_slices/communities/communities.slice';
+import { getCommunities } from '_slices/communities/communities.slice';
+import { emptyCommunity } from '_slices/communities/communities.slice.constants';
 import rest from '_services/rest/rest';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommunityCardView from '../community-card/CommunityCard.view';
