@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
-import { getCommunities } from '_slices/communities/communities.slice';
+import { selectCommunities } from '_slices/communities/communities.slice';
 import { emptyCommunity } from '_slices/communities/communities.slice.constants';
 import rest from '_services/rest/rest';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommunityCardView from '../community-card/CommunityCard.view';
 
 const CommunityFeedView = () => {
-  const { updatedAt, list: communities } = useSelector(getCommunities);
+  const { updatedAt, list: communities } = useSelector(selectCommunities);
   const retrieveCommunities = () => delayIfDev(() => rest.getCommunities());
 
   if (!updatedAt) {

@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import store from '_store/store';
+import { dispatch } from '_store/store';
 import {
   CommunitiesGetRes,
   SetCommunities,
-  GetCommunities,
+  SelectCommunities,
 } from './communities.slice.types';
 import { initialState } from './communities.slice.constants';
 
-const communitiesSlice = createSlice({
+const { actions, reducer } = createSlice({
   name: 'communities',
   initialState,
   reducers: {
@@ -21,9 +21,10 @@ const communitiesSlice = createSlice({
   },
 });
 
-export default communitiesSlice.reducer;
+export default reducer;
 
 export const setCommunities: SetCommunities = (communities) =>
-  store.dispatch(communitiesSlice.actions.setCommunities(communities));
+  dispatch(actions.setCommunities(communities));
 
-export const getCommunities: GetCommunities = (state) => state.communities;
+export const selectCommunities: SelectCommunities = (state) =>
+  state.communities;
