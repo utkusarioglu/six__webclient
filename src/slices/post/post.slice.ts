@@ -1,35 +1,8 @@
-import type { PostEndpoint_single } from '_types/public-api';
-import { createSlice, Selector } from '@reduxjs/toolkit';
-import store, { RootState } from '_store/store';
-import { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
+import { createSlice } from '@reduxjs/toolkit';
+import store from '_store/store';
 import { expandPost } from '_helpers/post/expandPost';
-
-type PostState = PostExpanded;
-
-const initialState: PostState = {
-  allowView: false,
-  id: '',
-  createdAt: '',
-  postTitle: '',
-  postBody: '',
-  postSlug: '',
-  likeCount: 0,
-  dislikeCount: 0,
-  commentCount: 0,
-  creatorUsername: '',
-  communityName: '',
-  communitySlug: '',
-  mediaImagePath: '',
-  mediaType: 'none',
-  receivedAt: 0,
-  communityUrl: '',
-  communityStylizedUrl: '',
-  postUrl: '',
-  creatorUrl: '',
-  creatorSlug: '',
-  creatorStylizedUrl: '',
-  voteCount: 0,
-};
+import { SetPost, GetPost, GetPostId } from './post.slice.types';
+import { initialState } from './post.slice.constants';
 
 const postSlice = createSlice({
   name: 'post',
@@ -44,10 +17,6 @@ const postSlice = createSlice({
 
 export default postSlice.reducer;
 
-type SetPost = (
-  postBody: PostEndpoint_single['_get']['_res']['Success']['body']
-) => void;
-
 export const setPost: SetPost = (postBody) =>
   store.dispatch(postSlice.actions.setPost(postBody));
 
@@ -55,13 +24,5 @@ export const clearPost = () => {
   store.dispatch(postSlice.actions.clearPost());
 };
 
-type GetPost = Selector<RootState, PostState>;
-type GetPostId = Selector<RootState, PostState['id']>;
-
 export const getPost: GetPost = (state) => state.post;
 export const getPostId: GetPostId = (state) => state.post.id;
-
-/**
- * Can be used for skeletons
- */
-export const emptyPost = initialState;

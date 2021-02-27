@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import PostCardView from '_views/post-card/PostCard.view';
 import rest from '_services/rest/rest';
 import { getPostRepo } from '_slices/post-repo/posts-repo.slice';
-import { emptyPost } from '_slices/post/post.slice';
+import { emptyPost } from '_slices/post/post.slice.constants';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
