@@ -1,15 +1,21 @@
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type {
+  SetPost,
+  SelectPost,
+  SelectPostId,
+  PostSingleBody,
+} from './post.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
 import { expandPost } from '_helpers/post/expandPost';
-import { SetPost, SelectPost, SelectPostId } from './post.slice.types';
 import { initialState } from './post.slice.constants';
 
 const { actions, reducer } = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    setPost: (_, action) => {
-      return expandPost(action.payload);
+    setPost: (_, { payload: post }: PayloadAction<PostSingleBody>) => {
+      return expandPost(post);
     },
     clearPost: () => initialState,
   },

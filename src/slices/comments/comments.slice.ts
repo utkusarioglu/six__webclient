@@ -1,3 +1,4 @@
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   UpdateComments,
   PushIsSubmittingComment,
@@ -16,10 +17,8 @@ const { actions, reducer } = createSlice({
   name: 'comments',
   initialState,
   reducers: {
-    setComments: (_, { payload }) => {
-      const received: Comment[] = payload;
-
-      const expanded: StoreComment[] = received.map((comment) => {
+    setComments: (_, { payload: comments }: PayloadAction<Comment[]>) => {
+      const expanded: StoreComment[] = comments.map((comment) => {
         return expandComment(comment);
       });
 
@@ -29,11 +28,12 @@ const { actions, reducer } = createSlice({
       };
     },
 
-    pushIsSubmittingComment: (state, { payload }) => {
-      const received: CommentSaveBody = payload;
-
+    pushIsSubmittingComment: (
+      state,
+      { payload }: PayloadAction<CommentSaveBody>
+    ) => {
       const expanded: StoreComment = expandComment({
-        ...received,
+        ...payload,
         id: '',
         createdAt: '',
         likeCount: 1,
@@ -47,13 +47,15 @@ const { actions, reducer } = createSlice({
       };
     },
 
-    replaceIsSubmittingComment: (state, { payload }) => {
-      const received: Comment = payload;
+    replaceIsSubmittingComment: (
+      state,
+      { payload }: PayloadAction<Comment>
+    ) => {
       const submittedMessages = state.list.filter(
         (comment) => comment.state !== 'is-submitting'
       );
 
-      const expanded = expandComment(received);
+      const expanded = expandComment(payload);
 
       return {
         ...state,

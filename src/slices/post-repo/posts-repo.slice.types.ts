@@ -3,6 +3,7 @@ import type { Selector } from '_types/helpers';
 
 type PostGetRes = PostEndpoint_single['_get']['_res']['Success'];
 type PostsGetRes = PostEndpoint_list['_get']['_res']['Success'];
+export type PostGetResBodyId = PostGetRes['id'];
 
 export interface PostsState {
   updatedAt: number;
@@ -33,16 +34,14 @@ export type PostExpanded = PostGetRes['body'] & {
 
 export type UpdatePosts = (posts: PostsGetRes['body']) => void;
 
-export type UpvotePost = (postId: PostsState['list'][0]['postSlug']) => void;
+export type UpvotePost = (postId: PostGetResBodyId) => void;
 
 export type VoteStats = Pick<
   PostsState['list'][0],
   'likeCount' | 'dislikeCount' | 'voteCount'
 >;
 
-export type SelectPostVotes = (
-  postId: PostsState['list'][0]['id']
-) => Selector<VoteStats>;
+export type SelectPostVotes = (postId: PostGetResBodyId) => Selector<VoteStats>;
 type SelectPost = PostsState['list'][0] | null;
 
 export type SelectPostTitle = (

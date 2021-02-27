@@ -7,7 +7,9 @@ import type {
   SelectPostBySlug,
   SelectPostRepo,
   SelectPostRepoLastUpdate,
+  PostGetResBodyId,
 } from './posts-repo.slice.types';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
 import { PostsGetRes } from '_types/public-api';
@@ -18,9 +20,8 @@ const { actions, reducer } = createSlice({
   name: 'postRepo',
   initialState,
   reducers: {
-    updatePosts: (_, action) => {
-      const received: PostsGetRes = action.payload;
-      const expanded: PostExpanded[] = received.map((post) => expandPost(post));
+    updatePosts: (_, { payload: posts }: PayloadAction<PostsGetRes>) => {
+      const expanded: PostExpanded[] = posts.map((post) => expandPost(post));
 
       return {
         updatedAt: Date.now(),
@@ -30,8 +31,8 @@ const { actions, reducer } = createSlice({
 
     clearPostRepo: () => initialState,
 
-    upvotePost: (state, action) => {
-      const altered = state.list.find((post) => post.id === action.payload);
+    upvotePost: (state, { payload }: PayloadAction<PostGetResBodyId>) => {
+      const altered = state.list.find((post) => post.id === payload);
 
       if (!altered) return state;
 
