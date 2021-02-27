@@ -1,24 +1,9 @@
 import type { UserSessionRes } from '_types/public-api';
-import { createSlice, Selector } from '@reduxjs/toolkit';
-import store, { RootState } from '_store/store';
-
-export type UserExpanded = UserSessionRes & {
-  userSlug: string;
-  userUrl: string;
-  userStylizedUrl: string;
-};
-
-type Visitor = {
-  state: 'visitor';
-};
-
-type UserState = UserExpanded | Visitor;
-
-export const emptyUser: UserState = {
-  state: 'visitor',
-} as UserState;
-
-const initialState: UserState = emptyUser;
+import { createSlice } from '@reduxjs/toolkit';
+import store from '_store/store';
+import { SetUser, GetLoggedIn, GetUser } from './user.slice.types';
+import { initialState } from './user.slice.constants';
+import { expandUser } from './user.slice.logic';
 
 const userSlice = createSlice({
   name: 'user',
@@ -29,19 +14,7 @@ const userSlice = createSlice({
       //  this would remove the need for having username as a property in initial
       const received: UserSessionRes = action.payload;
 
-      if (received.state === 'visitor') {
-        return emptyUser;
-      }
-
-      const { username } = received;
-      const userSlug = username.toLowerCase();
-
-      const expanded: UserState = {
-        ...received,
-        userSlug,
-        userUrl: `u/${userSlug}`,
-        userStylizedUrl: `u/${username}`,
-      };
+      const expanded = expandUser(received);
 
       return expanded;
     },
@@ -50,17 +23,8 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-type SetUser = (user: UserSessionRes) => void;
-type GetLoggedIn = Selector<RootState, boolean>;
-type GetUser = Selector<RootState, UserState>;
-
-export const setUser: SetUser = (user) => {
-  if (user.state === 'logged-in') {
-    store.dispatch(userSlice.actions.setUser(user));
-  } else {
-    store.dispatch(userSlice.actions.setUser(emptyUser));
-  }
-};
+export const setUser: SetUser = (user) =>
+  store.dispatch(userSlice.actions.setUser(user));
 
 export const getLoggedIn: GetLoggedIn = (state) =>
   state.user.state === 'logged-in';
