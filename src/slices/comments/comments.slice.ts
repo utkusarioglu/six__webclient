@@ -1,32 +1,16 @@
-import { createSlice, Selector } from '@reduxjs/toolkit';
-import {
-  CommentsState,
-  SliceComment,
-  Comment,
-  CommentSaveBody,
+import type {
+  UpdateComments,
+  PushIsSubmittingComment,
+  ReplaceIsSubmittingComment,
+  ClearComments,
+  GetCommentsForPost,
+  GetComments,
 } from './comments.slice.types';
+import { createSlice } from '@reduxjs/toolkit';
+import { StoreComment, Comment, CommentSaveBody } from './comments.slice.types';
 import store from '_store/store';
-import type { RootState } from '_store/store';
-import { uuid } from '_types/helpers';
-
-const initialState: CommentsState = {
-  receivedAt: 0,
-  list: [],
-};
-
-function expandComment(comment: Comment): SliceComment {
-  const { creatorUsername, likeCount, dislikeCount } = comment;
-  const creatorSlug = creatorUsername.toLowerCase();
-
-  return {
-    ...comment,
-    creatorSlug,
-    creatorStylizedUrl: `u/${creatorUsername}`,
-    creatorUrl: `u/${creatorSlug}`,
-    asSkeleton: false,
-    voteCount: likeCount - dislikeCount,
-  };
-}
+import { initialState } from './comments.slice.constants';
+import { expandComment } from './comments.slice.logic';
 
 const commentsSlice = createSlice({
   name: 'comments',
@@ -35,7 +19,7 @@ const commentsSlice = createSlice({
     setComments: (_, { payload }) => {
       const received: Comment[] = payload;
 
-      const expanded: SliceComment[] = received.map((comment) => {
+      const expanded: StoreComment[] = received.map((comment) => {
         return expandComment(comment);
       });
 
@@ -48,7 +32,7 @@ const commentsSlice = createSlice({
     pushIsSubmittingComment: (state, { payload }) => {
       const received: CommentSaveBody = payload;
 
-      const expanded: SliceComment = expandComment({
+      const expanded: StoreComment = expandComment({
         ...received,
         id: '',
         createdAt: '',
@@ -83,13 +67,6 @@ const commentsSlice = createSlice({
 
 export default commentsSlice.reducer;
 
-type UpdateComments = (comments: Comment[]) => void;
-type PushIsSubmittingComment = (comment: CommentSaveBody) => void;
-type ReplaceIsSubmittingComment = (comment: Comment) => void;
-type ClearComments = () => void;
-type GetCommentsForPost = (postId: uuid) => Selector<RootState, SliceComment[]>;
-type GetComments = Selector<RootState, CommentsState>;
-
 export const setComments: UpdateComments = (comments) =>
   store.dispatch(commentsSlice.actions.setComments(comments));
 
@@ -109,30 +86,3 @@ export const getCommentsByPostSlug: GetCommentsForPost = (postSlug) => (
 ) => state.comments.list.filter((comment) => comment.postSlug === postSlug);
 
 export const getComments: GetComments = (state) => state.comments;
-
-/**
- * useful for providing skeletons with props
- */
-export const emptyComment: SliceComment = {
-  id: '',
-  parentId: null,
-  createdAt: '',
-  body: '',
-  likeCount: 0,
-  dislikeCount: 0,
-  voteCount: 0,
-
-  postSlug: '',
-  postId: '',
-
-  creatorUsername: '',
-  userId: '',
-
-  creatorSlug: '',
-  creatorUrl: '',
-  creatorStylizedUrl: '',
-
-  state: 'submitted',
-
-  asSkeleton: true,
-};

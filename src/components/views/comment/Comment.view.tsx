@@ -1,5 +1,5 @@
 import type { FC, CSSProperties } from 'react';
-import type { SliceComment } from '_slices/comments/comments.slice.types';
+import type { StoreComment } from '_slices/comments/comments.slice.types';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
@@ -14,7 +14,7 @@ import VoteView from '../vote/vote.view';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import IconButton from '@material-ui/core/IconButton';
 
-type CommentViewProps = SliceComment;
+type CommentViewProps = StoreComment;
 
 const CommentView: FC<CommentViewProps> = ({
   asSkeleton,

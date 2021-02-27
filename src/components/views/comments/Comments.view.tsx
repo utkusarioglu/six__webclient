@@ -2,11 +2,8 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';
-import {
-  getComments,
-  clearComments,
-  emptyComment,
-} from '_slices/comments/comments.slice';
+import { getComments, clearComments } from '_slices/comments/comments.slice';
+import { emptyComment } from '_slices/comments/comments.slice.constants';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommentView from '_views/comment/Comment.view';
 import Container from '@material-ui/core/Container';
