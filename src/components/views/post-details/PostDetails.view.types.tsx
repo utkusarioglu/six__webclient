@@ -1,3 +1,3 @@
-import { PostGetRes } from 'six__public-api';
+import { PostGetRes } from '_types/public-api';
 
-export type PostDetailsProps = Pick<PostGetRes['res'], 'postSlug'>;
+export type PostDetailsProps = Pick<PostGetRes, 'postSlug'>;

@@ -1,3 +1,4 @@
+import type { CommentEndpoint_save } from '_types/public-api';
 import type { FC } from 'react';
 import { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -21,7 +22,6 @@ import {
   pushIsSubmittingComment,
   replaceIsSubmittingComment,
 } from '_slices/comments/comments.slice';
-import { CommentEndpoint } from 'six__public-api';
 import CommentLoginFirstView from './CommentLoginFirst.view';
 import { Formik } from 'formik';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
@@ -71,7 +71,7 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
         onSubmit={(values, { setSubmitting, setErrors, setValues }) => {
           setSubmitting(true);
 
-          const comment: CommentEndpoint['_save']['_v1']['_post']['_req']['Body'] = {
+          const comment: CommentEndpoint_save['_post']['_req']['Body'] = {
             userId,
             postId,
             parentId: null,

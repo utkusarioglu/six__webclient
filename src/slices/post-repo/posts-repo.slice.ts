@@ -7,7 +7,7 @@ import type {
 import { createSlice } from '@reduxjs/toolkit';
 import store from '_store/store';
 import { Selector } from '_types/helpers';
-import { PostsGetRes } from 'six__public-api';
+import { PostsGetRes } from '_types/public-api';
 import { expandPost } from '_helpers/post/expandPost';
 
 const initialState: PostsState = {
@@ -20,7 +20,7 @@ const postRepoSlice = createSlice({
   initialState,
   reducers: {
     updatePosts: (_, action) => {
-      const received: PostsGetRes['res'] = action.payload;
+      const received: PostsGetRes = action.payload;
       const expanded: PostExpanded[] = received.map((post) => expandPost(post));
 
       return {

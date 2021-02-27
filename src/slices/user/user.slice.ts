@@ -1,8 +1,8 @@
+import type { UserSessionRes } from '_types/public-api';
 import { createSlice, Selector } from '@reduxjs/toolkit';
-import { SuccessfulUserLoginRes, UserSessionRes } from 'six__public-api';
 import store, { RootState } from '_store/store';
 
-export type UserExpanded = SuccessfulUserLoginRes & {
+export type UserExpanded = UserSessionRes & {
   userSlug: string;
   userUrl: string;
   userStylizedUrl: string;

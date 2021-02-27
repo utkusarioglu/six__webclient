@@ -1,4 +1,4 @@
-import type { PostGetRes } from 'six__public-api';
+import type { PostGetRes } from '_types/public-api';
 import type { FC } from 'react';
 import type { AsSkeleton } from '_types/material-ui';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -8,7 +8,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Grid from '@material-ui/core/Grid';
 
 type PostCardMediaViewProps = AsSkeleton &
-  Pick<PostGetRes['res'], 'postTitle' | 'postBody' | 'mediaImagePath'>;
+  Pick<PostGetRes, 'postTitle' | 'postBody' | 'mediaImagePath'>;
 
 const PostCardMediaView: FC<PostCardMediaViewProps> = ({
   asSkeleton,

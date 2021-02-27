@@ -1,7 +1,7 @@
+import type { PostEndpoint_single } from '_types/public-api';
 import { createSlice, Selector } from '@reduxjs/toolkit';
 import store, { RootState } from '_store/store';
 import { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
-import { PostEndpoint } from 'six__public-api';
 import { expandPost } from '_helpers/post/expandPost';
 
 type PostState = PostExpanded;
@@ -45,7 +45,7 @@ const postSlice = createSlice({
 export default postSlice.reducer;
 
 type SetPost = (
-  postBody: PostEndpoint['_single']['_v1']['_get']['_res']['Success']['body']
+  postBody: PostEndpoint_single['_get']['_res']['Success']['body']
 ) => void;
 
 export const setPost: SetPost = (postBody) =>

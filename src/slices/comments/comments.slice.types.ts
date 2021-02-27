@@ -1,8 +1,8 @@
-import type { PostEndpoint, CommentEndpoint } from 'six__public-api';
+import { PostEndpoint_comments, CommentEndpoint_save } from '_types/public-api';
 import { AsSkeleton } from '_types/material-ui';
 
-export type Comment = PostEndpoint['_comments']['_v1']['_get']['_res']['Success']['body'][0];
-export type CommentSaveBody = CommentEndpoint['_save']['_v1']['_post']['_req']['Body'] & {
+export type Comment = PostEndpoint_comments['_get']['_res']['Success']['body'][0];
+export type CommentSaveBody = CommentEndpoint_save['_post']['_req']['Body'] & {
   creatorUsername: string;
   postSlug: string;
 };

@@ -1,5 +1,5 @@
 import { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
-import { PostEndpoint } from 'six__public-api';
+import { PostEndpoint_single } from '_types/public-api';
 
 /**
  * Computes the inferable properties of the post from the raw version
@@ -9,7 +9,7 @@ import { PostEndpoint } from 'six__public-api';
  * @returns expanded post object that multiple components use
  */
 export function expandPost(
-  raw: PostEndpoint['_single']['_v1']['_get']['_res']['Success']['body']
+  raw: PostEndpoint_single['_get']['_res']['Success']['body']
 ): PostExpanded {
   const {
     communityName,

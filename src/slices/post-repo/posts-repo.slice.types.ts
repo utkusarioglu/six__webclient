@@ -1,7 +1,7 @@
-import { PostEndpoint } from 'six__public-api';
+import type { PostEndpoint_list, PostEndpoint_single } from '_types/public-api';
 
-type PostGetRes = PostEndpoint['_single']['_v1']['_get']['Res']['Success'];
-type PostsGetRes = PostEndpoint['_list']['_v1']['_get']['Res']['Success'];
+type PostGetRes = PostEndpoint_single['_get']['_res']['Success'];
+type PostsGetRes = PostEndpoint_list['_get']['_res']['Success'];
 
 export interface PostsState {
   updatedAt: number;

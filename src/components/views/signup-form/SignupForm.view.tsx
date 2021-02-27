@@ -1,3 +1,4 @@
+import type { UserSignupPostReq } from '_types/public-api';
 import type { FC } from 'react';
 import { Formik } from 'formik';
 import TextField from '@material-ui/core/TextField';
@@ -6,7 +7,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import rest from '_services/rest/rest';
-import type { UserSignupPostReq } from 'six__public-api';
 import { Overwrite } from 'utility-types';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
@@ -15,7 +15,7 @@ import Link from '@material-ui/core/Link';
 
 type SignUpFormViewProps = {};
 
-type SingupFormValues = UserSignupPostReq['req'];
+type SingupFormValues = UserSignupPostReq;
 
 type Errors = Partial<
   Overwrite<SingupFormValues, { [key in keyof SingupFormValues]: string }> & {

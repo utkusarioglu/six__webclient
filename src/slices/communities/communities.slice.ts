@@ -1,8 +1,8 @@
+import type { CommunityEndpoint_list } from '_types/public-api';
 import { createSlice, Selector } from '@reduxjs/toolkit';
-import type { CommunityEndpoint } from 'six__public-api';
 import store, { RootState } from '_store/store';
 
-type CommunitiesGetRes = CommunityEndpoint['_list']['_v1']['_get']['_res']['Success']['body'];
+type CommunitiesGetRes = CommunityEndpoint_list['_get']['_res']['Success']['body'];
 
 export type CommunityExpanded = CommunitiesGetRes[0];
 
