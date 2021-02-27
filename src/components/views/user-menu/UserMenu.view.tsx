@@ -12,7 +12,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { getLoggedIn } from '_slices/user/user.slice';
+import { selectLoggedIn } from '_slices/user/user.slice';
 import { useSelector } from 'react-redux';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
@@ -20,7 +20,7 @@ const RightDrawerMenuView = () => {
   const classes = useStyles();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const isLoggedIn = useSelector(getLoggedIn);
+  const isLoggedIn = useSelector(selectLoggedIn);
 
   const toggleDrawer = (open: boolean) => (
     event: KeyboardEvent | MouseEvent

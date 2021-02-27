@@ -16,7 +16,7 @@ import { AsSkeleton } from '_types/material-ui';
 import Skeleton from '@material-ui/lab/Skeleton';
 import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';
-import { getUser } from '_slices/user/user.slice';
+import { selectUser } from '_slices/user/user.slice';
 import { selectPost } from '_slices/post/post.slice';
 import {
   pushIsSubmittingComment,
@@ -31,7 +31,7 @@ type CommentInputViewProps = AsSkeleton;
 
 const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
   const classes = useStyles();
-  const user = useSelector(getUser);
+  const user = useSelector(selectUser);
   const { id: postId, slug: postSlug } = useSelector(selectPost);
   const [commentInputFocused, setCommentInputFocused] = useState(false);
 

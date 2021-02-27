@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector } from 'react-redux';
-import { getUser } from '_slices/user/user.slice';
+import { selectUser } from '_slices/user/user.slice';
 import rest from '_services/rest/rest';
 
 type CommunityCardViewProps = AsSkeleton &
@@ -24,7 +24,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
   description,
 }) => {
   const classes = useStyles();
-  const user = useSelector(getUser);
+  const user = useSelector(selectUser);
 
   const subscribeOnClick = () => {
     if (user.state === 'logged-in') {

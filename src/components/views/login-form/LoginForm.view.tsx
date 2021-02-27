@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';
-import { getUser } from '_slices/user/user.slice';
+import { selectUser } from '_slices/user/user.slice';
 import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -21,7 +21,7 @@ type LoginFormViewProps = {};
 const LoginFormView: FC<LoginFormViewProps> = () => {
   const classes = useStyles();
   const history = useHistory();
-  const user = useSelector(getUser);
+  const user = useSelector(selectUser);
 
   if (user.state === 'logged-in') {
     setTimeout(() => history.push('/'), 1000);
