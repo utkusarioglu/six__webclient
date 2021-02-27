@@ -1,11 +1,11 @@
-import { CommunitiesSlice, StoreCommunity } from './communities.slice.types';
+import { CommunitiesStore, ExpandedCommunity } from './communities.slice.types';
 
-export const initialState: CommunitiesSlice = {
+export const initialState: CommunitiesStore = {
   updatedAt: 0,
   list: [],
 };
 
-export const emptyCommunity: StoreCommunity = {
+export const emptyCommunity: ExpandedCommunity = {
   id: '',
   createdAt: '',
   description: '',

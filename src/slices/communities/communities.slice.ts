@@ -1,6 +1,6 @@
+import type { CommunityEndpoint_list_res_body } from '_types/public-api';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
-  CommunitiesGetRes,
   SetCommunities,
   SelectCommunities,
 } from './communities.slice.types';
@@ -14,7 +14,7 @@ const { actions, reducer } = createSlice({
   reducers: {
     setCommunities: (
       _,
-      { payload: communities }: PayloadAction<CommunitiesGetRes>
+      { payload: communities }: PayloadAction<CommunityEndpoint_list_res_body>
     ) => {
       return {
         updatedAt: Date.now(),

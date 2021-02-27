@@ -1,6 +1,6 @@
 import type { SetUser, SelectLoggedIn, SelectUser } from './user.slice.types';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { UserSessionRes } from '_types/public-api';
+import type { UserEndpoint_session_res_body } from '_types/public-api';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
 import { initialState } from './user.slice.constants';
@@ -10,7 +10,10 @@ const { actions, reducer } = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (_, { payload: user }: PayloadAction<UserSessionRes>) => {
+    setUser: (
+      _,
+      { payload: user }: PayloadAction<UserEndpoint_session_res_body>
+    ) => {
       return expandUser(user);
     },
   },

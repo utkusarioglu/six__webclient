@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { StoreCommunity } from '_slices/communities/communities.slice.types';
+import { ExpandedCommunity } from '_slices/communities/communities.slice.types';
 import type { AsSkeleton } from '_types/material-ui';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -15,7 +15,7 @@ import { selectUser } from '_slices/user/user.slice';
 import rest from '_services/rest/rest';
 
 type CommunityCardViewProps = AsSkeleton &
-  Pick<StoreCommunity, 'name' | 'description' | 'id'>;
+  Pick<ExpandedCommunity, 'name' | 'description' | 'id'>;
 
 const CommunityCardView: FC<CommunityCardViewProps> = ({
   asSkeleton,

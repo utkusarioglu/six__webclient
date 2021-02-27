@@ -1,4 +1,4 @@
-import type { CommentEndpoint_save } from '_types/public-api';
+import type { CommentEndpoint_save_req_body } from '_types/public-api';
 import type { FC } from 'react';
 import { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -32,7 +32,7 @@ type CommentInputViewProps = AsSkeleton;
 const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
-  const { id: postId, slug: postSlug } = useSelector(selectPost);
+  const { id: postId, postSlug } = useSelector(selectPost);
   const [commentInputFocused, setCommentInputFocused] = useState(false);
 
   // if a visitor opens the page, skeleton is skipped
@@ -71,7 +71,7 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
         onSubmit={(values, { setSubmitting, setErrors, setValues }) => {
           setSubmitting(true);
 
-          const comment: CommentEndpoint_save['_post']['_req']['Body'] = {
+          const comment: CommentEndpoint_save_req_body = {
             userId,
             postId,
             parentId: null,

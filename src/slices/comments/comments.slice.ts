@@ -1,3 +1,7 @@
+import type {
+  PostEndpoint_comments_res_body,
+  PostEndpoint_comment_res_body,
+} from '_types/public-api';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   UpdateComments,
@@ -8,7 +12,10 @@ import type {
   SelectComments,
 } from './comments.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
-import { StoreComment, Comment, CommentSaveBody } from './comments.slice.types';
+import {
+  StoreComment,
+  IsSubmittingCommentParams,
+} from './comments.slice.types';
 import { dispatch } from '_store/store';
 import { initialState } from './comments.slice.constants';
 import { expandComment } from './comments.slice.logic';
@@ -17,8 +24,11 @@ const { actions, reducer } = createSlice({
   name: 'comments',
   initialState,
   reducers: {
-    setComments: (_, { payload: comments }: PayloadAction<Comment[]>) => {
-      const expanded: StoreComment[] = comments.map((comment) => {
+    setComments: (
+      _,
+      { payload: comments }: PayloadAction<PostEndpoint_comments_res_body>
+    ) => {
+      const expanded = comments.map((comment) => {
         return expandComment(comment);
       });
 
@@ -30,7 +40,7 @@ const { actions, reducer } = createSlice({
 
     pushIsSubmittingComment: (
       state,
-      { payload }: PayloadAction<CommentSaveBody>
+      { payload }: PayloadAction<IsSubmittingCommentParams>
     ) => {
       const expanded: StoreComment = expandComment({
         ...payload,
@@ -49,7 +59,7 @@ const { actions, reducer } = createSlice({
 
     replaceIsSubmittingComment: (
       state,
-      { payload }: PayloadAction<Comment>
+      { payload }: PayloadAction<PostEndpoint_comment_res_body>
     ) => {
       const submittedMessages = state.list.filter(
         (comment) => comment.state !== 'is-submitting'

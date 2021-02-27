@@ -1,19 +1,20 @@
-import type { PostEndpoint_list, PostEndpoint_single } from '_types/public-api';
-import type { Selector } from '_types/helpers';
-
-type PostGetRes = PostEndpoint_single['_get']['_res']['Success'];
-type PostsGetRes = PostEndpoint_list['_get']['_res']['Success'];
-export type PostGetResBodyId = PostGetRes['id'];
+import type {
+  PostEndpoint_single_res_body,
+  PostEndpoint_single_res_body_id,
+  PostEndpoint_list_res_body,
+} from '_types/public-api';
+import type { RootState } from '_store/store';
+import type { Selector } from '@reduxjs/toolkit';
 
 export interface PostsState {
   updatedAt: number;
-  list: PostExpanded[];
+  list: StorePost[];
 }
 
 /**
  * Expands the received post object with properties required by some components
  */
-export type PostExpanded = PostGetRes['body'] & {
+export type StorePost = PostEndpoint_single_res_body & {
   receivedAt: number; // epoch
   // used to check whether post can be displayed on screen, useful
   // in some scenarios
@@ -32,26 +33,31 @@ export type PostExpanded = PostGetRes['body'] & {
   voteCount: number;
 };
 
-export type UpdatePosts = (posts: PostsGetRes['body']) => void;
+export type UpdatePosts = (posts: PostEndpoint_list_res_body) => void;
 
-export type UpvotePost = (postId: PostGetResBodyId) => void;
+export type UpvotePost = (postId: PostEndpoint_single_res_body_id) => void;
 
 export type VoteStats = Pick<
   PostsState['list'][0],
   'likeCount' | 'dislikeCount' | 'voteCount'
 >;
 
-export type SelectPostVotes = (postId: PostGetResBodyId) => Selector<VoteStats>;
+export type SelectPostVotes = (
+  postId: PostEndpoint_single_res_body_id
+) => Selector<RootState, VoteStats>;
 type SelectPost = PostsState['list'][0] | null;
 
 export type SelectPostTitle = (
   postSlug: string
-) => Selector<PostsState['list'][0]['postTitle'] | null>;
+) => Selector<RootState, PostsState['list'][0]['postTitle'] | null>;
 
 export type SelectPostBySlug = (
   postSlug: PostsState['list'][0]['postSlug']
-) => Selector<SelectPost>;
+) => Selector<RootState, SelectPost>;
 
-export type SelectPostRepo = Selector<PostsState>;
+export type SelectPostRepo = Selector<RootState, PostsState>;
 
-export type SelectPostRepoLastUpdate = Selector<PostsState['updatedAt']>;
+export type SelectPostRepoLastUpdate = Selector<
+  RootState,
+  PostsState['updatedAt']
+>;

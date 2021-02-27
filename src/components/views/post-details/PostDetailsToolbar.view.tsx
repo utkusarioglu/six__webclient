@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import type { PostEndpoint_single } from '_types/public-api';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,15 +8,11 @@ import VoteView from '_views/vote/vote.view';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { selectPost } from '_slices/post/post.slice';
 import { useSelector } from 'react-redux';
-import { AsSkeleton } from '_types/material-ui';
 import Skeleton from '@material-ui/lab/Skeleton';
-
-type PostDetailsToolbarViewProps = AsSkeleton &
-  Pick<PostEndpoint_single['_get']['_res']['Success']['body'], 'postSlug'>;
+import { PostDetailsToolbarViewProps } from './PostDetailsToolbar.view.types';
 
 const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
   asSkeleton,
-  postSlug,
 }) => {
   const classes = useStyles();
   const { postTitle, likeCount, dislikeCount, voteCount } = useSelector(

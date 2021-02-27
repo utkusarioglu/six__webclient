@@ -1,8 +1,8 @@
 import type { AsSkeleton } from '_types/material-ui';
-import { RootState } from '_store/store';
+import type { PostState } from '_slices/post/post.slice.types';
 
 export type PostCardViewProps = Pick<
-  RootState['postRepo']['list'][0],
+  PostState,
   | 'createdAt'
   | 'postUrl'
   | 'postTitle'

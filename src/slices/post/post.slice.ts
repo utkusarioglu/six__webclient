@@ -1,20 +1,24 @@
+import type { PostEndpoint_single_res_body } from '_types/public-api';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   SetPost,
   SelectPost,
   SelectPostId,
-  PostSingleBody,
+  ClearPost,
 } from './post.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
-import { expandPost } from '_helpers/post/expandPost';
+import { expandPost } from '_slices/@shared/expandPost';
 import { initialState } from './post.slice.constants';
 
 const { actions, reducer } = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    setPost: (_, { payload: post }: PayloadAction<PostSingleBody>) => {
+    setPost: (
+      _,
+      { payload: post }: PayloadAction<PostEndpoint_single_res_body>
+    ) => {
       return expandPost(post);
     },
     clearPost: () => initialState,
@@ -26,7 +30,7 @@ export default reducer;
 export const setPost: SetPost = (postBody) =>
   dispatch(actions.setPost(postBody));
 
-export const clearPost = () => {
+export const clearPost: ClearPost = () => {
   dispatch(actions.clearPost());
 };
 

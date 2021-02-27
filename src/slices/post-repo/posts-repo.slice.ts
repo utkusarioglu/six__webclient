@@ -1,27 +1,30 @@
+import type { PostEndpoint_single_res_body_id } from '_types/public-api';
 import type {
   UpdatePosts,
   UpvotePost,
-  PostExpanded,
+  StorePost,
   SelectPostVotes,
   SelectPostTitle,
   SelectPostBySlug,
   SelectPostRepo,
   SelectPostRepoLastUpdate,
-  PostGetResBodyId,
 } from './posts-repo.slice.types';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
-import { PostsGetRes } from '_types/public-api';
-import { expandPost } from '_helpers/post/expandPost';
+import { PostEndpoint_list_res_body } from '_types/public-api';
+import { expandPost } from '_slices/@shared/expandPost';
 import { initialState } from './post-repo.slice.constants';
 
 const { actions, reducer } = createSlice({
   name: 'postRepo',
   initialState,
   reducers: {
-    updatePosts: (_, { payload: posts }: PayloadAction<PostsGetRes>) => {
-      const expanded: PostExpanded[] = posts.map((post) => expandPost(post));
+    updatePosts: (
+      _,
+      { payload: posts }: PayloadAction<PostEndpoint_list_res_body>
+    ) => {
+      const expanded: StorePost[] = posts.map((post) => expandPost(post));
 
       return {
         updatedAt: Date.now(),
@@ -31,7 +34,10 @@ const { actions, reducer } = createSlice({
 
     clearPostRepo: () => initialState,
 
-    upvotePost: (state, { payload }: PayloadAction<PostGetResBodyId>) => {
+    upvotePost: (
+      state,
+      { payload }: PayloadAction<PostEndpoint_single_res_body_id>
+    ) => {
       const altered = state.list.find((post) => post.id === payload);
 
       if (!altered) return state;

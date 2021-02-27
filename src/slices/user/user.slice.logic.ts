@@ -1,8 +1,8 @@
-import { UserSessionRes } from '_types/public-api';
+import { UserEndpoint_session_res_body } from '_types/public-api';
 import { StoreUser } from './user.slice.types';
 import { emptyUser } from './user.slice.constants';
 
-export function expandUser(received: UserSessionRes): StoreUser {
+export function expandUser(received: UserEndpoint_session_res_body): StoreUser {
   if (received.state === 'visitor') {
     return emptyUser;
   }

@@ -7,21 +7,9 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Timeago from 'react-timeago';
-import { AsSkeleton } from '_types/material-ui';
-import type { PostExpanded } from '_slices/post-repo/posts-repo.slice.types';
+import { PostDetailsForeheadViewProps } from './PostDetailsForehead.view.types';
 
-type PostTopRowViewProps = AsSkeleton &
-  Pick<
-    PostExpanded,
-    | 'communityUrl'
-    | 'communityStylizedUrl'
-    | 'createdAt'
-    | 'creatorUrl'
-    | 'creatorStylizedUrl'
-    | 'communityName'
-  >;
-
-const PostDetailsForeheadView: FC<PostTopRowViewProps> = ({
+const PostDetailsForeheadView: FC<PostDetailsForeheadViewProps> = ({
   asSkeleton,
   createdAt,
   communityUrl,

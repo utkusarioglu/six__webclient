@@ -1,3 +1,3 @@
-import { PostGetRes } from '_types/public-api';
+import type { PostState } from '_slices/post/post.slice.types';
 
-export type PostDetailsProps = Pick<PostGetRes, 'postSlug'>;
+export type PostDetailsProps = Pick<PostState, 'postSlug'>;

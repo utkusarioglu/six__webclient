@@ -1,16 +1,19 @@
 import {
-  CommunityEndpoint_list,
-  CommunityEndpoint_single,
+  CommunityEndpoint_list_res_body,
+  CommunityEndpoint_single_res_body,
 } from '_types/public-api';
 import { Selector } from '@reduxjs/toolkit';
 import { RootState } from '_store/store';
 
-export type CommunitiesGetRes = CommunityEndpoint_list['_get']['_res']['Success']['body'];
+export type ExpandedCommunity = CommunityEndpoint_single_res_body;
 
-export type StoreCommunity = CommunityEndpoint_single['_get']['_res']['Success']['body'];
-export type SetCommunities = (communities: CommunitiesGetRes) => void;
-export type SelectCommunities = Selector<RootState, CommunitiesSlice>;
-export type CommunitiesSlice = {
+export type SetCommunities = (
+  communities: CommunityEndpoint_list_res_body
+) => void;
+
+export type SelectCommunities = Selector<RootState, CommunitiesStore>;
+
+export type CommunitiesStore = {
   updatedAt: number; // epoch
-  list: StoreCommunity[];
+  list: ExpandedCommunity[];
 };

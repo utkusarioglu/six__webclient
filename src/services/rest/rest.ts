@@ -1,6 +1,22 @@
-import {
-  CommunityActionTypes,
-  UserLoginResSuccessful,
+import type {
+  PostEndpoint_list,
+  PostEndpoint_single,
+  PostEndpoint_single_res_body_id,
+  PostEndpoint_comments,
+  UserEndpoint_ucs_alter,
+  UserEndpoint_logout,
+  UserEndpoint_login,
+  UserEndpoint_signup,
+  UserEndpoint_session,
+  CommunityEndpoint_list,
+  CommunityEndpoint_single_res_body_id,
+  CommentEndpoint_save,
+  UserEndpoint_session_res_body_success_username,
+  UserEndpoint_ucs_alter_req_params_actionType,
+  PostEndpoint_single_res_body_slug,
+  UserEndpoint_login_req_body,
+  CommentEndpoint_save_req_body,
+  UserEndpoint_signup_req_body,
 } from '_types/public-api';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
@@ -9,20 +25,6 @@ import {
   clearPostRepo,
   updatePostRepo,
 } from '_slices/post-repo/posts-repo.slice';
-import {
-  PostEndpoint_list,
-  PostEndpoint_single,
-  PostEndpoint_comments,
-  UserEndpoint_ucs_alter,
-  UserEndpoint_logout,
-  UserEndpoint_login,
-  UserEndpoint_signup,
-  UserEndpoint_session,
-  CommunityEndpoint_list,
-  CommunityEndpoint_single,
-  CommentEndpoint_save,
-} from '_types/public-api';
-import { PostsState } from '_slices/post-repo/posts-repo.slice.types';
 import { setComments } from '_slices/comments/comments.slice';
 import { setUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
@@ -120,7 +122,7 @@ class Rest {
    *
    * @param postSlug slug for the post to be retrieved
    */
-  getPostBySlug(postSlug: PostsState['list'][0]['postSlug']) {
+  getPostBySlug(postSlug: PostEndpoint_single_res_body_slug) {
     type Method = PostEndpoint_single;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
@@ -182,9 +184,7 @@ class Rest {
    *
    * @param postId slug of the post for which the comments will be retrieved
    */
-  getCommentsByPostId(
-    postId: PostEndpoint_single['_get']['_res']['Success']['body']['id']
-  ) {
+  getCommentsByPostId(postId: PostEndpoint_single_res_body_id) {
     type Method = PostEndpoint_comments;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
@@ -215,9 +215,9 @@ class Rest {
   }
 
   userCommunitySubscription(
-    username: UserLoginResSuccessful['username'],
-    communityId: CommunityEndpoint_single['_get']['_res']['Success']['body']['id'],
-    actionType: CommunityActionTypes
+    username: UserEndpoint_session_res_body_success_username,
+    communityId: CommunityEndpoint_single_res_body_id,
+    actionType: UserEndpoint_ucs_alter_req_params_actionType
   ) {
     type Method = UserEndpoint_ucs_alter;
     type Response = Method['_post']['_res']['Union'];
@@ -270,7 +270,7 @@ class Rest {
       .catch(this.handleError);
   }
 
-  login(requestInput: UserEndpoint_login['_post']['_req']['Body']) {
+  login(requestInput: UserEndpoint_login_req_body) {
     type Method = UserEndpoint_login;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
@@ -298,7 +298,7 @@ class Rest {
       .catch(this.handleError);
   }
 
-  signup(data: UserEndpoint_signup['_post']['_req']['Body']) {
+  signup(data: UserEndpoint_signup_req_body) {
     type Method = UserEndpoint_signup;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
@@ -350,7 +350,7 @@ class Rest {
       .catch(this.handleError);
   }
 
-  saveComment(data: CommentEndpoint_save['_post']['_req']['Body']) {
+  saveComment(data: CommentEndpoint_save_req_body) {
     type Method = CommentEndpoint_save;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
