@@ -1,4 +1,5 @@
 import type { PostEndpoint_list, PostEndpoint_single } from '_types/public-api';
+import type { Selector } from '_types/helpers';
 
 type PostGetRes = PostEndpoint_single['_get']['_res']['Success'];
 type PostsGetRes = PostEndpoint_list['_get']['_res']['Success'];
@@ -33,3 +34,25 @@ export type PostExpanded = PostGetRes['body'] & {
 export type UpdatePosts = (posts: PostsGetRes['body']) => void;
 
 export type UpvotePost = (postId: PostsState['list'][0]['postSlug']) => void;
+
+export type VoteStats = Pick<
+  PostsState['list'][0],
+  'likeCount' | 'dislikeCount' | 'voteCount'
+>;
+
+export type GetPostVotes = (
+  postId: PostsState['list'][0]['id']
+) => Selector<VoteStats>;
+type SelectPost = PostsState['list'][0] | null;
+
+export type GetPostTitle = (
+  postSlug: string
+) => Selector<PostsState['list'][0]['postTitle'] | null>;
+
+export type GetPostBySlug = (
+  postSlug: PostsState['list'][0]['postSlug']
+) => Selector<SelectPost>;
+
+export type GetPostRepo = Selector<PostsState>;
+
+export type GetPostRepoLastUpdate = Selector<PostsState['updatedAt']>;

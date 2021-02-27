@@ -1,19 +1,18 @@
 import type {
-  PostsState,
   UpdatePosts,
   UpvotePost,
   PostExpanded,
+  GetPostVotes,
+  GetPostTitle,
+  GetPostBySlug,
+  GetPostRepo,
+  GetPostRepoLastUpdate,
 } from './posts-repo.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import store from '_store/store';
-import { Selector } from '_types/helpers';
 import { PostsGetRes } from '_types/public-api';
 import { expandPost } from '_helpers/post/expandPost';
-
-const initialState: PostsState = {
-  updatedAt: 0,
-  list: [],
-};
+import { initialState } from './post-repo.slice.constants';
 
 const postRepoSlice = createSlice({
   name: 'postRepo',
@@ -61,22 +60,11 @@ export const clearPostRepo = () => {
 export const upvotePost: UpvotePost = (postSlug) =>
   store.dispatch(postRepoSlice.actions.upvotePost(postSlug));
 
-export const getPostRepo: Selector<PostsState> = (state) => state.postRepo;
+export const getPostRepo: GetPostRepo = (state) => state.postRepo;
 
-export const getPostRepoLastUpdate: Selector<PostsState['updatedAt']> = (
-  state
-) => {
+export const getPostRepoLastUpdate: GetPostRepoLastUpdate = (state) => {
   return Date.now() - state.postRepo.updatedAt;
 };
-
-type VoteStats = Pick<
-  PostsState['list'][0],
-  'likeCount' | 'dislikeCount' | 'voteCount'
->;
-
-type GetPostVotes = (
-  postId: PostsState['list'][0]['id']
-) => Selector<VoteStats>;
 
 export const getPostVotes: GetPostVotes = (postSlug) => (state) => {
   const post = state.postRepo.list.find((post) => post.postSlug === postSlug);
@@ -98,11 +86,7 @@ export const getPostVotes: GetPostVotes = (postSlug) => (state) => {
   };
 };
 
-type SelectPost = PostsState['list'][0] | null;
-
-export const getPostBySlug: (
-  postSlug: PostsState['list'][0]['postSlug']
-) => Selector<SelectPost> = (postSlug) => (state) => {
+export const getPostBySlug: GetPostBySlug = (postSlug) => (state) => {
   if (!postSlug || postSlug.length === 0) return null;
 
   const post = state.postRepo.list.find((post) => post.postSlug === postSlug);
@@ -112,11 +96,7 @@ export const getPostBySlug: (
   return post;
 };
 
-export const getPostTitle: (
-  postSlug: string
-) => Selector<PostsState['list'][0]['postTitle'] | null> = (postSlug) => (
-  state
-) => {
+export const getPostTitle: GetPostTitle = (postSlug) => (state) => {
   const post = state.postRepo.list.find((post) => post.postSlug === postSlug);
 
   if (!post) return null;
