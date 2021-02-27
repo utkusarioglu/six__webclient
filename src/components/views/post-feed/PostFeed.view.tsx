@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import { useSelector } from 'react-redux';
 import PostCardView from '_views/post-card/PostCard.view';
 import rest from '_services/rest/rest';
-import { getPostRepo } from '_slices/post-repo/posts-repo.slice';
+import { selectPostRepo } from '_slices/post-repo/posts-repo.slice';
 import { emptyPost } from '_slices/post/post.slice.constants';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +12,7 @@ import Link from '@material-ui/core/Link';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 const PostFeedView: FC<PostFeedViewProps> = () => {
-  const { updatedAt, list: posts } = useSelector(getPostRepo);
+  const { updatedAt, list: posts } = useSelector(selectPostRepo);
   const getPosts = () => delayIfDev(() => rest.getPosts());
   const CommunitiesLink = domLinkHelper('/communities');
 

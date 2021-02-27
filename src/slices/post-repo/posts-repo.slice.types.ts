@@ -40,19 +40,19 @@ export type VoteStats = Pick<
   'likeCount' | 'dislikeCount' | 'voteCount'
 >;
 
-export type GetPostVotes = (
+export type SelectPostVotes = (
   postId: PostsState['list'][0]['id']
 ) => Selector<VoteStats>;
 type SelectPost = PostsState['list'][0] | null;
 
-export type GetPostTitle = (
+export type SelectPostTitle = (
   postSlug: string
 ) => Selector<PostsState['list'][0]['postTitle'] | null>;
 
-export type GetPostBySlug = (
+export type SelectPostBySlug = (
   postSlug: PostsState['list'][0]['postSlug']
 ) => Selector<SelectPost>;
 
-export type GetPostRepo = Selector<PostsState>;
+export type SelectPostRepo = Selector<PostsState>;
 
-export type GetPostRepoLastUpdate = Selector<PostsState['updatedAt']>;
+export type SelectPostRepoLastUpdate = Selector<PostsState['updatedAt']>;
