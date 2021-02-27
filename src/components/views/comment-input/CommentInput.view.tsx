@@ -17,7 +17,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import rest from '_services/rest/rest';
 import { useSelector } from 'react-redux';
 import { getUser } from '_slices/user/user.slice';
-import { getPost } from '_slices/post/post.slice';
+import { selectPost } from '_slices/post/post.slice';
 import {
   pushIsSubmittingComment,
   replaceIsSubmittingComment,
@@ -32,7 +32,7 @@ type CommentInputViewProps = AsSkeleton;
 const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
   const classes = useStyles();
   const user = useSelector(getUser);
-  const { id: postId, slug: postSlug } = useSelector(getPost);
+  const { id: postId, slug: postSlug } = useSelector(selectPost);
   const [commentInputFocused, setCommentInputFocused] = useState(false);
 
   // if a visitor opens the page, skeleton is skipped

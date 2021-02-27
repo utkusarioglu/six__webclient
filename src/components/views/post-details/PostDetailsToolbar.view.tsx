@@ -7,7 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import VoteView from '_views/vote/vote.view';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
-import { getPost } from '_slices/post/post.slice';
+import { selectPost } from '_slices/post/post.slice';
 import { useSelector } from 'react-redux';
 import { AsSkeleton } from '_types/material-ui';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -21,7 +21,7 @@ const PostDetailsToolbarView: FC<PostDetailsToolbarViewProps> = ({
 }) => {
   const classes = useStyles();
   const { postTitle, likeCount, dislikeCount, voteCount } = useSelector(
-    getPost
+    selectPost
   );
 
   const voteFunction = (voteType: number) => alert(`toolbar vote ${voteType}`);

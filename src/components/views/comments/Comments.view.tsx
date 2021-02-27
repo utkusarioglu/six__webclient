@@ -8,7 +8,7 @@ import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommentView from '_views/comment/Comment.view';
 import Container from '@material-ui/core/Container';
 import CommentInputView from '_views/comment-input/CommentInput.view';
-import { getPostId } from '_slices/post/post.slice';
+import { selectPostId } from '_slices/post/post.slice';
 import NoCommentsYetView from './NoCommentsYet.view';
 
 // ! post slug  should come from the store type, cannot be a string
@@ -16,7 +16,7 @@ type CommentsViewProps = {};
 
 const CommentsView: FC<CommentsViewProps> = () => {
   const { receivedAt, list: comments } = useSelector(selectComments);
-  const postId = useSelector(getPostId);
+  const postId = useSelector(selectPostId);
   /** clears comment list when the user navigates away  */
   useEffect(() => clearComments, []);
 

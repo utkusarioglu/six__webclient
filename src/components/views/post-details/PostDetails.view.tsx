@@ -9,12 +9,12 @@ import PostDetailsForeheadView from '_views/post-details-forehead/PostDetailsFor
 import PostDetailsToolbarView from './PostDetailsToolbar.view';
 import { useSelector } from 'react-redux';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
-import { getPost, clearPost } from '_slices/post/post.slice';
+import { selectPost, clearPost } from '_slices/post/post.slice';
 import rest from '_services/rest/rest';
 
 const PostDetailsView: FC<PostDetailsProps> = ({ postSlug }) => {
   const classes = useStyles();
-  const post = useSelector(getPost);
+  const post = useSelector(selectPost);
   const { allowView } = post;
   let asSkeleton = !allowView;
 
