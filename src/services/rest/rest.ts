@@ -71,7 +71,6 @@ class Rest {
         );
       });
     }
-    console.log(preparedEndpoint);
     return preparedEndpoint;
   }
 
