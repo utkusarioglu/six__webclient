@@ -128,7 +128,6 @@ class Rest {
     type Params = Method['_get']['_req']['Params'];
 
     const requestId = this.createRequestId();
-    console.log('requestId', requestId);
 
     return this._axios
       .get<Response>(
