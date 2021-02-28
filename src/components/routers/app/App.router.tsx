@@ -10,7 +10,7 @@ import PostDetailsRoute from '_routes/post-details/PostDetails.route';
 import ProfileRoute from '_routes/profile/Profile.route';
 import SettingsRoute from '_routes/settings/Settings.route';
 import CommunityRoute from '_routes/community/Community.route';
-import StartupSnacksView from '_views/startup-snacks/StartupSnacks.view';
+import SnacksView from '_views/snacks/Snacks.view';
 import LoginRoute from '_routes/login/Login.route';
 import SignupRoute from '_routes/signup/Signup.route';
 import CommunitiesRoute from '_routes/communities/Communities.route';
@@ -62,7 +62,8 @@ const AppRouter = () => {
             <Redirect to="/" />
           </Route>
         </Switch>
-        <StartupSnacksView />
+
+        <SnacksView />
       </Router>
     </>
   );
