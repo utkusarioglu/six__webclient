@@ -6,13 +6,13 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Timeago from 'react-timeago';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import VoteView from '../vote/vote.view';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import IconButton from '@material-ui/core/IconButton';
+import RelativeDateView from '_views/relative-date/RelativeDate.view';
 
 type CommentViewProps = StoreComment;
 
@@ -71,7 +71,7 @@ const CommentView: FC<CommentViewProps> = ({
                 {creatorStylizedUrl}
               </Link>
               <Link color="textSecondary">
-                <Timeago date={createdAt} />
+                <RelativeDateView date={createdAt} />
               </Link>
             </>
           )}

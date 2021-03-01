@@ -6,7 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
-import Timeago from 'react-timeago';
+import RelativeDateView from '_views/relative-date/RelativeDate.view';
+
 import { PostDetailsForeheadViewProps } from './PostDetailsForehead.view.types';
 
 const PostDetailsForeheadView: FC<PostDetailsForeheadViewProps> = ({
@@ -69,7 +70,7 @@ const PostDetailsForeheadView: FC<PostDetailsForeheadViewProps> = ({
             {creatorStylizedUrl}
           </Link>
           <Link color="textSecondary" className={classes.topRowText}>
-            <Timeago date={createdAt} />
+            <RelativeDateView date={createdAt} />
           </Link>
         </>
       )}
