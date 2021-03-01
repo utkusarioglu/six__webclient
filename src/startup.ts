@@ -1,4 +1,4 @@
-import { pushSnack } from '_slices/snacks/snacks.slice';
+import snacks from '_services/snacks/snacks';
 import cookies from '_services/cookies/cookies';
 import ReactGa from 'react-ga';
 import { GA_ID } from '_config';
@@ -16,12 +16,12 @@ export default async function startup() {
   if (!cookies.getCookieConsent()) {
     // Cookie prompt links to login prompt through actions,
     // don't list login prompt separately
-    pushSnack('cookiePrompt');
+    snacks.push('cookiePrompt');
   } else if (
     getState().user.state === 'visitor' &&
     !isAtLoginPromptDisabledPath()
   ) {
-    pushSnack('loginPrompt');
+    snacks.push('loginPrompt');
   }
 }
 

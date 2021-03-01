@@ -1,20 +1,20 @@
 import type {
-  ClearSnacks,
-  SetSnacks,
-  StoreSnacks,
-  SelectSnacks,
-  PushSnack,
-  RemoveSnack,
-} from './snacks.slice.types';
+  ClearSnackKeys,
+  SetSnackKeys,
+  StoreSnackKeys,
+  SelectSnackKeys,
+  PushSnackKey,
+  RemoveSnackKey,
+} from './snack-keys.slice.types';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
-import { snackRecords } from '_views/snacks/Snacks.view.constants';
+import { snackRecord } from '_services/snacks/snacks.constants';
 
-const initialState = [] as StoreSnacks;
+const initialState = [] as StoreSnackKeys;
 
 const { actions, reducer } = createSlice({
-  name: 'snacks',
+  name: 'snackKeys',
   initialState,
   reducers: {
     clearSnacks: () => [],
@@ -31,22 +31,23 @@ const { actions, reducer } = createSlice({
 
     removeSnack: (
       state,
-      { payload }: PayloadAction<keyof typeof snackRecords>
+      { payload }: PayloadAction<keyof typeof snackRecord>
     ) => state.filter((snackKey) => snackKey !== payload),
   },
 });
 
 export default reducer;
 
-export const clearSnacks: ClearSnacks = () => dispatch(actions.clearSnacks());
+export const clearSnackKeys: ClearSnackKeys = () =>
+  dispatch(actions.clearSnacks());
 
-export const setSnacks: SetSnacks = (snacks: StoreSnacks) =>
+export const setSnackKeys: SetSnackKeys = (snacks: StoreSnackKeys) =>
   dispatch(actions.setSnacks(snacks));
 
-export const selectSnacks: SelectSnacks = (state) => state.snacks;
+export const selectSnackKeys: SelectSnackKeys = (state) => state.snackKeys;
 
-export const pushSnack: PushSnack = (snackKey) =>
+export const pushSnackKey: PushSnackKey = (snackKey) =>
   dispatch(actions.pushSnack(snackKey));
 
-export const removeSnack: RemoveSnack = (snackKey) =>
+export const removeSnackKey: RemoveSnackKey = (snackKey) =>
   dispatch(actions.removeSnack(snackKey));
