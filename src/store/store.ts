@@ -1,22 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
-import postRepoReducer from '_slices/post-repo/posts-repo.slice';
-import commentsReducer from '_slices/comments/comments.slice';
-import userReducer from '_slices/user/user.slice';
-import postReducer from '_slices/post/post.slice';
-import communitiesReducer from '_slices/communities/communities.slice';
-import snacksReducer from '_slices/snacks/snacks.slice';
+import postRepo from '_slices/post-repo/posts-repo.slice';
+import comments from '_slices/comments/comments.slice';
+import user from '_slices/user/user.slice';
+import post from '_slices/post/post.slice';
+import communities from '_slices/communities/communities.slice';
+import snackKeys from '_slices/snack-keys/snack-keys.slice';
 
 /**
  * The actual store for the app
  */
 const store = configureStore({
   reducer: {
-    post: postReducer,
-    postRepo: postRepoReducer,
-    comments: commentsReducer,
-    user: userReducer,
-    communities: communitiesReducer,
-    snacks: snacksReducer,
+    post,
+    postRepo,
+    comments,
+    user,
+    communities,
+    snackKeys,
   },
 });
 
