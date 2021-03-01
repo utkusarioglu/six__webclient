@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useState } from 'react';
-import { ExpandedCommunity } from '_slices/communities/communities.slice.types';
+import { CommunityState } from '_slices/community/community.slice.types';
 import type { AsSkeleton } from '_types/material-ui';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -18,20 +18,23 @@ import snacks from '_services/snacks/snacks';
 import { removeUcsId, selectHasUcsId } from '_slices/ucs/ucs.slice';
 import { pushUcsId } from '_slices/ucs/ucs.slice';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
+import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 type CommunityCardViewProps = AsSkeleton &
-  Pick<ExpandedCommunity, 'name' | 'description' | 'id'>;
+  Pick<CommunityState, 'name' | 'description' | 'id' | 'communityUrl'>;
 
 const CommunityCardView: FC<CommunityCardViewProps> = ({
   asSkeleton,
   id,
   name,
   description,
+  communityUrl,
 }) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const subscribed = useSelector(selectHasUcsId(id));
   const [subscribeButtonEnabled, setSubscribeButtonEnabled] = useState(true);
+  const CommunitiesLink = domLinkHelper(communityUrl);
 
   const subscribeOnClick = () => {
     if (user.state === 'logged-in') {
@@ -70,7 +73,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea component={CommunitiesLink}>
         {asSkeleton ? (
           <Skeleton variant="rect" className={classes.media} />
         ) : (
@@ -96,7 +99,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
           <Skeleton width="100%" variant="rect" height="30px" />
         ) : (
           <>
-            <Button size="small" color="primary">
+            <Button component={CommunitiesLink} size="small" color="primary">
               Visit
             </Button>
             {user.state === 'logged-in' && (
