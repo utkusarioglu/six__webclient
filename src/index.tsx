@@ -5,15 +5,11 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
-import ReactGa from 'react-ga';
 import AppRouter from '_routers/app/App.router';
 import { darkTheme } from './theme';
-import { GA_ID } from '_config';
-import rest from '_services/rest/rest';
+import startup from './startup';
 
-ReactGa.initialize(GA_ID);
-
-rest.getSession();
+startup();
 
 ReactDOM.render(
   <React.StrictMode>
