@@ -21,6 +21,7 @@ import { selectPost } from '_slices/post/post.slice';
 import {
   pushIsSubmittingComment,
   replaceIsSubmittingComment,
+  clearIsSubmittingComment,
 } from '_slices/comments/comments.slice';
 import CommentLoginFirstView from './CommentLoginFirst.view';
 import { Formik } from 'formik';
@@ -90,6 +91,7 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
               if (response) {
                 if (response.state === 'fail') {
                   snacks.push('commentPostError');
+                  clearIsSubmittingComment();
                   setErrors(response.errors);
                 } else {
                   setValues(formInitialValues);
