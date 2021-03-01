@@ -1,4 +1,7 @@
-import { CommunitiesStore, ExpandedCommunity } from './communities.slice.types';
+import {
+  CommunitiesStore,
+  ExpandedCommunity,
+} from './community-repo.slice.types';
 
 export const initialState: CommunitiesStore = {
   updatedAt: 0,
@@ -13,4 +16,5 @@ export const emptyCommunity: ExpandedCommunity = {
   slug: '',
   postCount: 0,
   subscriberCount: 0,
+  communityUrl: '',
 };

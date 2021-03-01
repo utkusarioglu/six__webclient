@@ -3,22 +3,25 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   SetCommunities,
   SelectCommunities,
-} from './communities.slice.types';
+} from './community-repo.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
-import { initialState } from './communities.slice.constants';
+import { initialState } from './community-repo.slice.constants';
+import { expandCommunity } from '_slices/@shared/expandCommunity';
 
 const { actions, reducer } = createSlice({
-  name: 'communities',
+  name: 'communityRepo',
   initialState,
   reducers: {
     setCommunities: (
       _,
-      { payload: communities }: PayloadAction<CommunityEndpoint_list_res_body>
+      { payload }: PayloadAction<CommunityEndpoint_list_res_body>
     ) => {
+      const expanded = payload.map((community) => expandCommunity(community));
+
       return {
         updatedAt: Date.now(),
-        list: communities,
+        list: expanded,
       };
     },
   },
@@ -30,4 +33,4 @@ export const setCommunities: SetCommunities = (communities) =>
   dispatch(actions.setCommunities(communities));
 
 export const selectCommunities: SelectCommunities = (state) =>
-  state.communities;
+  state.communityRepo;

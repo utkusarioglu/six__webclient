@@ -5,7 +5,9 @@ import {
 import { Selector } from '@reduxjs/toolkit';
 import { RootState } from '_store/store';
 
-export type ExpandedCommunity = CommunityEndpoint_single_res_body;
+export type ExpandedCommunity = CommunityEndpoint_single_res_body & {
+  communityUrl: string;
+};
 
 export type SetCommunities = (
   communities: CommunityEndpoint_list_res_body
