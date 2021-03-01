@@ -35,7 +35,7 @@ const PostCardView: FC<PostCardViewProps> = ({
   voteCount,
 }) => {
   const classes = useStyles();
-  const PostDetailsLink = domLinkHelper(postUrl as string);
+  const PostDetailsLink = domLinkHelper(postUrl);
 
   const voteFunction = (voteType: number) => alert(`card vote: ${voteType}`);
 
