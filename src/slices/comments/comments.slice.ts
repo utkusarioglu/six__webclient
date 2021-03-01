@@ -10,6 +10,7 @@ import type {
   ClearComments,
   SelectCommentsForPost,
   SelectComments,
+  ClearIsSubmittingComment,
 } from './comments.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import {
@@ -73,6 +74,13 @@ const { actions, reducer } = createSlice({
       };
     },
 
+    clearIsSubmittingComment: (state) => {
+      return {
+        ...state,
+        list: state.list.filter((comment) => comment.state !== 'is-submitting'),
+      };
+    },
+
     clearComments: () => initialState,
   },
 });
@@ -89,12 +97,14 @@ export const replaceIsSubmittingComment: ReplaceIsSubmittingComment = (
   comment
 ) => dispatch(actions.replaceIsSubmittingComment(comment));
 
-export const clearComments: ClearComments = () => {
+export const clearComments: ClearComments = () =>
   dispatch(actions.clearComments());
-};
 
 export const selectCommentsByPostSlug: SelectCommentsForPost = (postSlug) => (
   state
 ) => state.comments.list.filter((comment) => comment.postSlug === postSlug);
 
 export const selectComments: SelectComments = (state) => state.comments;
+
+export const clearIsSubmittingComment: ClearIsSubmittingComment = () =>
+  dispatch(actions.clearIsSubmittingComment());

@@ -51,3 +51,5 @@ export type SelectCommentsForPost = (
 ) => Selector<RootState, StoreComment[]>;
 
 export type SelectComments = Selector<RootState, CommentsState>;
+
+export type ClearIsSubmittingComment = () => void;
