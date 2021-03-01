@@ -7,7 +7,7 @@ export function delayIfDev<T>(
   if (NODE_ENV === 'development') {
     setTimeout(() => {
       callback();
-    }, delayMultiplier * 1000);
+    }, delayMultiplier * 500);
   } else {
     callback();
   }
