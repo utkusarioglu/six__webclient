@@ -15,11 +15,8 @@ const { actions, reducer } = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    setPost: (
-      _,
-      { payload: post }: PayloadAction<PostEndpoint_single_res_body>
-    ) => {
-      return expandPost(post);
+    setPost: (_, { payload }: PayloadAction<PostEndpoint_single_res_body>) => {
+      return expandPost(payload);
     },
     clearPost: () => initialState,
   },
