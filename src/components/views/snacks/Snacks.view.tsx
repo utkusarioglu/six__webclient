@@ -1,198 +1,76 @@
-import { useState, useEffect, useMemo } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import Button from '@material-ui/core/Button';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import domLinkHelper from '_helpers/dom-link/DomLink.helper';
-import cookies from '_services/cookies/cookies';
+import type { SnackMessage } from '_slices/snack-keys/snack-keys.slice.types';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { selectLoggedIn } from '_slices/user/user.slice';
-import MuiAlert from '@material-ui/lab/Alert';
-import { SnackMessage, SnackMessages } from './Snacks.view.types';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    width: '100%',
-    // '& > * + *': {
-    //   marginBottom: theme.spacing(3),
-    // },
-  },
-  snackbar: {
-    bottom: theme.spacing(3),
-  },
-}));
-
-function isAtDisabledPath(): boolean {
-  switch (window.location.pathname.slice(1)) {
-    case 'login':
-    case 'signup':
-    case 'profile':
-    case 'settings':
-      return true;
-
-    default:
-      return false;
-  }
-}
+import { selectSnackKeys } from '_slices/snack-keys/snack-keys.slice';
+import snacks from '_services/snacks/snacks';
+import SnackbarAlertView from './SnackbarAlert.view';
+import SnackbarPromptView from './SnackbarPrompt.view';
 
 function SnacksView() {
-  const classes = useStyles();
-  const disableSnacks = isAtDisabledPath();
-  const isLoggedIn = useSelector(selectLoggedIn);
+  const snackKeys = useSelector(selectSnackKeys);
 
-  const [open, setOpen] = useState(true);
-  const [skipCookieConsent, setSkipCookieConsent] = useState(false);
-  const [skipLoginSnack, setSkipLoginSnack] = useState(false);
-  const [messageInfo, setMessageInfo] = useState<SnackMessage | undefined>(
-    undefined
-  );
+  const [open, setOpen] = useState(false);
+  const [snackCursor, setSnackCursor] = useState<number>(-1);
+  const [currentSnack, setCurrentSnack] = useState<SnackMessage | undefined>();
+  const [nextKey, setNextKey] = useState<string | undefined>();
 
-  const snackPack: SnackMessages = useMemo(
-    () => [
-      {
-        alert: 'none',
-        message:
-          'This website uses cookies to serve you with content that is curated to your taste. Please click allow to enable this amazing feature',
-        actions: [
-          {
-            color: 'primary',
-            closeOnAction: true,
-            variant: 'text',
-            text: 'Decline',
-            onClick: () => {
-              setSkipCookieConsent(true);
-            },
-          },
-          {
-            color: 'primary',
-            closeOnAction: true,
-            variant: 'contained',
-            text: 'Allow',
-            onClick: () => {
-              cookies.setCookieConsent(true);
-            },
-          },
-        ],
-      },
-      {
-        message:
-          'Login to customize your feed, follow any of the thousands of communities and swear at people for no reason',
-        alert: 'none',
-        actions: [
-          {
-            color: 'primary',
-            variant: 'text',
-            text: 'Maybe later',
-            closeOnAction: true,
-            onClick: () => {
-              setSkipLoginSnack(true);
-            },
-          },
-          {
-            color: 'primary',
-            variant: 'contained',
-            text: 'Sign up',
-            href: '/signup',
-            closeOnAction: true,
-            onClick: () => {
-              setSkipLoginSnack(true);
-            },
-          },
-          {
-            color: 'primary',
-            variant: 'contained',
-            text: 'Login',
-            href: '/login',
-            closeOnAction: true,
-            onClick: () => {
-              setSkipLoginSnack(true);
-            },
-          },
-        ],
-      },
-      {
-        alert: 'success',
-        message: 'Success message',
-      },
-    ],
-    []
-  );
+  const incrementSnackCursor = () => setSnackCursor((c) => ++c);
 
   useEffect(() => {
-    const cookiesAllowed = cookies.getCookieConsent() || skipCookieConsent;
-
-    const loggedIn = isLoggedIn || skipCookieConsent || skipLoginSnack;
-
-    let snackPosition = [cookiesAllowed, loggedIn, true].indexOf(false);
-    snackPosition = disableSnacks ? -1 : snackPosition;
-
-    if (snackPosition !== -1) {
-      setOpen(true);
-      setMessageInfo(snackPack[snackPosition]);
-    } else {
+    if (!snackKeys.length) {
       setOpen(false);
+      setSnackCursor(-1);
+    } else if (!!snackKeys.length && snackCursor === -1) {
+      setSnackCursor(0);
+    } else if (snackKeys.length <= snackCursor) {
+      setOpen(false);
+      snacks.clear();
+    } else {
+      const snack = snacks.getSnackForKey(snackKeys[snackCursor]);
+      if (snack) {
+        setCurrentSnack(snack);
+        setOpen(true);
+      }
     }
-  }, [
-    messageInfo,
-    open,
-    snackPack,
-    skipCookieConsent,
-    skipLoginSnack,
-    disableSnacks,
-    isLoggedIn,
-  ]);
+  }, [snackCursor, snackKeys]);
 
-  const handleExited = () => {
-    setMessageInfo(undefined);
+  const onExit = () => {
+    const moveToNextCursor = () => {
+      incrementSnackCursor();
+      setCurrentSnack(undefined);
+    };
+
+    if (nextKey) {
+      setNextKey(undefined);
+      const snack = snacks.getSnackForKey(nextKey);
+
+      if (snack) {
+        setCurrentSnack(snack);
+        setOpen(true);
+      } else {
+        moveToNextCursor();
+      }
+    } else {
+      moveToNextCursor();
+    }
   };
 
   return (
-    <div className={classes.root}>
-      {messageInfo &&
-        (messageInfo.alert === 'none' ? (
-          <Snackbar
-            key={'hey'}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
+    <div>
+      {currentSnack &&
+        (currentSnack.alert === 'none' ? (
+          <SnackbarPromptView
+            {...{
+              open,
+              onExit,
+              currentSnack,
+              setNext: setNextKey,
+              setOpen,
+              incrementSnackCursor,
             }}
-            open={open}
-            autoHideDuration={6000}
-            onExited={handleExited}
-            message={messageInfo.message}
-            action={
-              <>
-                {messageInfo.actions.map(
-                  ({ color, onClick, text, variant, href, closeOnAction }) => (
-                    <Button
-                      component={href ? domLinkHelper(href) : 'button'}
-                      color={color}
-                      size="small"
-                      variant={variant}
-                      onClick={() => {
-                        closeOnAction && setOpen(false);
-                        onClick();
-                      }}
-                    >
-                      {text}
-                    </Button>
-                  )
-                )}
-              </>
-            }
           />
         ) : (
-          <Snackbar
-            open={open}
-            autoHideDuration={1000}
-            onClose={() => {
-              handleExited();
-              setOpen(false);
-            }}
-          >
-            <MuiAlert severity={messageInfo.alert}>
-              {messageInfo.message}
-            </MuiAlert>
-          </Snackbar>
+          <SnackbarAlertView {...{ open, currentSnack, onExit, setOpen }} />
         ))}
     </div>
   );
