@@ -4,20 +4,41 @@ import { emptyCommunity } from '_slices/communities/communities.slice.constants'
 import rest from '_services/rest/rest';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import CommunityCardView from '../community-card/CommunityCard.view';
+import { selectUcsIds } from '_slices/ucs/ucs.slice';
+import { selectUser } from '_slices/user/user.slice';
+import { NoCommunitiesView } from './NoCommunities.view';
 
 const CommunityFeedView = () => {
-  const { updatedAt, list: communities } = useSelector(selectCommunities);
+  const { updatedAt: communitiesUpdatedAt, list: communities } = useSelector(
+    selectCommunities
+  );
+  const user = useSelector(selectUser);
+  const { updatedAt: ucsUpdatedAt } = useSelector(selectUcsIds);
   const retrieveCommunities = () => delayIfDev(() => rest.getCommunities());
 
-  if (!updatedAt) {
+  if (!communitiesUpdatedAt) {
     retrieveCommunities();
-    return skeletons();
-  } else if (Date.now() - updatedAt > 10000) {
+  } else if (Date.now() - communitiesUpdatedAt > 10000) {
     retrieveCommunities();
   }
 
-  if (!!updatedAt && !communities.length) {
-    return <span>There are no communities to show</span>;
+  if (user.state !== 'visitor') {
+    const retrieveUcs = () =>
+      delayIfDev(() => rest.getUcsIdsForUserId(user.id));
+
+    if (!ucsUpdatedAt) {
+      retrieveUcs();
+    } else if (Date.now() - ucsUpdatedAt > 10000) {
+      retrieveUcs();
+    }
+  }
+
+  if (!communitiesUpdatedAt || (user.state !== 'visitor' && !ucsUpdatedAt)) {
+    return skeletons();
+  }
+
+  if (!!communitiesUpdatedAt && !communities.length) {
+    return <NoCommunitiesView />;
   }
 
   return (
