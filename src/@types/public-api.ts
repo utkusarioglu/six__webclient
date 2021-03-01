@@ -47,6 +47,8 @@ export type UserEndpoint_session_res_body_success = UserLoginResSuccessful;
 export type UserEndpoint_session_res_body_success_username = UserLoginResSuccessful['username'];
 export type UserEndpoint_session_res_body_success_id = UserLoginResSuccessful['id'];
 
+export type UserEndpoint_ucs_id_list = UserEndpoint['_user_community_subscription']['_id_list']['_v1'];
+
 /**
  * Community
  */

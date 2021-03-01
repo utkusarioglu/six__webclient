@@ -17,6 +17,7 @@ import type {
   UserEndpoint_login_req_body,
   CommentEndpoint_save_req_body,
   UserEndpoint_signup_req_body,
+  UserEndpoint_ucs_id_list,
 } from '_types/public-api';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
@@ -29,6 +30,7 @@ import { setComments } from '_slices/comments/comments.slice';
 import { setUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
 import { setCommunities } from '_slices/communities/communities.slice';
+import { setUcsIds } from '_slices/ucs/ucs.slice';
 
 class Rest {
   private _axios: AxiosInstance;
@@ -376,6 +378,33 @@ class Rest {
           console.log('comment post response: \n', data);
         }
         return data;
+      })
+      .catch(this.handleError);
+  }
+
+  getUcsIdsForUserId(userId: UserEndpoint_session_res_body_success_id) {
+    type Method = UserEndpoint_ucs_id_list;
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>(
+          '/user/:userId/subscriptions/id/:requestId',
+          {
+            userId,
+            requestId,
+          }
+        )
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          setUcsIds(data.body);
+        }
       })
       .catch(this.handleError);
   }
