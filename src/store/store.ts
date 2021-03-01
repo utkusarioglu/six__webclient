@@ -4,6 +4,7 @@ import commentsReducer from '_slices/comments/comments.slice';
 import userReducer from '_slices/user/user.slice';
 import postReducer from '_slices/post/post.slice';
 import communitiesReducer from '_slices/communities/communities.slice';
+import snacksReducer from '_slices/snacks/snacks.slice';
 
 /**
  * The actual store for the app
@@ -15,9 +16,10 @@ const store = configureStore({
     comments: commentsReducer,
     user: userReducer,
     communities: communitiesReducer,
+    snacks: snacksReducer,
   },
 });
 
-export const dispatch = store.dispatch;
 export default store;
+export const { dispatch, subscribe, getState } = store;
 export type RootState = ReturnType<typeof store.getState>;
