@@ -9,6 +9,7 @@ import type {
   UserEndpoint_signup,
   UserEndpoint_session,
   CommunityEndpoint_list,
+  CommunityEndpoint_single,
   CommunityEndpoint_single_res_body_id,
   CommentEndpoint_save,
   UserEndpoint_session_res_body_success_id,
@@ -29,8 +30,9 @@ import {
 import { setComments } from '_slices/comments/comments.slice';
 import { setUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
-import { setCommunities } from '_slices/communities/communities.slice';
+import { setCommunities } from '_slices/community-repo/community-repo.slice';
 import { setUcsIds } from '_slices/ucs/ucs.slice';
+import { setCommunity } from '_slices/community/community.slice';
 
 class Rest {
   private _axios: AxiosInstance;
@@ -404,6 +406,30 @@ class Rest {
           this.handleError(data);
         } else {
           setUcsIds(data.body);
+        }
+      })
+      .catch(this.handleError);
+  }
+
+  getCommunitySingle(communitySlug: string) {
+    type Method = CommunityEndpoint_single;
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>(
+          '/community/:communitySlug/:requestId',
+          { communitySlug, requestId }
+        )
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          setCommunity(data.body);
         }
       })
       .catch(this.handleError);
