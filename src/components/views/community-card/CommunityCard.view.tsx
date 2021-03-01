@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { useState } from 'react';
 import { ExpandedCommunity } from '_slices/communities/communities.slice.types';
 import type { AsSkeleton } from '_types/material-ui';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
@@ -14,6 +15,9 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '_slices/user/user.slice';
 import rest from '_services/rest/rest';
 import snacks from '_services/snacks/snacks';
+import { removeUcsId, selectHasUcsId } from '_slices/ucs/ucs.slice';
+import { pushUcsId } from '_slices/ucs/ucs.slice';
+import { delayIfDev } from '_helpers/dev/delayIfDev';
 
 type CommunityCardViewProps = AsSkeleton &
   Pick<ExpandedCommunity, 'name' | 'description' | 'id'>;
@@ -26,12 +30,39 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
 }) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
+  const subscribed = useSelector(selectHasUcsId(id));
+  const [subscribeButtonEnabled, setSubscribeButtonEnabled] = useState(true);
 
   const subscribeOnClick = () => {
     if (user.state === 'logged-in') {
-      console.log('subscribing', user.username, 'to', id);
-      rest.userCommunitySubscription(user.username, id, 'subscribe');
-      snacks.push('communitySubscribed');
+      setSubscribeButtonEnabled(false);
+      delayIfDev(() => {
+        if (subscribed) {
+          rest
+            .userCommunitySubscription(user.id, id, 'unsubscribe')
+            .then((data) => {
+              if (data && data.state === 'success') {
+                snacks.push('communityUnsubscribed');
+                removeUcsId(id);
+              } else {
+                snacks.push('communitySubscriptionFail');
+              }
+              setSubscribeButtonEnabled(true);
+            });
+        } else {
+          rest
+            .userCommunitySubscription(user.id, id, 'subscribe')
+            .then((data) => {
+              if (data && data.state === 'success') {
+                snacks.push('communitySubscribed');
+                pushUcsId(id);
+              } else {
+                snacks.push('communitySubscriptionFail');
+              }
+              setSubscribeButtonEnabled(true);
+            });
+        }
+      });
     } else {
       snacks.push('visitorIllegalActionError');
     }
@@ -69,8 +100,13 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
               Visit
             </Button>
             {user.state === 'logged-in' && (
-              <Button size="small" color="primary" onClick={subscribeOnClick}>
-                Subscribe
+              <Button
+                size="small"
+                color="primary"
+                onClick={subscribeOnClick}
+                disabled={!subscribeButtonEnabled}
+              >
+                {subscribed ? 'Unsubscribe' : 'Subscribe'}
               </Button>
             )}
           </>
