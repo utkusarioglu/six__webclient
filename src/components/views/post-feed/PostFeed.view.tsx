@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import type { PostsViewProps as PostFeedViewProps } from './PostFeed.view.types';
 import Container from '@material-ui/core/Container';
 import { useSelector } from 'react-redux';
 import PostCardView from '_views/post-card/PostCard.view';
@@ -11,10 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
-const PostFeedView: FC<PostFeedViewProps> = () => {
+const PostFeedView: FC<{}> = () => {
   const { updatedAt, list: posts } = useSelector(selectPostRepo);
   const getPosts = () => delayIfDev(() => rest.getPosts());
-  const CommunitiesLink = domLinkHelper('/communities');
 
   // THis is faulty logic
   if (!updatedAt) {
@@ -31,7 +29,7 @@ const PostFeedView: FC<PostFeedViewProps> = () => {
         <Typography>There isn't anything new...</Typography>
         <Typography>
           You need to follow more communities.{' '}
-          <Link component={CommunitiesLink}>Click here</Link>
+          <Link component={domLinkHelper('/communities')}>Click here</Link>
         </Typography>
       </Container>
     );
