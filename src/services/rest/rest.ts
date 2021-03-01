@@ -227,7 +227,7 @@ class Rest {
     return this._axios
       .post<Response>(
         this.prepareEndpoint<Endpoint, Params>(
-          'user/:userId/:actionType/:communityId/:requestId',
+          '/user/:userId/:actionType/:communityId/:requestId',
           {
             requestId,
             userId,
@@ -243,6 +243,8 @@ class Rest {
           console.log(data);
           clearPostRepo();
         }
+
+        return data;
       })
       .catch(this.handleError);
   }
