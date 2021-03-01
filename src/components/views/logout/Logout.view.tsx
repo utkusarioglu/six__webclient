@@ -4,6 +4,7 @@ import { selectUser } from '_slices/user/user.slice';
 import { useHistory } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import snacks from '_services/snacks/snacks';
 
 const LogoutView = () => {
   const history = useHistory();
@@ -14,6 +15,8 @@ const LogoutView = () => {
   }, []);
 
   if (user.state === 'visitor') {
+    snacks.push('loggedOut');
+    snacks.push('loginPrompt');
     setTimeout(() => history.push('/'), 1000);
   }
 

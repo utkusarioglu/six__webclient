@@ -11,9 +11,12 @@ import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { SignUpFormViewProps, Errors } from './SignUpForm.view.types';
+import snacks from '_services/snacks/snacks';
 
 const SignUpFormView: FC<SignUpFormViewProps> = () => {
   const classes = useStyles();
+
+  snacks.remove('loginPrompt');
 
   return (
     <>
@@ -60,8 +63,8 @@ const SignUpFormView: FC<SignUpFormViewProps> = () => {
         ) => {
           rest.signup({ username, age, email, password }).then((response) => {
             delayIfDev(() => {
-              console.log(response);
               if (response && response.state === 'fail') {
+                snacks.push('restGeneralError');
                 setErrors(response.errors);
               }
               setSubmitting(false);

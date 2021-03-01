@@ -15,6 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Link from '@material-ui/core/Link';
+import snacks from '_services/snacks/snacks';
 
 type LoginFormViewProps = {};
 
@@ -23,7 +24,10 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
   const history = useHistory();
   const user = useSelector(selectUser);
 
+  snacks.remove('loginPrompt');
+
   if (user.state === 'logged-in') {
+    snacks.push('loggedIn');
     setTimeout(() => history.push('/'), 1000);
   }
 
@@ -46,6 +50,12 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
         rest.login(values).then((response) => {
           delayIfDev(() => {
             if (response && response.state === 'fail') {
+              // TODO this is not exhaustive
+              if (response.errors.general === 'AUTH_FAILURE') {
+                snacks.push('loginWrongUsernamePass');
+              } else {
+                snacks.push('restGeneralError');
+              }
               setErrors(response.errors);
             }
             setSubmitting(false);
@@ -117,8 +127,6 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
             </Container>
           </form>
           <Container>
-            {user.state === 'logged-in' && <Typography>Success!</Typography>}
-
             <Typography>
               Are you looking for{' '}
               <Link component={domLinkHelper('/signup')}>sign up</Link>?

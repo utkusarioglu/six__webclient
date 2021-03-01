@@ -25,6 +25,7 @@ import {
 import CommentLoginFirstView from './CommentLoginFirst.view';
 import { Formik } from 'formik';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
+import snacks from '_services/snacks/snacks';
 
 // TODO Connect these
 type CommentInputViewProps = AsSkeleton;
@@ -88,13 +89,13 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
             delayIfDev(() => {
               if (response) {
                 if (response.state === 'fail') {
+                  snacks.push('commentPostError');
                   setErrors(response.errors);
                 } else {
                   setValues(formInitialValues);
                   setCommentInputFocused(false);
 
                   replaceIsSubmittingComment(response.body);
-                  console.log(response.body);
                 }
               } else {
               }

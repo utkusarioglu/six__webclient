@@ -13,6 +13,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector } from 'react-redux';
 import { selectUser } from '_slices/user/user.slice';
 import rest from '_services/rest/rest';
+import snacks from '_services/snacks/snacks';
 
 type CommunityCardViewProps = AsSkeleton &
   Pick<ExpandedCommunity, 'name' | 'description' | 'id'>;
@@ -30,8 +31,9 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
     if (user.state === 'logged-in') {
       console.log('subscribing', user.username, 'to', id);
       rest.userCommunitySubscription(user.username, id, 'subscribe');
+      snacks.push('communitySubscribed');
     } else {
-      alert("you aren't logged in");
+      snacks.push('visitorIllegalActionError');
     }
   };
 
