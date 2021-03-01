@@ -236,8 +236,13 @@ class Rest {
           }
         )
       )
-      .then((response) => {
-        console.log(response);
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          console.log(data);
+          clearPostRepo();
+        }
       })
       .catch(this.handleError);
   }
