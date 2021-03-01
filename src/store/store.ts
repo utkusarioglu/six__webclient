@@ -5,6 +5,7 @@ import user from '_slices/user/user.slice';
 import post from '_slices/post/post.slice';
 import communities from '_slices/communities/communities.slice';
 import snackKeys from '_slices/snack-keys/snack-keys.slice';
+import ucs from '_slices/ucs/ucs.slice';
 
 /**
  * The actual store for the app
@@ -17,6 +18,7 @@ const store = configureStore({
     user,
     communities,
     snackKeys,
+    ucs,
   },
 });
 
