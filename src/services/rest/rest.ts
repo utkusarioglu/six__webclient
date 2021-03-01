@@ -11,7 +11,7 @@ import type {
   CommunityEndpoint_list,
   CommunityEndpoint_single_res_body_id,
   CommentEndpoint_save,
-  UserEndpoint_session_res_body_success_username,
+  UserEndpoint_session_res_body_success_id,
   UserEndpoint_ucs_alter_req_params_actionType,
   PostEndpoint_single_res_body_slug,
   UserEndpoint_login_req_body,
@@ -213,7 +213,7 @@ class Rest {
   }
 
   userCommunitySubscription(
-    username: UserEndpoint_session_res_body_success_username,
+    userId: UserEndpoint_session_res_body_success_id,
     communityId: CommunityEndpoint_single_res_body_id,
     actionType: UserEndpoint_ucs_alter_req_params_actionType
   ) {
@@ -227,10 +227,10 @@ class Rest {
     return this._axios
       .post<Response>(
         this.prepareEndpoint<Endpoint, Params>(
-          'user/:username/:actionType/:communityId/:requestId',
+          'user/:userId/:actionType/:communityId/:requestId',
           {
             requestId,
-            username,
+            userId,
             communityId,
             actionType,
           }
