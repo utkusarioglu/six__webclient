@@ -74,6 +74,16 @@ export const snackRecord: SnackRecord = {
     message: 'Subscribed',
   },
 
+  communityUnsubscribed: {
+    alert: 'info',
+    message: 'Unsubscribed',
+  },
+
+  communitySubscriptionFail: {
+    alert: 'error',
+    message: 'Subscription failed',
+  },
+
   loggedIn: {
     alert: 'success',
     message: 'Logged in, redirecting',
