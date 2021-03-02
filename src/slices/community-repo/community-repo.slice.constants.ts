@@ -17,4 +17,5 @@ export const emptyCommunity: ExpandedCommunity = {
   postCount: 0,
   subscriberCount: 0,
   communityUrl: '',
+  ucs: false,
 };

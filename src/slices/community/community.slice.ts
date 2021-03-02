@@ -5,6 +5,8 @@ import type {
   SelectCommunity,
   SelectCommunityId,
   ClearCommunity,
+  AmendCommunityDetailsUcs,
+  AmendCommunityDetailsUcsParams,
 } from './community.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
@@ -22,6 +24,18 @@ const { actions, reducer } = createSlice({
       return expandCommunity(payload);
     },
     clearCommunity: () => initialState,
+
+    amendCommunityDetailsUcs: (
+      state,
+      { payload: { id, ucs } }: PayloadAction<AmendCommunityDetailsUcsParams>
+    ) => {
+      if (state.id !== id) return state;
+
+      return {
+        ...state,
+        ucs,
+      };
+    },
   },
 });
 
@@ -38,3 +52,6 @@ export const selectCommunity: SelectCommunity = (state) => state.community;
 
 export const selectCommunityId: SelectCommunityId = (state) =>
   state.community.id;
+
+export const amendCommunityDetailsUcs: AmendCommunityDetailsUcs = (params) =>
+  dispatch(actions.amendCommunityDetailsUcs(params));

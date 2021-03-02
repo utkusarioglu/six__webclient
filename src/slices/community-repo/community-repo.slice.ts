@@ -3,6 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   SetCommunities,
   SelectCommunities,
+  AmendCommunityUcs,
+  AmendUcsParams,
 } from './community-repo.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
@@ -24,6 +26,26 @@ const { actions, reducer } = createSlice({
         list: expanded,
       };
     },
+
+    amendUcs: (
+      state,
+      { payload: { id, ucs } }: PayloadAction<AmendUcsParams>
+    ) => {
+      const amended = state.list.map((c) => {
+        if (c.id === id) {
+          return {
+            ...c,
+            ucs,
+          };
+        }
+        return c;
+      });
+
+      return {
+        ...state,
+        list: amended,
+      };
+    },
   },
 });
 
@@ -34,3 +56,6 @@ export const setCommunities: SetCommunities = (communities) =>
 
 export const selectCommunities: SelectCommunities = (state) =>
   state.communityRepo;
+
+export const amendCommunityRepoUcs: AmendCommunityUcs = (params) =>
+  dispatch(actions.amendUcs(params));

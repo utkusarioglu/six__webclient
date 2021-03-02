@@ -15,6 +15,7 @@ export const emptyCommunity: CommunityState = {
   communityUrl: '',
   receivedAt: 0,
   allowView: false,
+  ucs: false,
 };
 
 export const initialState = emptyCommunity;

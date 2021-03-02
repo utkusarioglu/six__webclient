@@ -19,3 +19,10 @@ export type CommunitiesStore = {
   updatedAt: number; // epoch
   list: ExpandedCommunity[];
 };
+
+export type AmendUcsParams = Pick<
+  CommunityEndpoint_single_res_body,
+  'id' | 'ucs'
+>;
+
+export type AmendCommunityUcs = (params: AmendUcsParams) => void;

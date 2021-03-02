@@ -18,10 +18,17 @@ export type SelectCommunityId = Selector<
   CommunityEndpoint_single_res_body_id
 >;
 
-// export type CommunitySingleBody = CommunityEndpoint_single_res_body;
-
 export type SetCommunity = (
   communityBody: CommunityEndpoint_single_res_body
 ) => void;
 
 export type ClearCommunity = () => void;
+
+export type AmendCommunityDetailsUcsParams = Pick<
+  CommunityEndpoint_single_res_body,
+  'id' | 'ucs'
+>;
+
+export type AmendCommunityDetailsUcs = (
+  params: AmendCommunityDetailsUcsParams
+) => void;
