@@ -5,7 +5,6 @@ import user from '_slices/user/user.slice';
 import post from '_slices/post/post.slice';
 import communityRepo from '_slices/community-repo/community-repo.slice';
 import snackKeys from '_slices/snack-keys/snack-keys.slice';
-import ucs from '_slices/ucs/ucs.slice';
 import community from '_slices/community/community.slice';
 
 /**
@@ -19,7 +18,6 @@ const store = configureStore({
     user,
     communityRepo,
     snackKeys,
-    ucs,
     community,
   },
 });
