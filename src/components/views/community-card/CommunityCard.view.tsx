@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useState } from 'react';
 import { CommunityState } from '_slices/community/community.slice.types';
 import type { AsSkeleton } from '_types/material-ui';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
@@ -13,15 +12,11 @@ import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector } from 'react-redux';
 import { selectUser } from '_slices/user/user.slice';
-import rest from '_services/rest/rest';
-import snacks from '_services/snacks/snacks';
-import { removeUcsId, selectHasUcsId } from '_slices/ucs/ucs.slice';
-import { pushUcsId } from '_slices/ucs/ucs.slice';
-import { delayIfDev } from '_helpers/dev/delayIfDev';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
+import CommunityJoinButtonView from '../community-join-button/CommunityJoinButton.view';
 
 type CommunityCardViewProps = AsSkeleton &
-  Pick<CommunityState, 'name' | 'description' | 'id' | 'communityUrl'>;
+  Pick<CommunityState, 'name' | 'description' | 'id' | 'communityUrl' | 'ucs'>;
 
 const CommunityCardView: FC<CommunityCardViewProps> = ({
   asSkeleton,
@@ -29,47 +24,13 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
   name,
   description,
   communityUrl,
+  ucs,
 }) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
-  const subscribed = useSelector(selectHasUcsId(id));
-  const [subscribeButtonEnabled, setSubscribeButtonEnabled] = useState(true);
-  const CommunitiesLink = domLinkHelper(communityUrl);
+  // const subscribed = useSelector(selectHasUcsId(id));
 
-  const subscribeOnClick = () => {
-    if (user.state === 'logged-in') {
-      setSubscribeButtonEnabled(false);
-      delayIfDev(() => {
-        if (subscribed) {
-          rest
-            .userCommunitySubscription(user.id, id, 'unsubscribe')
-            .then((data) => {
-              if (data && data.state === 'success') {
-                snacks.push('communityUnsubscribed');
-                removeUcsId(id);
-              } else {
-                snacks.push('communitySubscriptionFail');
-              }
-              setSubscribeButtonEnabled(true);
-            });
-        } else {
-          rest
-            .userCommunitySubscription(user.id, id, 'subscribe')
-            .then((data) => {
-              if (data && data.state === 'success') {
-                snacks.push('communitySubscribed');
-                pushUcsId(id);
-              } else {
-                snacks.push('communitySubscriptionFail');
-              }
-              setSubscribeButtonEnabled(true);
-            });
-        }
-      });
-    } else {
-      snacks.push('visitorIllegalActionError');
-    }
-  };
+  const CommunitiesLink = domLinkHelper(communityUrl);
 
   return (
     <Card className={classes.root}>
@@ -102,16 +63,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
             <Button component={CommunitiesLink} size="small" color="primary">
               Visit
             </Button>
-            {user.state === 'logged-in' && (
-              <Button
-                size="small"
-                color="primary"
-                onClick={subscribeOnClick}
-                disabled={!subscribeButtonEnabled}
-              >
-                {subscribed ? 'Unsubscribe' : 'Subscribe'}
-              </Button>
-            )}
+            <CommunityJoinButtonView {...{ user, ucs, id }} />
           </>
         )}
       </CardActions>
