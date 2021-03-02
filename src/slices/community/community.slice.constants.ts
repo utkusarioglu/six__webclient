@@ -13,6 +13,8 @@ export const emptyCommunity: CommunityState = {
   postCount: 0,
   subscriberCount: 0,
   communityUrl: '',
+  receivedAt: 0,
+  allowView: false,
 };
 
 export const initialState = emptyCommunity;

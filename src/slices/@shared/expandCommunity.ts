@@ -15,6 +15,8 @@ export function expandCommunity(
 
   return {
     ...raw,
+    receivedAt: Date.now(),
+    allowView: true,
     communityUrl: `r/${slug}`,
   };
 }

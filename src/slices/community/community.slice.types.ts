@@ -7,6 +7,8 @@ import { RootState } from '_store/store';
 
 export type CommunityState = CommunityEndpoint_single_res_body & {
   communityUrl: string;
+  receivedAt: number; // epoch
+  allowView: boolean;
 };
 
 export type SelectCommunity = Selector<RootState, CommunityState>;
