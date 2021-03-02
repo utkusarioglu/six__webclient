@@ -17,22 +17,14 @@ const PostFeedView: FC<{}> = () => {
   // THis is faulty logic
   if (!updatedAt) {
     getPosts();
-    return skeletons();
+    return <PostCardSkeletonsView />;
   } else if (Date.now() - updatedAt > 10000) {
     // instead show a prompt to the user
     getPosts();
   }
 
   if (updatedAt && !posts.length) {
-    return (
-      <Container>
-        <Typography>There isn't anything new...</Typography>
-        <Typography>
-          You need to follow more communities.{' '}
-          <Link component={domLinkHelper('/communities')}>Click here</Link>
-        </Typography>
-      </Container>
-    );
+    return <FollowMoreCommunitiesView />;
   }
 
   return (
@@ -47,7 +39,7 @@ const PostFeedView: FC<{}> = () => {
 
 export default PostFeedView;
 
-function skeletons() {
+const PostCardSkeletonsView = () => {
   return (
     <>
       {Array(3)
@@ -63,4 +55,14 @@ function skeletons() {
         ))}
     </>
   );
-}
+};
+
+const FollowMoreCommunitiesView = () => (
+  <Container>
+    <Typography>There isn't anything new...</Typography>
+    <Typography>
+      You need to follow more communities.{' '}
+      <Link component={domLinkHelper('/communities')}>Click here</Link>
+    </Typography>
+  </Container>
+);
