@@ -22,6 +22,7 @@ const PostDetailsView: FC<PostDetailsProps> = ({ postSlug }) => {
   useEffect(() => clearPost, []);
 
   if (!postSlug) {
+    // todo replace this with something that makes sense
     return <span>something went wrong</span>;
   }
 
