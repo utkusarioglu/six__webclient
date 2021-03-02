@@ -15,9 +15,9 @@ export function expandPost(raw: PostEndpoint_single_res_body): StorePost {
     postSlug,
     likeCount,
     dislikeCount,
+    communitySlug,
   } = raw;
 
-  const communitySlug = communityName.toLowerCase();
   const creatorSlug = creatorUsername.toLowerCase();
 
   return {
