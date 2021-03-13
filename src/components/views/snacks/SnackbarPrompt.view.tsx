@@ -17,7 +17,7 @@ const SnackbarPromptView: FC<SnackPromptViewProps> = ({
 
   return (
     <Snackbar
-      className={classes.snackbar}
+      className={classes.root}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'left',
@@ -63,11 +63,12 @@ const SnackbarPromptView: FC<SnackPromptViewProps> = ({
 };
 
 const useStyles = makeStyles((theme) => ({
-  snackbar: {
+  root: {
     bottom: theme.spacing(),
   },
   actionButton: {
     marginLeft: theme.spacing(),
+    whiteSpace: 'nowrap',
   },
 }));
 
