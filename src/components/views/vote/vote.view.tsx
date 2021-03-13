@@ -17,6 +17,8 @@ const VoteView: FC<VoteViewProps> = ({
   voteCount,
   voteFunction,
   mode,
+  userVote,
+  isSubmitting,
 }) => {
   const classes = useStyles();
 
@@ -34,6 +36,8 @@ const VoteView: FC<VoteViewProps> = ({
             onClick={() => voteFunction(1)}
             size="small"
             edge="start"
+            color={userVote === 1 ? 'secondary' : 'default'}
+            disabled={isSubmitting}
           >
             {mode === 'post' ? (
               <ArrowDropUpIcon />
@@ -48,6 +52,8 @@ const VoteView: FC<VoteViewProps> = ({
             aria-label="down vote"
             onClick={() => voteFunction(-1)}
             size="small"
+            disabled={isSubmitting}
+            color={userVote === -1 ? 'secondary' : 'default'}
           >
             {mode === 'post' ? (
               <ArrowDropDownIcon />
