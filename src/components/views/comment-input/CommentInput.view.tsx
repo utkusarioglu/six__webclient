@@ -1,4 +1,4 @@
-import type { CommentEndpoint_save_req_body } from '_types/public-api';
+import type { CommentEp_save_req_body } from '_types/public-api';
 import type { FC } from 'react';
 import { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -73,7 +73,7 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
         onSubmit={(values, { setSubmitting, setErrors, setValues }) => {
           setSubmitting(true);
 
-          const comment: CommentEndpoint_save_req_body = {
+          const comment: CommentEp_save_req_body = {
             userId,
             postId,
             parentId: null,
