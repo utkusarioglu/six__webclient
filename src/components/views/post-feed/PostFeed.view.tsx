@@ -14,7 +14,7 @@ const PostFeedView: FC<{}> = () => {
   const { updatedAt, list: posts } = useSelector(selectPostRepo);
   const getPosts = () => delayIfDev(() => rest.getPosts());
 
-  // THis is faulty logic
+  // This is faulty logic
   if (!updatedAt) {
     getPosts();
     return <PostCardSkeletonsView />;
