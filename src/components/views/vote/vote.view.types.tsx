@@ -1,3 +1,5 @@
+import { VoteTypes } from '_types/public-api';
+
 export type VoteViewProps = PostVote | CommentVote;
 
 type PostVote = VoteFunctions & {
@@ -9,8 +11,10 @@ type CommentVote = VoteFunctions & {
 };
 
 type VoteFunctions = {
-  voteFunction: (voteType: number) => void;
+  voteFunction: (voteType: 1 | -1) => void;
   likeCount: number;
   dislikeCount: number;
   voteCount: number;
+  userVote: VoteTypes;
+  isSubmitting: boolean;
 };
