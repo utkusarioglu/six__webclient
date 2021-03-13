@@ -1,24 +1,25 @@
 import type {
-  PostEndpoint_list,
-  PostEndpoint_single,
-  PostEndpoint_single_res_body_id,
-  PostEndpoint_comments,
+  PostEp_list,
+  PostEp_single,
+  PostEp_single_res_body_id,
+  PostEp_comments,
   UserEndpoint_ucs_alter,
-  UserEndpoint_logout,
-  UserEndpoint_login,
-  UserEndpoint_signup,
-  UserEndpoint_session,
-  CommunityEndpoint_list,
-  CommunityEndpoint_single,
-  CommunityEndpoint_single_res_body_id,
-  CommentEndpoint_save,
-  UserEndpoint_session_res_body_success_id,
+  UserEp_logout,
+  UserEp_login,
+  UserEp_signup,
+  UserEp_session,
+  CommunityEp_list,
+  CommunityEp_single,
+  CommunityEp_single_res_body_id,
+  CommentEp_save,
+  UserEp_session_res_body_success_id,
   UserEndpoint_ucs_alter_req_params_actionType,
-  PostEndpoint_single_res_body_slug,
-  UserEndpoint_login_req_body,
-  CommentEndpoint_save_req_body,
-  UserEndpoint_signup_req_body,
-  UserEndpoint_ucs_id_list,
+  PostEp_single_res_body_slug,
+  UserEp_login_req_body,
+  CommentEp_save_req_body,
+  UserEp_signup_req_body,
+  PostEp_vote,
+  PostEp_vote_req_params,
 } from '_types/public-api';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
@@ -26,12 +27,12 @@ import { API_ENDPOINT } from '_config';
 import {
   clearPostRepo,
   updatePostRepo,
+  amendPostVote,
 } from '_slices/post-repo/posts-repo.slice';
 import { setComments } from '_slices/comments/comments.slice';
 import { setUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
 import { setCommunities } from '_slices/community-repo/community-repo.slice';
-import { setUcsIds } from '_slices/ucs/ucs.slice';
 import { setCommunity } from '_slices/community/community.slice';
 
 class Rest {
@@ -95,7 +96,7 @@ class Rest {
    * Retrieves Posts for post repo
    */
   getPosts() {
-    type Method = PostEndpoint_list;
+    type Method = PostEp_list;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_get']['_req']['Params'];
@@ -104,7 +105,7 @@ class Rest {
 
     return this._axios
       .get<Response>(
-        this.prepareEndpoint<Endpoint, Params>('/posts/:requestId', {
+        this.prepareEndpoint<Endpoint, Params>('/posts/v1/:requestId', {
           requestId,
         })
       )
@@ -125,8 +126,8 @@ class Rest {
    *
    * @param postSlug slug for the post to be retrieved
    */
-  getPostBySlug(postSlug: PostEndpoint_single_res_body_slug) {
-    type Method = PostEndpoint_single;
+  getPostBySlug(postSlug: PostEp_single_res_body_slug) {
+    type Method = PostEp_single;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_get']['_req']['Params'];
@@ -136,7 +137,7 @@ class Rest {
     return this._axios
       .get<Response>(
         this.prepareEndpoint<Endpoint, Params>(
-          '/post/slug/:postSlug/:requestId',
+          '/post/slug/v1/:postSlug/:requestId',
           {
             postSlug,
             requestId,
@@ -156,7 +157,7 @@ class Rest {
   }
 
   getCommunities() {
-    type Method = CommunityEndpoint_list;
+    type Method = CommunityEp_list;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_get']['_req']['Params'];
@@ -165,7 +166,7 @@ class Rest {
 
     return this._axios
       .get<Response>(
-        this.prepareEndpoint<Endpoint, Params>('/communities/:requestId', {
+        this.prepareEndpoint<Endpoint, Params>('/communities/v1/:requestId', {
           requestId,
         })
       )
@@ -186,8 +187,8 @@ class Rest {
    *
    * @param postId slug of the post for which the comments will be retrieved
    */
-  getCommentsByPostId(postId: PostEndpoint_single_res_body_id) {
-    type Method = PostEndpoint_comments;
+  getCommentsByPostId(postId: PostEp_single_res_body_id) {
+    type Method = PostEp_comments;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_get']['_req']['Params'];
@@ -197,7 +198,7 @@ class Rest {
     return this._axios
       .get<Response>(
         this.prepareEndpoint<Endpoint, Params>(
-          '/post/:postId/comments/:requestId',
+          '/post/:postId/comments/v1/:requestId',
           {
             requestId,
             postId,
@@ -217,8 +218,8 @@ class Rest {
   }
 
   userCommunitySubscription(
-    userId: UserEndpoint_session_res_body_success_id,
-    communityId: CommunityEndpoint_single_res_body_id,
+    userId: UserEp_session_res_body_success_id,
+    communityId: CommunityEp_single_res_body_id,
     actionType: UserEndpoint_ucs_alter_req_params_actionType
   ) {
     type Method = UserEndpoint_ucs_alter;
@@ -230,15 +231,14 @@ class Rest {
 
     return this._axios
       .post<Response>(
-        this.prepareEndpoint<Endpoint, Params>(
-          '/user/:userId/:actionType/:communityId/:requestId',
-          {
-            requestId,
-            userId,
-            communityId,
-            actionType,
-          }
-        )
+        this.prepareEndpoint<Endpoint, Params>('/user/ucs/:requestId', {
+          requestId,
+        }),
+        {
+          userId,
+          communityId,
+          actionType,
+        }
       )
       .then(({ data }) => {
         if (data.state === 'fail') {
@@ -254,7 +254,7 @@ class Rest {
   }
 
   logout() {
-    type Method = UserEndpoint_logout;
+    type Method = UserEp_logout;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_post']['_req']['Params'];
@@ -279,8 +279,8 @@ class Rest {
       .catch(this.handleError);
   }
 
-  login(requestInput: UserEndpoint_login_req_body) {
-    type Method = UserEndpoint_login;
+  login(requestInput: UserEp_login_req_body) {
+    type Method = UserEp_login;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_post']['_req']['Params'];
@@ -307,8 +307,8 @@ class Rest {
       .catch(this.handleError);
   }
 
-  signup(data: UserEndpoint_signup_req_body) {
-    type Method = UserEndpoint_signup;
+  signup(data: UserEp_signup_req_body) {
+    type Method = UserEp_signup;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_post']['_req']['Params'];
@@ -335,7 +335,7 @@ class Rest {
   }
 
   getSession() {
-    type Method = UserEndpoint_session;
+    type Method = UserEp_session;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_get']['_req']['Params'];
@@ -359,8 +359,8 @@ class Rest {
       .catch(this.handleError);
   }
 
-  saveComment(data: CommentEndpoint_save_req_body) {
-    type Method = CommentEndpoint_save;
+  saveComment(data: CommentEp_save_req_body) {
+    type Method = CommentEp_save;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_post']['_req']['Params'];
@@ -368,7 +368,7 @@ class Rest {
 
     return this._axios
       .post<Response>(
-        this.prepareEndpoint<Endpoint, Params>('/comment/save/:requestId', {
+        this.prepareEndpoint<Endpoint, Params>('/comment/save/v1/:requestId', {
           requestId,
         }),
         data
@@ -384,35 +384,8 @@ class Rest {
       .catch(this.handleError);
   }
 
-  getUcsIdsForUserId(userId: UserEndpoint_session_res_body_success_id) {
-    type Method = UserEndpoint_ucs_id_list;
-    type Response = Method['_get']['_res']['Union'];
-    type Endpoint = Method['Endpoint'];
-    type Params = Method['_get']['_req']['Params'];
-    const requestId = this.createRequestId();
-
-    return this._axios
-      .get<Response>(
-        this.prepareEndpoint<Endpoint, Params>(
-          '/user/:userId/subscriptions/id/:requestId',
-          {
-            userId,
-            requestId,
-          }
-        )
-      )
-      .then(({ data }) => {
-        if (data.state === 'fail') {
-          this.handleError(data);
-        } else {
-          setUcsIds(data.body);
-        }
-      })
-      .catch(this.handleError);
-  }
-
   getCommunitySingle(communitySlug: string) {
-    type Method = CommunityEndpoint_single;
+    type Method = CommunityEp_single;
     type Response = Method['_get']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
     type Params = Method['_get']['_req']['Params'];
@@ -421,7 +394,7 @@ class Rest {
     return this._axios
       .get<Response>(
         this.prepareEndpoint<Endpoint, Params>(
-          '/community/:communitySlug/:requestId',
+          '/community/v1/:communitySlug/:requestId',
           { communitySlug, requestId }
         )
       )
@@ -431,6 +404,33 @@ class Rest {
         } else {
           setCommunity(data.body);
         }
+        return data;
+      })
+      .catch(this.handleError);
+  }
+
+  async vote(body: PostEp_vote_req_params) {
+    type Method = PostEp_vote;
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/post/vote/v1/:requestId', {
+          requestId,
+        }),
+        body
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          amendPostVote(data.body);
+          console.log('post vote', data.body);
+        }
+        return data;
       })
       .catch(this.handleError);
   }
