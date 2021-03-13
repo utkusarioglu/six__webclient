@@ -1,4 +1,4 @@
-import type { PostEndpoint_single_res_body } from '_types/public-api';
+import type { PostEp_single_res_body } from '_types/public-api';
 import type { StorePost } from '_slices/post-repo/posts-repo.slice.types';
 
 /**
@@ -8,7 +8,7 @@ import type { StorePost } from '_slices/post-repo/posts-repo.slice.types';
  * @param raw raw post from the server
  * @returns expanded post object that multiple components use
  */
-export function expandPost(raw: PostEndpoint_single_res_body): StorePost {
+export function expandPost(raw: PostEp_single_res_body): StorePost {
   const {
     communityName,
     creatorUsername,

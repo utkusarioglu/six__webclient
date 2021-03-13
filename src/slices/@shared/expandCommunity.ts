@@ -1,4 +1,4 @@
-import type { CommunityEndpoint_single_res_body } from '_types/public-api';
+import type { CommunityEp_single_res_body } from '_types/public-api';
 import type { CommunityState } from '_slices/community/community.slice.types';
 
 /**
@@ -9,7 +9,7 @@ import type { CommunityState } from '_slices/community/community.slice.types';
  * @returns expanded community object that multiple components use
  */
 export function expandCommunity(
-  raw: CommunityEndpoint_single_res_body
+  raw: CommunityEp_single_res_body
 ): CommunityState {
   const { slug } = raw;
 

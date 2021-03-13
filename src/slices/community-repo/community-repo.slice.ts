@@ -1,4 +1,4 @@
-import type { CommunityEndpoint_list_res_body } from '_types/public-api';
+import type { CommunityEp_list_res_body } from '_types/public-api';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   SetCommunities,
@@ -17,7 +17,7 @@ const { actions, reducer } = createSlice({
   reducers: {
     setCommunities: (
       _,
-      { payload }: PayloadAction<CommunityEndpoint_list_res_body>
+      { payload }: PayloadAction<CommunityEp_list_res_body>
     ) => {
       const expanded = payload.map((community) => expandCommunity(community));
 

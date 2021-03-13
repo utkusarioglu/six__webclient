@@ -1,11 +1,11 @@
 import {
-  PostEndpoint_single_res_body,
-  PostEndpoint_single_res_body_id,
+  PostEp_single_res_body,
+  PostEp_single_res_body_id,
 } from '_types/public-api';
 import { Selector } from '@reduxjs/toolkit';
 import { RootState } from '_store/store';
 
-export type PostState = PostEndpoint_single_res_body & {
+export type PostState = PostEp_single_res_body & {
   receivedAt: number; // epoch
   allowView: boolean;
   communitySlug: string;
@@ -20,10 +20,10 @@ export type PostState = PostEndpoint_single_res_body & {
 
 export type SelectPost = Selector<RootState, PostState>;
 
-export type SelectPostId = Selector<RootState, PostEndpoint_single_res_body_id>;
+export type SelectPostId = Selector<RootState, PostEp_single_res_body_id>;
 
 // export type PostSingleBody = PostEndpoint_single_res_body;
 
-export type SetPost = (postBody: PostEndpoint_single_res_body) => void;
+export type SetPost = (postBody: PostEp_single_res_body) => void;
 
 export type ClearPost = () => void;

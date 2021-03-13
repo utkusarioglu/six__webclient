@@ -1,6 +1,6 @@
 import type {
-  PostEndpoint_comments_res_body,
-  PostEndpoint_comment_res_body,
+  PostEp_comments_res_body,
+  PostEp_comment_res_body,
 } from '_types/public-api';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
@@ -27,7 +27,7 @@ const { actions, reducer } = createSlice({
   reducers: {
     setComments: (
       _,
-      { payload: comments }: PayloadAction<PostEndpoint_comments_res_body>
+      { payload: comments }: PayloadAction<PostEp_comments_res_body>
     ) => {
       const expanded = comments.map((comment) => {
         return expandComment(comment);
@@ -60,7 +60,7 @@ const { actions, reducer } = createSlice({
 
     replaceIsSubmittingComment: (
       state,
-      { payload }: PayloadAction<PostEndpoint_comment_res_body>
+      { payload }: PayloadAction<PostEp_comment_res_body>
     ) => {
       const submittedMessages = state.list.filter(
         (comment) => comment.state !== 'is-submitting'

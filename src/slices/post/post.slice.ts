@@ -1,4 +1,4 @@
-import type { PostEndpoint_single_res_body } from '_types/public-api';
+import type { PostEp_single_res_body } from '_types/public-api';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   SetPost,
@@ -15,7 +15,7 @@ const { actions, reducer } = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    setPost: (_, { payload }: PayloadAction<PostEndpoint_single_res_body>) => {
+    setPost: (_, { payload }: PayloadAction<PostEp_single_res_body>) => {
       return expandPost(payload);
     },
     clearPost: () => initialState,

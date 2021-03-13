@@ -12,7 +12,7 @@ import type {
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
-import { PostEndpoint_list_res_body } from '_types/public-api';
+import { PostEp_list_res_body } from '_types/public-api';
 import { expandPost } from '_slices/@shared/expandPost';
 import { initialState } from './post-repo.slice.constants';
 
@@ -22,7 +22,7 @@ const { actions, reducer } = createSlice({
   reducers: {
     updatePosts: (
       _,
-      { payload: posts }: PayloadAction<PostEndpoint_list_res_body>
+      { payload: posts }: PayloadAction<PostEp_list_res_body>
     ) => {
       const expanded: StorePost[] = posts.map((post) => expandPost(post));
 
