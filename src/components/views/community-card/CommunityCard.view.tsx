@@ -75,8 +75,22 @@ export default CommunityCardView;
 
 const useStyles = makeStyles((theme) =>
   createStyles({
+    /**
+     * TODO Community card has the same values, these could be moved to
+     * the theme file
+     */
     root: {
-      margin: theme.spacing(1),
+      marginLeft: 0,
+      marginRight: 0,
+      marginBottom: theme.spacing(),
+      marginTop: theme.spacing(),
+      borderRadius: 0,
+
+      [theme.breakpoints.up('xs')]: {
+        marginLeft: theme.spacing(),
+        marginRight: theme.spacing(),
+        borderRadius: theme.spacing(0.5),
+      },
     },
     media: {
       height: 100,
