@@ -93,4 +93,9 @@ export const snackRecord: SnackRecord = {
     alert: 'info',
     message: 'Logged out, redirecting',
   },
+
+  voteSubmitFail: {
+    alert: 'error',
+    message: 'Vote submit failed',
+  },
 };
