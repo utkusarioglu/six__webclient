@@ -2,6 +2,7 @@ import type {
   PostEp_single_res_body,
   PostEp_single_res_body_id,
   PostEp_list_res_body,
+  VoteTypes,
 } from '_types/public-api';
 import type { RootState } from '_store/store';
 import type { Selector } from '@reduxjs/toolkit';
@@ -35,8 +36,6 @@ export type StorePost = PostEp_single_res_body & {
 
 export type UpdatePosts = (posts: PostEp_list_res_body) => void;
 
-export type UpvotePost = (postId: PostEndpoint_single_res_body_id) => void;
-
 export type VoteStats = Pick<
   PostsState['list'][0],
   'likeCount' | 'dislikeCount' | 'voteCount'
@@ -61,3 +60,15 @@ export type SelectPostRepoLastUpdate = Selector<
   RootState,
   PostsState['updatedAt']
 >;
+
+export type AmendPostVoteParams2 = {
+  id: PostEp_single_res_body_id;
+  voteType: VoteTypes;
+};
+
+export type AmendPostVoteParams = Pick<
+  StorePost,
+  'id' | 'likeCount' | 'dislikeCount' | 'userVote'
+>;
+
+export type AmendPostVote = (params: AmendPostVoteParams) => void;

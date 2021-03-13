@@ -1,13 +1,13 @@
-import type { PostEndpoint_single_res_body_id } from '_types/public-api';
 import type {
   UpdatePosts,
-  UpvotePost,
   StorePost,
   SelectPostVotes,
   SelectPostTitle,
   SelectPostBySlug,
   SelectPostRepo,
   SelectPostRepoLastUpdate,
+  AmendPostVote,
+  AmendPostVoteParams,
 } from './posts-repo.slice.types';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
@@ -34,22 +34,29 @@ const { actions, reducer } = createSlice({
 
     clearPostRepo: () => initialState,
 
-    upvotePost: (
+    amendPostVote: (
       state,
-      { payload }: PayloadAction<PostEndpoint_single_res_body_id>
+      {
+        payload: { id, likeCount, dislikeCount, userVote },
+      }: PayloadAction<AmendPostVoteParams>
     ) => {
-      const altered = state.list.find((post) => post.id === payload);
+      const amended = state.list.map((post) => {
+        if (post.id !== id) return post;
 
-      if (!altered) return state;
+        const voteCount = likeCount - dislikeCount;
 
-      altered.likeCount++;
+        return {
+          ...post,
+          likeCount,
+          dislikeCount,
+          userVote,
+          voteCount,
+        };
+      });
 
       return {
         ...state,
-        list: {
-          ...state.list,
-          altered,
-        },
+        list: amended,
       };
     },
   },
@@ -64,8 +71,8 @@ export const clearPostRepo = () => {
   dispatch(actions.clearPostRepo());
 };
 
-export const upvotePost: UpvotePost = (postSlug) =>
-  dispatch(actions.upvotePost(postSlug));
+// export const upvotePost: UpvotePost = (postSlug) =>
+//   dispatch(actions.upvotePost(postSlug));
 
 export const selectPostRepo: SelectPostRepo = (state) => state.postRepo;
 
@@ -110,3 +117,6 @@ export const selectPostTitle: SelectPostTitle = (postSlug) => (state) => {
 
   return post.postTitle;
 };
+
+export const amendPostVote: AmendPostVote = (params) =>
+  dispatch(actions.amendPostVote(params));
