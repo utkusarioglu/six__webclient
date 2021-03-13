@@ -21,15 +21,17 @@ const AppBarView = () => {
   const HomeDomLink = domLinkHelper('/');
 
   return (
-    <AppBar position="static" className={classes.root}>
+    <AppBar position="static" className={classes.root} color="inherit">
       <Toolbar>
         <IconButton
+          className={classes.redditButton}
           component={HomeDomLink}
           edge="start"
           aria-label="reddit button"
           // aria-controls={menuId}
           aria-haspopup="true"
           color="inherit"
+          size="small"
         >
           <RedditIcon />
           <Typography className={classes.title} variant="h6" noWrap>
@@ -60,6 +62,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+    },
+    redditButton: {
+      backgroundColor: theme.palette.primary.main,
     },
     title: {
       display: 'none',

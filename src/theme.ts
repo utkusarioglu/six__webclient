@@ -3,6 +3,12 @@ import { createMuiTheme } from '@material-ui/core/styles';
 export const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
+    primary: {
+      main: '#ff4500',
+    },
+    secondary: {
+      main: '#ffaa41',
+    },
   },
   breakpoints: {
     values: {
@@ -14,6 +20,11 @@ export const darkTheme = createMuiTheme({
     },
   },
   overrides: {
+    MuiAppBar: {
+      root: {
+        backgroundColor: '#424242', // same color as mui-paper
+      },
+    },
     MuiInputBase: {
       root: {
         borderRadius: '4px',

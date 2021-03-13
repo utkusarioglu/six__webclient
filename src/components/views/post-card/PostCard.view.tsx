@@ -179,6 +179,7 @@ export const useStyles = makeStyles((theme) =>
     },
     cardActionsContainer: {
       paddingLeft: 0,
+      paddingRight: 0,
       width: '100%',
       display: 'flex',
       flexDirection: 'row',
