@@ -3,6 +3,7 @@ import type { PostState } from '_slices/post/post.slice.types';
 
 export type PostCardViewProps = Pick<
   PostState,
+  | 'id'
   | 'createdAt'
   | 'postUrl'
   | 'postTitle'
@@ -17,5 +18,6 @@ export type PostCardViewProps = Pick<
   | 'likeCount'
   | 'dislikeCount'
   | 'voteCount'
+  | 'userVote'
 > &
   AsSkeleton;

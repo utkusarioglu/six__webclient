@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import type { PostCardViewProps } from './PostCard.view.types';
+import { useState } from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -16,8 +17,15 @@ import ShareView from '_views/share/Share.view';
 import PostCardMediaView from './PostCardMedia.view';
 import PostDetailsForeheadView from '_views/post-details-forehead/PostDetailsForehead.view';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
+import rest from '_services/rest/rest';
+import snacks from '_services/snacks/snacks';
+import { selectUser } from '_slices/user/user.slice';
+import { useSelector } from 'react-redux';
+import { delayIfDev } from '_helpers/dev/delayIfDev';
+// import { amendPostVote } from '_slices/post-repo/posts-repo.slice';
 
 const PostCardView: FC<PostCardViewProps> = ({
+  id,
   asSkeleton,
   createdAt,
   postTitle,
@@ -33,11 +41,40 @@ const PostCardView: FC<PostCardViewProps> = ({
   likeCount,
   dislikeCount,
   voteCount,
+  userVote,
 }) => {
   const classes = useStyles();
   const PostDetailsLink = domLinkHelper(postUrl);
+  const user = useSelector(selectUser);
+  const [isSubmittingVote, setIsSubmittingVote] = useState(false);
 
-  const voteFunction = (voteType: number) => alert(`card vote: ${voteType}`);
+  const voteFunction = (voteSelection: 1 | -1) => {
+    if (user.state === 'logged-in') {
+      // const voteType = userVote === voteSelection ? null : voteSelection;
+      setIsSubmittingVote(true);
+      // amend with temp value
+      // amendPostVote({ id, voteType });
+
+      delayIfDev(() => {
+        rest
+          .vote({
+            voteType: voteSelection,
+            userId: user.id,
+            postId: id,
+          })
+          .then((response) => {
+            if (response) {
+              if (response.state === 'fail') {
+                snacks.push('voteSubmitFail');
+              }
+            } else {
+              snacks.push('voteSubmitFail');
+            }
+            setIsSubmittingVote(false);
+          });
+      });
+    }
+  };
 
   return (
     <Card className={classes.root}>
@@ -96,6 +133,8 @@ const PostCardView: FC<PostCardViewProps> = ({
                     dislikeCount,
                     voteCount,
                     voteFunction,
+                    userVote,
+                    isSubmitting: isSubmittingVote,
                   }}
                 />
                 <ShareView />
