@@ -1,25 +1,27 @@
 import type {
-  PostEp_list,
-  PostEp_single,
-  PostEp_single_res_body_id,
-  PostEp_comments,
-  UserEndpoint_ucs_alter,
-  UserEp_logout,
-  UserEp_login,
-  UserEp_signup,
-  UserEp_session,
-  CommunityEp_list,
-  CommunityEp_single,
-  CommunityEp_single_res_body_id,
-  CommentEp_save,
-  UserEp_session_res_body_success_id,
-  UserEndpoint_ucs_alter_req_params_actionType,
-  PostEp_single_res_body_slug,
-  UserEp_login_req_body,
   CommentEp_save_req_body,
-  UserEp_signup_req_body,
-  PostEp_vote,
+  CommentEp_save,
+  CommunityEp_list,
+  CommunityEp_single_res_body_id,
+  CommunityEp_single,
+  PostEp_comments,
+  PostEp_create_req_body,
+  PostEp_create,
+  PostEp_list,
+  PostEp_single_res_body_id,
+  PostEp_single_res_body_slug,
+  PostEp_single,
   PostEp_vote_req_params,
+  PostEp_vote,
+  UserEndpoint_ucs_alter_req_params_actionType,
+  UserEndpoint_ucs_alter,
+  UserEp_login_req_body,
+  UserEp_login,
+  UserEp_logout,
+  UserEp_session_res_body_success_id,
+  UserEp_session,
+  UserEp_signup_req_body,
+  UserEp_signup,
 } from '_types/public-api';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
@@ -429,6 +431,31 @@ class Rest {
         } else {
           amendPostVote(data.body);
           console.log('post vote', data.body);
+        }
+        return data;
+      })
+      .catch(this.handleError);
+  }
+
+  async createPost(body: PostEp_create_req_body) {
+    type Method = PostEp_create;
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>('/post/create/v1/:requestId', {
+          requestId,
+        }),
+        body
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          console.log('post create response', data.body);
         }
         return data;
       })
