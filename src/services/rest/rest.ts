@@ -455,7 +455,7 @@ class Rest {
         if (data.state === 'fail') {
           this.handleError(data);
         } else {
-          console.log('post create response', data.body);
+          setPost(data.body);
         }
         return data;
       })

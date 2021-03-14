@@ -98,4 +98,14 @@ export const snackRecord: SnackRecord = {
     alert: 'error',
     message: 'Vote submit failed',
   },
+
+  postCreateFail: {
+    alert: 'error',
+    message: 'Post creation failed',
+  },
+
+  postCreateSuccess: {
+    alert: 'success',
+    message: 'Post created, redirecting',
+  },
 };

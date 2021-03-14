@@ -1,6 +1,9 @@
 import type { FC, ChangeEvent } from 'react';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Formik } from 'formik';
 import rest from '_services/rest/rest';
+import snacks from '_services/snacks/snacks';
 import { selectUser } from '_slices/user/user.slice';
 import { selectCommunities } from '_slices/community-repo/community-repo.slice';
 import { useSelector } from 'react-redux';
@@ -11,19 +14,21 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 const PostCreateFormView: FC<{}> = () => {
   const classes = useStyles();
+  const history = useHistory();
   const user = useSelector(selectUser);
   const { updatedAt: communitiesUpdatedAt, list: communities } = useSelector(
     selectCommunities
   );
 
-  const [communityId, setCommunityId] = useState('');
-  const [title, setTitle] = useState('first title');
-  const [body, setBody] = useState('first body');
+  const [activeTab, setActiveTab] = useState(0);
 
   if (user.state !== 'logged-in') {
     return <span>Login to create posts</span>;
@@ -47,56 +52,181 @@ const PostCreateFormView: FC<{}> = () => {
 
   const { id: userId } = user;
 
-  const submitOnClick = () => {
-    rest.createPost({
-      title,
-      body,
-      communityId,
-      userId,
-      mediaImagePath: '',
-    });
-  };
-
-  const selectOnChange: (
-    e: ChangeEvent<{ name?: string; value: unknown }>
-  ) => void = (e) => {
-    const value = e.target.value as string;
-    setCommunityId(value);
+  const tabOnChange: (e: ChangeEvent<{}>, newValue: number) => void = (
+    e,
+    newValue
+  ) => {
+    // const value = e.target.value as string;
+    setActiveTab(newValue);
   };
 
   return (
-    <Container className={classes.root}>
-      <TextField
-        variant="filled"
-        label="Post title"
-        className={classes.input}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <TextField
-        variant="filled"
-        label="Post body"
-        className={classes.input}
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-      />
-      <FormControl variant="filled" className={classes.input}>
-        <InputLabel>Community</InputLabel>
-        <Select onChange={selectOnChange}>
-          {communities.map((c) => (
-            <MenuItem value={c.id}>{c.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <Button
-        variant="contained"
-        fullWidth={true}
-        color="primary"
-        onClick={submitOnClick}
+    <>
+      <Tabs
+        centered
+        className={classes.tabs}
+        indicatorColor="primary"
+        value={activeTab}
+        onChange={tabOnChange}
       >
-        Submit
-      </Button>
-    </Container>
+        <Tab label="Text" />
+        <Tab label="Image" />
+        <Tab label="Link" />
+      </Tabs>
+
+      <Formik
+        initialValues={{
+          title: 'This is the most amazing post title',
+          body: 'This is the most amazing post body',
+          communityId: communities[0].id,
+        }}
+        validate={({ title, body, communityId }) => {
+          const errors: Record<keyof any, string> = {};
+          if (!title) {
+            errors.title = 'Required';
+          }
+
+          if (title.length < 10) {
+            errors.title = 'Title needs to be longer than 10 characters';
+          }
+
+          if (!body) {
+            errors.body = 'Required';
+          }
+
+          if (body.length < 10) {
+            errors.body = 'Body needs to be longer than 10 characters';
+          }
+
+          if (communityId === '') {
+            errors.communityId = 'You need to select a community to post to';
+          }
+
+          return errors;
+        }}
+        onSubmit={(
+          { title, body, communityId },
+          { setSubmitting, setErrors }
+        ) => {
+          console.log('submitting values:', {
+            title,
+            body,
+            communityId,
+            userId,
+          });
+          setSubmitting(true);
+          rest
+            .createPost({
+              title,
+              body,
+              communityId,
+              userId,
+              mediaImagePath: '',
+            })
+            .then((response) => {
+              delayIfDev(() => {
+                setSubmitting(false);
+
+                if (!response) {
+                  snacks.push('postCreateFail');
+                  return;
+                }
+
+                if (response.state === 'fail') {
+                  setErrors(response.errors);
+                  snacks.push('postCreateFail');
+                  return;
+                }
+
+                snacks.push('postCreateSuccess');
+
+                setTimeout(() => {
+                  const communitySlug = communities.find(
+                    (c) => c.id === communityId
+                  )?.communityUrl;
+                  const { postSlug } = response.body;
+                  history.push(`/${communitySlug}/${postSlug}`);
+                }, 1000);
+              });
+            });
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+          <Container className={classes.root}>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                name="title"
+                variant="filled"
+                label="Post title"
+                className={classes.input}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.title}
+                error={!!(errors.title && touched.title)}
+                helperText={errors.title && touched.title && errors.title}
+              />
+
+              <TextField
+                variant="filled"
+                label="Post body"
+                className={classes.input}
+                name="body"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.body}
+                error={!!(errors.body && touched.body)}
+                helperText={errors.body && touched.body && errors.body}
+              />
+
+              <FormControl
+                variant="filled"
+                className={classes.input}
+                error={!!(errors.communityId && touched.communityId)}
+              >
+                <InputLabel>Community</InputLabel>
+                <Select
+                  name="communityId"
+                  onChange={handleChange}
+                  value={values.communityId}
+                >
+                  {communities.map((c) => (
+                    <MenuItem key={c.id} value={c.id}>
+                      {c.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText
+                  error={!!(errors.communityId && touched.communityId)}
+                >
+                  {errors.communityId &&
+                    touched.communityId &&
+                    errors.communityId}
+                </FormHelperText>
+              </FormControl>
+
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                color="primary"
+                size="large"
+                disabled={isSubmitting}
+              >
+                Submit
+              </Button>
+            </form>
+          </Container>
+        )}
+      </Formik>
+    </>
   );
 };
 
@@ -108,6 +238,9 @@ const useStyles = makeStyles((theme) =>
     input: {
       minWidth: '100%',
       marginBottom: theme.spacing(),
+    },
+    tabs: {
+      backgroundColor: theme.palette.background.paper,
     },
   })
 );
