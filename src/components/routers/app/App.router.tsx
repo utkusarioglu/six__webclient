@@ -15,6 +15,7 @@ import LoginRoute from '_routes/login/Login.route';
 import SignupRoute from '_routes/signup/Signup.route';
 import CommunitiesRoute from '_routes/communities/Communities.route';
 import LogoutRoute from '_routes/logout/Logout.route';
+import PostCreateRoute from '_routes/post-create/PostCreate.route';
 
 const AppRouter = () => {
   return (
@@ -56,6 +57,10 @@ const AppRouter = () => {
 
           <Route path="/u/:userSlug" exact>
             <ProfileRoute />
+          </Route>
+
+          <Route path="/post/create">
+            <PostCreateRoute />
           </Route>
 
           <Route>
