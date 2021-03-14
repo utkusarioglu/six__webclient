@@ -13,3 +13,8 @@ export const HTTP_SCHEME = SECURE_SCHEMES ? 'https' : 'http';
 export const API_ENDPOINT = `${HTTP_SCHEME}://${window.location.host}/api`;
 export const GA_ID = REACT_APP_GA_ID;
 export const NODE_ENV = RAW_NODE_ENV;
+
+/**
+ * Native config
+ */
+export const REDIRECT_TIMEOUT = 1000;

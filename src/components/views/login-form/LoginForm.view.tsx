@@ -16,6 +16,7 @@ import { delayIfDev } from '_helpers/dev/delayIfDev';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Link from '@material-ui/core/Link';
 import snacks from '_services/snacks/snacks';
+import { REDIRECT_TIMEOUT } from '_config';
 
 type LoginFormViewProps = {};
 
@@ -28,7 +29,7 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
 
   if (user.state === 'logged-in') {
     snacks.push('loggedIn');
-    setTimeout(() => history.push('/'), 1000);
+    setTimeout(() => history.push('/'), REDIRECT_TIMEOUT);
   }
 
   return (

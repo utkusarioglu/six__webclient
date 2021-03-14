@@ -19,6 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { REDIRECT_TIMEOUT } from '_config';
 
 const PostCreateFormView: FC<{}> = () => {
   const classes = useStyles();
@@ -146,7 +147,7 @@ const PostCreateFormView: FC<{}> = () => {
                   )?.communityUrl;
                   const { postSlug } = response.body;
                   history.push(`/${communitySlug}/${postSlug}`);
-                }, 1000);
+                }, REDIRECT_TIMEOUT);
               });
             });
         }}

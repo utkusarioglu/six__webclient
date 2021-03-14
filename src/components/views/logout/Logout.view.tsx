@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import snacks from '_services/snacks/snacks';
+import { REDIRECT_TIMEOUT } from '_config';
 
 const LogoutView = () => {
   const history = useHistory();
@@ -17,7 +18,7 @@ const LogoutView = () => {
   if (user.state === 'visitor') {
     snacks.push('loggedOut');
     snacks.push('loginPrompt');
-    setTimeout(() => history.push('/'), 1000);
+    setTimeout(() => history.push('/'), REDIRECT_TIMEOUT);
   }
 
   return <Typography>Logging out...</Typography>;
