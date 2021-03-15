@@ -27,6 +27,7 @@ export type PostEp_comment_res_body = PostEp_comments['_get']['_res']['Success']
 export type PostEp_vote = PostEp['_vote']['_v1'];
 export type PostEp_vote_req_body = PostEp_vote['_post']['_req']['Body'];
 export type PostEp_vote_req_params = PostEp_vote['_post']['_req']['Body'];
+export type PostEp_vote_res_body = PostEp_vote['_post']['_res']['Success']['body'];
 
 export type PostEp_create = PostEp['_create']['_v1'];
 export type PostEp_create_req_body = PostEp_create['_post']['_req']['Body'];
