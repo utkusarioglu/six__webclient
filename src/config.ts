@@ -18,3 +18,10 @@ export const NODE_ENV = RAW_NODE_ENV;
  * Native config
  */
 export const REDIRECT_TIMEOUT = 1000;
+
+/**
+ * Post creation
+ */
+export const POST_TITLE_MIN_SIZE = 10;
+export const POST_TITLE_MAX_SIZE = 100;
+export const POST_BODY_MAX_SIZE = 1000;

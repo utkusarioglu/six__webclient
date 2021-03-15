@@ -18,9 +18,24 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import {
+  REDIRECT_TIMEOUT,
+  POST_TITLE_MIN_SIZE,
+  POST_TITLE_MAX_SIZE,
+  POST_BODY_MAX_SIZE,
+} from '_config';
 import { TabPanelView } from '../tab-panel/TabPanel.view';
+
+type TabOnChange = (e: ChangeEvent<{}>, newValue: number) => void;
+
+const initialValues = {
+  title: '',
+  body: '',
+  communityId: '',
+};
 
 const PostCreateFormView: FC<{}> = () => {
   const classes = useStyles();
@@ -54,13 +69,7 @@ const PostCreateFormView: FC<{}> = () => {
 
   const { id: userId } = user;
 
-  const tabOnChange: (e: ChangeEvent<{}>, newValue: number) => void = (
-    e,
-    newValue
-  ) => {
-    // const value = e.target.value as string;
-    setActiveTab(newValue);
-  };
+  const tabOnChange: TabOnChange = (_, newValue) => setActiveTab(newValue);
 
   return (
     <>
@@ -77,31 +86,27 @@ const PostCreateFormView: FC<{}> = () => {
       </Tabs>
 
       <Formik
-        initialValues={{
-          title: 'This is the most amazing post title',
-          body: 'This is the most amazing post body',
-          communityId: communities[0].id,
-        }}
+        initialValues={initialValues}
         validate={({ title, body, communityId }) => {
           const errors: Record<keyof any, string> = {};
           if (!title) {
             errors.title = 'Required';
           }
 
-          if (title.length < 10) {
-            errors.title = 'Title needs to be longer than 10 characters';
+          if (title.length < POST_TITLE_MIN_SIZE) {
+            errors.title = `Title needs at least ${POST_TITLE_MIN_SIZE} characters`;
           }
 
-          if (!body) {
-            errors.body = 'Required';
+          if (title.length > POST_TITLE_MAX_SIZE) {
+            errors.title = `Title cannot be longer than ${POST_TITLE_MAX_SIZE} characters`;
           }
 
-          if (body.length < 10) {
-            errors.body = 'Body needs to be longer than 10 characters';
+          if (body.length > POST_BODY_MAX_SIZE) {
+            errors.body = `Body cannot be longer than ${POST_BODY_MAX_SIZE} characters`;
           }
 
           if (communityId === '') {
-            errors.communityId = 'You need to select a community to post to';
+            errors.communityId = 'You need to select a community for your post';
           }
 
           return errors;
@@ -149,7 +154,7 @@ const PostCreateFormView: FC<{}> = () => {
                   const { postSlug } = response.body;
                   history.push(`/${communitySlug}/${postSlug}`);
                 }, REDIRECT_TIMEOUT);
-              });
+              }, 5);
             });
         }}
       >
@@ -164,10 +169,47 @@ const PostCreateFormView: FC<{}> = () => {
         }) => (
           <Container className={classes.root}>
             <form onSubmit={handleSubmit}>
+              <FormControl
+                variant="filled"
+                className={classes.input}
+                error={!!(errors.communityId && touched.communityId)}
+              >
+                <InputLabel>Community</InputLabel>
+                <Select
+                  name="communityId"
+                  onChange={handleChange}
+                  value={values.communityId}
+                >
+                  <ListSubheader>My communities</ListSubheader>
+                  {communities
+                    .filter((c) => c.ucs)
+                    .map((c) => (
+                      <MenuItem key={c.id} value={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    ))}
+                  <ListSubheader>Other communities</ListSubheader>
+                  {communities
+                    .filter((c) => !c.ucs)
+                    .map((c) => (
+                      <MenuItem key={c.id} value={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+                {errors.communityId && touched.communityId && (
+                  <FormHelperText
+                    error={!!(errors.communityId && touched.communityId)}
+                  >
+                    {errors.communityId}
+                  </FormHelperText>
+                )}
+              </FormControl>
+
               <TextField
                 name="title"
                 variant="filled"
-                label="Post title"
+                label="Title"
                 className={classes.input}
                 onChange={handleChange}
                 onBlur={handleBlur}
