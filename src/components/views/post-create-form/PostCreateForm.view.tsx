@@ -20,7 +20,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { REDIRECT_TIMEOUT } from '_config';
+import { TabPanelView } from '../tab-panel/TabPanel.view';
 
 const PostCreateFormView: FC<{}> = () => {
   const classes = useStyles();
@@ -176,43 +176,40 @@ const PostCreateFormView: FC<{}> = () => {
                 helperText={errors.title && touched.title && errors.title}
               />
 
-              <TextField
-                variant="filled"
-                label="Post body"
-                className={classes.input}
-                name="body"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.body}
-                error={!!(errors.body && touched.body)}
-                helperText={errors.body && touched.body && errors.body}
-              />
-
-              <FormControl
-                variant="filled"
-                className={classes.input}
-                error={!!(errors.communityId && touched.communityId)}
-              >
-                <InputLabel>Community</InputLabel>
-                <Select
-                  name="communityId"
+              <TabPanelView value={activeTab} index={0}>
+                <TextField
+                  variant="filled"
+                  label="Text (optional)"
+                  className={classes.input}
+                  name="body"
+                  rows={5}
+                  rowsMax={8}
+                  multiline
                   onChange={handleChange}
-                  value={values.communityId}
-                >
-                  {communities.map((c) => (
-                    <MenuItem key={c.id} value={c.id}>
-                      {c.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText
-                  error={!!(errors.communityId && touched.communityId)}
-                >
-                  {errors.communityId &&
-                    touched.communityId &&
-                    errors.communityId}
-                </FormHelperText>
-              </FormControl>
+                  onBlur={handleBlur}
+                  value={values.body}
+                  error={!!(errors.body && touched.body)}
+                  helperText={errors.body && touched.body && errors.body}
+                />
+              </TabPanelView>
+
+              <TabPanelView value={activeTab} index={1}>
+                <span>image upload will be placed here</span>
+              </TabPanelView>
+
+              <TabPanelView value={activeTab} index={2}>
+                <TextField
+                  variant="filled"
+                  label="Url"
+                  className={classes.input}
+                  name="body"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.body}
+                  error={!!(errors.body && touched.body)}
+                  helperText={errors.body && touched.body && errors.body}
+                />
+              </TabPanelView>
 
               <CircularProgressWrapper isBusy={isSubmitting}>
                 <Button
