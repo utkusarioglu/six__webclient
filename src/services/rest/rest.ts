@@ -412,7 +412,7 @@ class Rest {
       .catch(this.handleError);
   }
 
-  async vote(body: PostEp_vote_req_params) {
+  async votePost(body: PostEp_vote_req_params) {
     type Method = PostEp_vote;
     type Response = Method['_post']['_res']['Union'];
     type Endpoint = Method['Endpoint'];
