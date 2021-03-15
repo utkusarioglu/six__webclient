@@ -18,6 +18,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { REDIRECT_TIMEOUT } from '_config';
 
@@ -213,16 +214,18 @@ const PostCreateFormView: FC<{}> = () => {
                 </FormHelperText>
               </FormControl>
 
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                color="primary"
-                size="large"
-                disabled={isSubmitting}
-              >
-                Submit
-              </Button>
+              <CircularProgressWrapper isBusy={isSubmitting}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  size="large"
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </Button>
+              </CircularProgressWrapper>
             </form>
           </Container>
         )}

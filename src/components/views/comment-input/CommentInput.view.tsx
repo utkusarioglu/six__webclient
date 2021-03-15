@@ -27,6 +27,7 @@ import CommentLoginFirstView from './CommentLoginFirst.view';
 import { Formik } from 'formik';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
 import snacks from '_services/snacks/snacks';
+import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
 
 // TODO Connect these
 type CommentInputViewProps = AsSkeleton;
@@ -193,17 +194,19 @@ const CommentInputView: FC<CommentInputViewProps> = ({ asSkeleton }) => {
                     </Button>
                   </Grid>
                   <Grid item xs={8}>
-                    <Button
-                      disableElevation
-                      disabled={isSubmitting}
-                      color="primary"
-                      variant="contained"
-                      size="large"
-                      type="submit"
-                      startIcon={<SendIcon />}
-                    >
-                      Comment
-                    </Button>
+                    <CircularProgressWrapper isBusy={isSubmitting}>
+                      <Button
+                        disableElevation
+                        disabled={isSubmitting}
+                        color="primary"
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        startIcon={<SendIcon />}
+                      >
+                        Comment
+                      </Button>
+                    </CircularProgressWrapper>
                   </Grid>
                 </Grid>
               </Box>

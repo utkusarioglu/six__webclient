@@ -17,6 +17,7 @@ import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Link from '@material-ui/core/Link';
 import snacks from '_services/snacks/snacks';
 import { REDIRECT_TIMEOUT } from '_config';
+import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
 
 type LoginFormViewProps = {};
 
@@ -33,47 +34,54 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
   }
 
   return (
-    <Formik
-      initialValues={{ email: '', password: '', rememberMe: true }}
-      validate={(values) => {
-        // !any
-        const errors: any = {};
-        if (!values.email) {
-          errors.email = 'Required';
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = 'Invalid email address';
-        }
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting, setErrors }) => {
-        rest.login(values).then((response) => {
-          delayIfDev(() => {
-            if (response && response.state === 'fail') {
-              // TODO this is not exhaustive
-              if (response.errors.general === 'AUTH_FAILURE') {
-                snacks.push('loginWrongUsernamePass');
-              } else {
+    <>
+      <Formik
+        initialValues={{ email: '', password: '', rememberMe: true }}
+        validate={(values) => {
+          // !any
+          const errors: any = {};
+          if (!values.email) {
+            errors.email = 'Required';
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = 'Invalid email address';
+          }
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting, setErrors }) => {
+          rest.login(values).then((response) => {
+            delayIfDev(() => {
+              setSubmitting(false);
+
+              if (!response) {
                 snacks.push('restGeneralError');
+                return;
               }
-              setErrors(response.errors);
-            }
-            setSubmitting(false);
+
+              if (response.state === 'fail') {
+                // TODO this is not exhaustive
+                if (response.errors.general === 'AUTH_FAILURE') {
+                  snacks.push('loginWrongUsernamePass');
+                } else {
+                  snacks.push('restGeneralError');
+                }
+                setErrors(response.errors);
+                return;
+              }
+            }, 5);
           });
-        });
-      }}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-      }) => (
-        <>
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
           <form onSubmit={handleSubmit} className={classes.root}>
             <Container>
               <Grid container direction="column">
@@ -89,6 +97,7 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
                   error={!!(errors.email && touched.email)}
                   helperText={errors.email && touched.email && errors.email}
                 />
+
                 <TextField
                   className={classes.input}
                   label="password"
@@ -103,6 +112,7 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
                     errors.password && touched.password && errors.password
                   }
                 />
+
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -115,27 +125,32 @@ const LoginFormView: FC<LoginFormViewProps> = () => {
                   }
                   label="Remember me"
                 />
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
+
+                <CircularProgressWrapper isBusy={isSubmitting}>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Submit
+                  </Button>
+                </CircularProgressWrapper>
               </Grid>
             </Container>
           </form>
-          <Container>
-            <Typography>
-              Are you looking for{' '}
-              <Link component={domLinkHelper('/signup')}>sign up</Link>?
-            </Typography>
-          </Container>
-        </>
-      )}
-    </Formik>
+        )}
+      </Formik>
+
+      <Container>
+        <Typography>
+          Are you looking for{' '}
+          <Link component={domLinkHelper('/signup')}>sign up</Link>?
+        </Typography>
+      </Container>
+    </>
   );
 };
 

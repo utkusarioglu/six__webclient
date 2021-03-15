@@ -12,6 +12,7 @@ import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { SignUpFormViewProps, Errors } from './SignUpForm.view.types';
 import snacks from '_services/snacks/snacks';
+import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
 
 const SignUpFormView: FC<SignUpFormViewProps> = () => {
   const classes = useStyles();
@@ -152,15 +153,19 @@ const SignUpFormView: FC<SignUpFormViewProps> = () => {
                   error={!!(errors.age && touched.age)}
                   helperText={errors.age && touched.age && errors.age}
                 />
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
+
+                <CircularProgressWrapper isBusy={isSubmitting}>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Submit
+                  </Button>
+                </CircularProgressWrapper>
               </Grid>
             </Container>
           </form>
