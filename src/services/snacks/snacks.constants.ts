@@ -108,4 +108,9 @@ export const snackRecord: SnackRecord = {
     alert: 'success',
     message: 'Post created, redirecting',
   },
+
+  accountCreated: {
+    alert: 'success',
+    message: 'Account created',
+  },
 };

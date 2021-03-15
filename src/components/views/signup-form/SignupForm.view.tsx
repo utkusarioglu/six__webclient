@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import { Formik } from 'formik';
+import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -10,28 +11,32 @@ import { delayIfDev } from '_helpers/dev/delayIfDev';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
-import { SignUpFormViewProps, Errors } from './SignUpForm.view.types';
+import { SignUpFormViewProps } from './SignUpForm.view.types';
 import snacks from '_services/snacks/snacks';
 import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
+import { REDIRECT_TIMEOUT } from '_config';
+
+const SignupInitialValues = {
+  email: '',
+  password: '',
+  passwordRepeat: '',
+  age: 0,
+  username: '',
+};
 
 const SignUpFormView: FC<SignUpFormViewProps> = () => {
   const classes = useStyles();
-
+  const history = useHistory();
   snacks.remove('loginPrompt');
 
   return (
     <>
       <Formik
-        initialValues={{
-          email: '',
-          password: '',
-          passwordRepeat: '',
-          age: 0,
-          username: '',
-        }}
+        initialValues={SignupInitialValues}
         validate={(values) => {
-          // ! any
-          const errors: Errors = {};
+          const errors: Partial<
+            Record<keyof typeof SignupInitialValues, string>
+          > = {};
 
           if (!values.username) {
             errors.username = 'Required';
@@ -64,12 +69,24 @@ const SignUpFormView: FC<SignUpFormViewProps> = () => {
         ) => {
           rest.signup({ username, age, email, password }).then((response) => {
             delayIfDev(() => {
-              if (response && response.state === 'fail') {
+              setSubmitting(false);
+
+              if (!response) {
+                snacks.push('restGeneralError');
+                return;
+              }
+
+              if (response.state === 'fail') {
                 snacks.push('restGeneralError');
                 setErrors(response.errors);
+                return;
               }
-              setSubmitting(false);
-            });
+
+              snacks.push('accountCreated');
+              setTimeout(() => {
+                history.push('/communities');
+              }, REDIRECT_TIMEOUT);
+            }, 5);
           });
         }}
       >
