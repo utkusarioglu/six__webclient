@@ -1,6 +1,7 @@
 import {
   PostEp_single_res_body,
   PostEp_single_res_body_id,
+  PostEp_vote_res_body,
 } from '_types/public-api';
 import { Selector } from '@reduxjs/toolkit';
 import { RootState } from '_store/store';
@@ -22,8 +23,8 @@ export type SelectPost = Selector<RootState, PostState>;
 
 export type SelectPostId = Selector<RootState, PostEp_single_res_body_id>;
 
-// export type PostSingleBody = PostEndpoint_single_res_body;
-
 export type SetPost = (postBody: PostEp_single_res_body) => void;
 
 export type ClearPost = () => void;
+
+export type AmendPostDetailsVote = (postBody: PostEp_vote_res_body) => void;

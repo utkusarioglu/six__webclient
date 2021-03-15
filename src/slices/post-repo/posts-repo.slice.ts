@@ -71,9 +71,6 @@ export const clearPostRepo = () => {
   dispatch(actions.clearPostRepo());
 };
 
-// export const upvotePost: UpvotePost = (postSlug) =>
-//   dispatch(actions.upvotePost(postSlug));
-
 export const selectPostRepo: SelectPostRepo = (state) => state.postRepo;
 
 export const selectPostRepoLastUpdate: SelectPostRepoLastUpdate = (state) => {
@@ -118,5 +115,5 @@ export const selectPostTitle: SelectPostTitle = (postSlug) => (state) => {
   return post.postTitle;
 };
 
-export const amendPostVote: AmendPostVote = (params) =>
+export const amendPostRepoVote: AmendPostVote = (params) =>
   dispatch(actions.amendPostVote(params));

@@ -1,10 +1,14 @@
-import type { PostEp_single_res_body } from '_types/public-api';
+import type {
+  PostEp_single_res_body,
+  PostEp_vote_res_body,
+} from '_types/public-api';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type {
   SetPost,
   SelectPost,
   SelectPostId,
   ClearPost,
+  AmendPostDetailsVote,
 } from './post.slice.types';
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '_store/store';
@@ -18,7 +22,27 @@ const { actions, reducer } = createSlice({
     setPost: (_, { payload }: PayloadAction<PostEp_single_res_body>) => {
       return expandPost(payload);
     },
+
     clearPost: () => initialState,
+
+    amendVote: (
+      state,
+      {
+        payload: { id, likeCount, dislikeCount, userVote },
+      }: PayloadAction<PostEp_vote_res_body>
+    ) => {
+      if (state.id !== id) {
+        return state;
+      }
+
+      return {
+        ...state,
+        likeCount,
+        dislikeCount,
+        voteCount: likeCount - dislikeCount,
+        userVote,
+      };
+    },
   },
 });
 
@@ -30,6 +54,9 @@ export const setPost: SetPost = (postBody) =>
 export const clearPost: ClearPost = () => {
   dispatch(actions.clearPost());
 };
+
+export const amendPostDetailsVote: AmendPostDetailsVote = (postBody) =>
+  dispatch(actions.amendVote(postBody));
 
 export const selectPost: SelectPost = (state) => state.post;
 
