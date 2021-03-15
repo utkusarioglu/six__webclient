@@ -18,7 +18,10 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Toolbar from '@material-ui/core/Toolbar';
 import CircularProgressWrapper from '_views/circular-progress-wrapper/CircularProgressWrapper.view';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import {
@@ -27,7 +30,8 @@ import {
   POST_TITLE_MAX_SIZE,
   POST_BODY_MAX_SIZE,
 } from '_config';
-import { TabPanelView } from '../tab-panel/TabPanel.view';
+import { TabPanelView } from '_views/tab-panel/TabPanel.view';
+import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 type TabOnChange = (e: ChangeEvent<{}>, newValue: number) => void;
 
@@ -73,17 +77,30 @@ const PostCreateFormView: FC<{}> = () => {
 
   return (
     <>
-      <Tabs
-        centered
-        className={classes.tabs}
-        indicatorColor="primary"
-        value={activeTab}
-        onChange={tabOnChange}
-      >
-        <Tab label="Text" />
-        <Tab label="Image" />
-        <Tab label="Link" />
-      </Tabs>
+      <Toolbar className={classes.toolbar}>
+        <Tabs
+          centered
+          className={classes.tabs}
+          indicatorColor="primary"
+          value={activeTab}
+          onChange={tabOnChange}
+        >
+          <Tab label="Text" />
+          <Tab label="Image" />
+          <Tab label="Link" />
+        </Tabs>
+
+        <IconButton
+          edge="end"
+          aria-label="account of current user"
+          aria-haspopup="true"
+          color="inherit"
+          component={domLinkHelper('/')}
+          className={classes.closeButton}
+        >
+          <CloseIcon color="primary" />
+        </IconButton>
+      </Toolbar>
 
       <Formik
         initialValues={initialValues}
@@ -278,12 +295,21 @@ const useStyles = makeStyles((theme) =>
     root: {
       marginTop: theme.spacing(),
     },
+    toolbar: {
+      backgroundColor: theme.palette.background.paper,
+      minHeight: 'initial',
+    },
+    closeButton: {
+      position: 'absolute',
+      right: theme.spacing(2),
+    },
     input: {
       minWidth: '100%',
       marginBottom: theme.spacing(),
     },
     tabs: {
-      backgroundColor: theme.palette.background.paper,
+      flexGrow: 1,
+      // backgroundColor: theme.palette.background.paper,
     },
   })
 );
