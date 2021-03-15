@@ -29,13 +29,14 @@ import { API_ENDPOINT } from '_config';
 import {
   clearPostRepo,
   updatePostRepo,
-  amendPostVote,
+  amendPostRepoVote,
 } from '_slices/post-repo/posts-repo.slice';
 import { setComments } from '_slices/comments/comments.slice';
 import { setUser } from '_slices/user/user.slice';
 import { setPost } from '_slices/post/post.slice';
 import { setCommunities } from '_slices/community-repo/community-repo.slice';
 import { setCommunity } from '_slices/community/community.slice';
+import { amendPostDetailsVote } from '_slices/post/post.slice';
 
 class Rest {
   private _axios: AxiosInstance;
@@ -429,8 +430,8 @@ class Rest {
         if (data.state === 'fail') {
           this.handleError(data);
         } else {
-          amendPostVote(data.body);
-          console.log('post vote', data.body);
+          amendPostRepoVote(data.body);
+          amendPostDetailsVote(data.body);
         }
         return data;
       })
