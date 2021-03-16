@@ -113,4 +113,14 @@ export const snackRecord: SnackRecord = {
     alert: 'success',
     message: 'Account created',
   },
+
+  communityCreateFail: {
+    alert: 'error',
+    message: 'Community creation failed',
+  },
+
+  communityCreateSuccess: {
+    alert: 'success',
+    message: 'Community created, redirecting',
+  },
 };
