@@ -38,8 +38,12 @@ const CommunityDetailsView: FC<CommunityDetailsViewProps> = ({
   const retrieveCommunity = () =>
     delayIfDev(() => rest.getCommunitySingle(communitySlug));
 
+  const retrieveCommunityPosts = () =>
+    delayIfDev(() => rest.getCommunityPosts(communitySlug));
+
   if (!allowView) {
     retrieveCommunity();
+    retrieveCommunityPosts();
   }
 
   const { name, communityUrl, ucs, id } = community;
