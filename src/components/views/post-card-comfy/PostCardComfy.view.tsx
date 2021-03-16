@@ -133,8 +133,8 @@ export const useStyles = makeStyles((theme) =>
     root: {
       marginLeft: 0,
       marginRight: 0,
-      marginBottom: theme.spacing(),
-      marginTop: theme.spacing(),
+      marginBottom: theme.spacing(1),
+      // marginTop: theme.spacing(),
       borderRadius: 0,
 
       [theme.breakpoints.up('xs')]: {
