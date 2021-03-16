@@ -1,13 +1,10 @@
 import CommunityFeedView from '_views/community-feed/CommunityFeed.view';
-import Button from '@material-ui/core/Button';
-import domLinkHelper from '_helpers/dom-link/DomLink.helper';
+import CreateCommunityControlsView from '../../views/create-community-controls/CreateCommunityControls.view';
 
 const CommunitiesLayout = () => {
   return (
     <>
-      <Button component={domLinkHelper('/community/create')}>
-        Create a community
-      </Button>
+      <CreateCommunityControlsView />
       <CommunityFeedView />
     </>
   );
