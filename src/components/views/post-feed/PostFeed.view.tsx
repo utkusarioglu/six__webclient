@@ -64,13 +64,21 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
     <>
       <Container>
         <Grid container className={classes.postFeedControls}>
-          <Select value={feedType} onChange={selectFeedTypeOnChange}>
+          <Select
+            value={feedType}
+            onChange={selectFeedTypeOnChange}
+            disableUnderline
+          >
             <MenuItem value="best">Best</MenuItem>
             <MenuItem value="new">New</MenuItem>
             <MenuItem value="top">Top</MenuItem>
           </Select>
 
-          <Select value={cardType} onChange={selectCardTypeOnChange}>
+          <Select
+            value={cardType}
+            onChange={selectCardTypeOnChange}
+            disableUnderline
+          >
             <MenuItem value="comfy">
               <ViewStreamIcon />
             </MenuItem>
