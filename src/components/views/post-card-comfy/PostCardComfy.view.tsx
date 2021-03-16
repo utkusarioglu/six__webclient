@@ -68,7 +68,6 @@ const PostCardComfyView: FC<PostCardComfyViewProps> = ({
               <Typography
                 gutterBottom
                 variant="h5"
-                component="h2"
                 className={classes.postTitle}
               >
                 {asSkeleton ? <Skeleton /> : postTitle}
@@ -86,7 +85,7 @@ const PostCardComfyView: FC<PostCardComfyViewProps> = ({
         </Grid>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
-        <Container className={classes.cardActionsContainer}>
+        <Container className={classes.cardActionsContainer} disableGutters>
           {asSkeleton ? (
             <Skeleton
               variant="rect"
@@ -94,8 +93,8 @@ const PostCardComfyView: FC<PostCardComfyViewProps> = ({
               className={classes.cardActionsSkeleton}
             />
           ) : (
-            <Container>
-              <Grid container>
+            <>
+              <Grid container className={classes.cardActionsGrid}>
                 <VoteView
                   {...{
                     mode: 'post',
@@ -116,7 +115,7 @@ const PostCardComfyView: FC<PostCardComfyViewProps> = ({
                   <Typography noWrap>{commentCount}</Typography>
                 </IconButton>
               </Grid>
-            </Container>
+            </>
           )}
         </Container>
       </CardActions>
@@ -146,15 +145,20 @@ export const useStyles = makeStyles((theme) =>
     cardActions: {
       overflowX: 'auto',
       overflowY: 'hidden',
-    },
-    cardActionsContainer: {
       paddingLeft: 0,
       paddingRight: 0,
+    },
+    cardActionsContainer: {
       width: '100%',
       display: 'flex',
       flexDirection: 'row',
       alignContent: 'flex-start',
-      margin: 0,
+
+      paddingRight: theme.spacing(),
+      paddingLeft: theme.spacing(),
+    },
+    cardActionsGrid: {
+      alignItems: 'center',
     },
     cardActionsSkeleton: {
       marginTop: theme.spacing(2),

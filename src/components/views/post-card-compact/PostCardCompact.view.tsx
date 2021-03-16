@@ -68,7 +68,6 @@ const PostCardCompactView: FC<PostCardCompactViewProps> = ({
               <Typography
                 gutterBottom
                 variant="h6"
-                component="h2"
                 className={classes.postTitle}
               >
                 {asSkeleton ? <Skeleton /> : postTitle}
@@ -94,7 +93,7 @@ const PostCardCompactView: FC<PostCardCompactViewProps> = ({
               className={classes.cardActionsSkeleton}
             />
           ) : (
-            <Container>
+            <Container disableGutters>
               <Grid container>
                 <VoteView
                   {...{
@@ -133,10 +132,9 @@ export const useStyles = makeStyles((theme) =>
     root: {
       marginLeft: 0,
       marginRight: 0,
+      marginBottom: 1,
       borderRadius: 0,
-      borderTop: 'none',
-      borderLeft: 'none',
-      borderRight: 'none',
+      border: 'none',
     },
     cardActions: {
       overflowX: 'auto',
