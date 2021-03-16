@@ -4,6 +4,7 @@ import type {
   CommunityEp_list,
   CommunityEp_single_res_body_id,
   CommunityEp_single,
+  CommunityEp_posts,
   PostEp_comments,
   PostEp_create_req_body,
   PostEp_create,
@@ -111,6 +112,39 @@ class Rest {
         this.prepareEndpoint<Endpoint, Params>('/posts/v1/:requestId', {
           requestId,
         })
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          return this.handleError(data);
+        } else {
+          updatePostRepo(data.body);
+        }
+
+        return data;
+      })
+      .catch(this.handleError);
+  }
+
+  /**
+   * Retrieves Posts for post repo
+   */
+  getCommunityPosts(communitySlug: string) {
+    type Method = CommunityEp_posts;
+    type Response = Method['_get']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_get']['_req']['Params'];
+
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .get<Response>(
+        this.prepareEndpoint<Endpoint, Params>(
+          '/community/posts/v1/:communitySlug/:requestId',
+          {
+            requestId,
+            communitySlug,
+          }
+        )
       )
       .then(({ data }) => {
         if (data.state === 'fail') {
