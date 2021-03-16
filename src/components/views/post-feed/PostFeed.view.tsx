@@ -2,7 +2,7 @@ import type { FC, ChangeEvent } from 'react';
 import { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import { useSelector } from 'react-redux';
-import PostCardView from '_views/post-card/PostCard.view';
+import PostCardView from '_views/post-card-comfy/PostCardComfy.view';
 import rest from '_services/rest/rest';
 import { selectPostRepo } from '_slices/post-repo/posts-repo.slice';
 import { emptyPost } from '_slices/post/post.slice.constants';
@@ -81,6 +81,12 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
       </Container>
       <Container disableGutters className={classes.postCardContainer}>
         {posts &&
+          cardType === 'comfy' &&
+          posts.map((post) => (
+            <PostCardView {...{ key: post.id, asSkeleton: false, ...post }} />
+          ))}
+        {posts &&
+          cardType === 'compact' &&
           posts.map((post) => (
             <PostCardView {...{ key: post.id, asSkeleton: false, ...post }} />
           ))}

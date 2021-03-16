@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import type { PostCardViewProps } from './PostCard.view.types';
+import type { PostCardComfyViewProps } from './PostCardComfy.view.types';
 import { useState } from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -14,14 +14,14 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import VoteView from '_views/vote/vote.view';
 import ShareView from '_views/share/Share.view';
-import PostCardMediaView from './PostCardMedia.view';
+import PostCardMediaView from './PostCardComfyMedia.view';
 import PostDetailsForeheadView from '_views/post-details-forehead/PostDetailsForehead.view';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import { selectUser } from '_slices/user/user.slice';
 import { useSelector } from 'react-redux';
 import { votePost } from '../vote/vote.logic';
 
-const PostCardView: FC<PostCardViewProps> = ({
+const PostCardComfyView: FC<PostCardComfyViewProps> = ({
   id,
   asSkeleton,
   createdAt,
@@ -180,4 +180,4 @@ export const useStyles = makeStyles((theme) =>
   })
 );
 
-export default PostCardView;
+export default PostCardComfyView;
