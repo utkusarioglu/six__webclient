@@ -16,6 +16,7 @@ import SignupRoute from '_routes/signup/Signup.route';
 import CommunitiesRoute from '_routes/communities/Communities.route';
 import LogoutRoute from '_routes/logout/Logout.route';
 import PostCreateRoute from '_routes/post-create/PostCreate.route';
+import CommunityCreateRoute from '_routes/community-create/CommunityCreate.route';
 
 const AppRouter = () => {
   return (
@@ -41,6 +42,10 @@ const AppRouter = () => {
 
           <Route path="/communities" exact>
             <CommunitiesRoute />
+          </Route>
+
+          <Route path="/community/create" exact>
+            <CommunityCreateRoute />
           </Route>
 
           <Route path="/r/:communitySlug" exact>
