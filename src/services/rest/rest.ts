@@ -5,6 +5,8 @@ import type {
   CommunityEp_single_res_body_id,
   CommunityEp_single,
   CommunityEp_posts,
+  CommunityEp_create,
+  CommunityEp_create_req_body,
   PostEp_comments,
   PostEp_create_req_body,
   PostEp_create,
@@ -494,6 +496,34 @@ class Rest {
           this.handleError(data);
         } else {
           setPost(data.body);
+        }
+        return data;
+      })
+      .catch(this.handleError);
+  }
+
+  async createCommunity(body: CommunityEp_create_req_body) {
+    type Method = CommunityEp_create;
+    type Response = Method['_post']['_res']['Union'];
+    type Endpoint = Method['Endpoint'];
+    type Params = Method['_post']['_req']['Params'];
+    const requestId = this.createRequestId();
+
+    return this._axios
+      .post<Response>(
+        this.prepareEndpoint<Endpoint, Params>(
+          '/community/create/v1/:requestId',
+          {
+            requestId,
+          }
+        ),
+        body
+      )
+      .then(({ data }) => {
+        if (data.state === 'fail') {
+          this.handleError(data);
+        } else {
+          setCommunity(data.body);
         }
         return data;
       })
