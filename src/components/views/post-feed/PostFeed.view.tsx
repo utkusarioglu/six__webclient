@@ -19,10 +19,21 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 type SelectOnChange = (e: ChangeEvent<{ value: unknown }>) => void;
 
-const PostFeedView: FC<{}> = () => {
+interface PostFeedViewProps {
+  communitySlug?: string;
+}
+
+const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
   const classes = useStyles();
   const { updatedAt, list: posts } = useSelector(selectPostRepo);
-  const getPosts = () => delayIfDev(() => rest.getPosts());
+  const getPosts = () =>
+    delayIfDev(() => {
+      if (communitySlug) {
+        rest.getCommunityPosts(communitySlug);
+      } else {
+        rest.getPosts();
+      }
+    });
   const [feedType, setFeedType] = useState('best');
   const [cardType, setCardType] = useState('comfy');
   // This is faulty logic
