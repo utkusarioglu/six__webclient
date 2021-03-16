@@ -48,7 +48,7 @@ export const useStyles = makeStyles((theme) =>
       marginRight: theme.spacing(2),
     },
     media: {
-      height: 140,
+      height: 200,
     },
     cardActionGridItem: {
       width: '100%',
