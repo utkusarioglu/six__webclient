@@ -73,6 +73,10 @@ export type CommunityEp_single_res_body_id = CommunityEp_single_res_body['id'];
 export type CommunityEp_posts = CommunityEp['_community_posts']['_v1'];
 export type CommunityEp_posts_res_body = CommunityEp_posts['_get']['_res']['Success']['body'];
 
+export type CommunityEp_create = CommunityEp['_create']['_v1'];
+export type CommunityEp_create_req_body = CommunityEp_create['_post']['_req']['Body'];
+export type CommunityEp_create_res_body = CommunityEp_create['_post']['_res']['Success']['body'];
+
 export type { CommunityActionTypes };
 
 /**
