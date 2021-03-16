@@ -2,7 +2,8 @@ import type { FC, ChangeEvent } from 'react';
 import { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import { useSelector } from 'react-redux';
-import PostCardView from '_views/post-card-comfy/PostCardComfy.view';
+import PostCardComfyView from '_views/post-card-comfy/PostCardComfy.view';
+import PostCardCompactView from '_views/post-card-compact/PostCardCompact.view';
 import rest from '_services/rest/rest';
 import { selectPostRepo } from '_slices/post-repo/posts-repo.slice';
 import { emptyPost } from '_slices/post/post.slice.constants';
@@ -39,7 +40,7 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
   // This is faulty logic
   if (!updatedAt) {
     getPosts();
-    return <PostCardSkeletonsView />;
+    return <PostCardComfySkeletonsView />;
   } else if (Date.now() - updatedAt > 10000) {
     // instead show a prompt to the user
     getPosts();
@@ -83,12 +84,16 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
         {posts &&
           cardType === 'comfy' &&
           posts.map((post) => (
-            <PostCardView {...{ key: post.id, asSkeleton: false, ...post }} />
+            <PostCardComfyView
+              {...{ key: post.id, asSkeleton: false, ...post }}
+            />
           ))}
         {posts &&
           cardType === 'compact' &&
           posts.map((post) => (
-            <PostCardView {...{ key: post.id, asSkeleton: false, ...post }} />
+            <PostCardCompactView
+              {...{ key: post.id, asSkeleton: false, ...post }}
+            />
           ))}
       </Container>
     </>
@@ -97,13 +102,13 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
 
 export default PostFeedView;
 
-const PostCardSkeletonsView = () => {
+const PostCardComfySkeletonsView = () => {
   return (
     <>
       {Array(3)
         .fill(null)
         .map((_, idx) => (
-          <PostCardView
+          <PostCardComfyView
             {...{
               key: idx,
               asSkeleton: true,
