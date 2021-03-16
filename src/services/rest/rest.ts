@@ -203,9 +203,12 @@ class Rest {
 
     return this._axios
       .get<Response>(
-        this.prepareEndpoint<Endpoint, Params>('/communities/v1/:requestId', {
-          requestId,
-        })
+        this.prepareEndpoint<Endpoint, Params>(
+          '/community/list/v1/:requestId',
+          {
+            requestId,
+          }
+        )
       )
       .then(({ data }) => {
         if (data.state === 'fail') {
