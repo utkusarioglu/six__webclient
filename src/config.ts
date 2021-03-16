@@ -25,3 +25,13 @@ export const REDIRECT_TIMEOUT = 1000;
 export const POST_TITLE_MIN_SIZE = 10;
 export const POST_TITLE_MAX_SIZE = 100;
 export const POST_BODY_MAX_SIZE = 1000;
+
+/**
+ * Community creation
+ */
+export const COMMUNITY_NAME_MIN_LEN = 5;
+export const COMMUNITY_NAME_MAX_LEN = 40;
+export const COMMUNITY_DESCRIPTION_MIN_LEN = 10;
+export const COMMUNITY_DESCRIPTION_MAX_LEN = 200;
+export const COMMUNITY_SLUG_MIN_LEN = 5;
+export const COMMUNITY_SLUG_MAX_LEN = 20;
