@@ -29,8 +29,6 @@ const RightDrawerMenuView = () => {
   const user = useSelector(selectUser);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const ProfileLink = domLinkHelper('/profile');
-
   const toggleDrawer = (open: boolean) => (
     event: KeyboardEvent | MouseEvent
   ) => {
@@ -56,7 +54,7 @@ const RightDrawerMenuView = () => {
       {user.state === 'logged-in' ? (
         <Container
           className={classes.userCardContainer}
-          component={ProfileLink}
+          component={domLinkHelper(user.userUrl)}
         >
           <Avatar className={classes.avatar} />
           <Typography align="center" variant="h5" color="textPrimary">
@@ -109,7 +107,7 @@ const RightDrawerMenuView = () => {
       <List>
         {user.state === 'logged-in' ? (
           <>
-            <ListItem button component={ProfileLink}>
+            <ListItem button component={domLinkHelper(user.userUrl)}>
               <ListItemIcon>
                 <AccountCircle />
               </ListItemIcon>
@@ -157,7 +155,6 @@ const RightDrawerMenuView = () => {
       <IconButton
         edge="end"
         aria-label="account of current user"
-        // aria-controls={menuId}
         aria-haspopup="true"
         color="inherit"
         onClick={toggleDrawer(true)}
