@@ -86,8 +86,6 @@ const CommunityCreateFormView: FC<{}> = () => {
           return errors;
         }}
         onSubmit={(values, { setSubmitting, setErrors }) => {
-          console.log('submitting: ', values);
-
           setSubmitting(true);
           rest.createCommunity(values).then((response) => {
             delayIfDev(() => {
