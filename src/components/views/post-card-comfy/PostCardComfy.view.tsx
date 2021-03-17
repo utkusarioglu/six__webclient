@@ -85,7 +85,7 @@ const PostCardComfyView: FC<PostCardComfyViewProps> = ({
         </Grid>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
-        <Container className={classes.cardActionsContainer} disableGutters>
+        <Container className={classes.cardActionsContainer}>
           {asSkeleton ? (
             <Skeleton
               variant="rect"
@@ -133,7 +133,6 @@ export const useStyles = makeStyles((theme) =>
       marginLeft: 0,
       marginRight: 0,
       marginBottom: theme.spacing(1),
-      // marginTop: theme.spacing(),
       borderRadius: 0,
 
       [theme.breakpoints.up('xs')]: {
@@ -153,9 +152,6 @@ export const useStyles = makeStyles((theme) =>
       display: 'flex',
       flexDirection: 'row',
       alignContent: 'flex-start',
-
-      paddingRight: theme.spacing(),
-      paddingLeft: theme.spacing(),
     },
     cardActionsGrid: {
       alignItems: 'center',
