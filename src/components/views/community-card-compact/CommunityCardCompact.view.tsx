@@ -90,7 +90,6 @@ const useStyles = makeStyles((theme) =>
       marginLeft: 0,
       marginRight: 0,
       marginBottom: theme.spacing(),
-      marginTop: theme.spacing(),
       borderRadius: 0,
 
       [theme.breakpoints.up('xs')]: {
