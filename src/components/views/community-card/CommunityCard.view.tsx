@@ -13,6 +13,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { useSelector } from 'react-redux';
 import { selectUser } from '_slices/user/user.slice';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
+import Avatar from '@material-ui/core/Avatar';
 import CommunityJoinButtonView from '../community-join-button/CommunityJoinButton.view';
 
 type CommunityCardViewProps = AsSkeleton &
@@ -28,7 +29,6 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
 }) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
-  // const subscribed = useSelector(selectHasUcsId(id));
 
   const CommunitiesLink = domLinkHelper(communityUrl);
 
@@ -46,7 +46,14 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
         )}
 
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          {asSkeleton ? (
+            <Skeleton variant="circle" className={classes.avatar}>
+              <Avatar className={classes.avatar} />
+            </Skeleton>
+          ) : (
+            <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>
+          )}
+          <Typography align="center" gutterBottom variant="h5" component="h2">
             {asSkeleton ? <Skeleton /> : name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
@@ -55,7 +62,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
         </CardContent>
       </CardActionArea>
 
-      <CardActions>
+      <CardActions className={classes.cardActions}>
         {asSkeleton ? (
           <Skeleton width="100%" variant="rect" height="30px" />
         ) : (
@@ -94,6 +101,17 @@ const useStyles = makeStyles((theme) =>
     },
     media: {
       height: 100,
+    },
+    avatar: {
+      height: 80,
+      width: 80,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginTop: -80,
+      marginBottom: theme.spacing(),
+    },
+    cardActions: {
+      justifyContent: 'center',
     },
   })
 );
