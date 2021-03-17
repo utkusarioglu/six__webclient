@@ -31,76 +31,76 @@ const SignUpFormView: FC<SignUpFormViewProps> = () => {
 
   return (
     <>
-      <Formik
-        initialValues={SignupInitialValues}
-        validate={(values) => {
-          const errors: Partial<
-            Record<keyof typeof SignupInitialValues, string>
-          > = {};
+      <Container className={classes.formContainer}>
+        <Formik
+          initialValues={SignupInitialValues}
+          validate={(values) => {
+            const errors: Partial<
+              Record<keyof typeof SignupInitialValues, string>
+            > = {};
 
-          if (!values.username) {
-            errors.username = 'Required';
-          }
+            if (!values.username) {
+              errors.username = 'Required';
+            }
 
-          if (!values.email) {
-            errors.email = 'Required';
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = 'Invalid email address';
-          }
+            if (!values.email) {
+              errors.email = 'Required';
+            } else if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            ) {
+              errors.email = 'Invalid email address';
+            }
 
-          if (values.password !== values.passwordRepeat) {
-            const passwordNoMatchMessage = "password fields don't match";
+            if (values.password !== values.passwordRepeat) {
+              const passwordNoMatchMessage = "password fields don't match";
 
-            errors.password = passwordNoMatchMessage;
-            errors.passwordRepeat = passwordNoMatchMessage;
-          }
+              errors.password = passwordNoMatchMessage;
+              errors.passwordRepeat = passwordNoMatchMessage;
+            }
 
-          if (!values.age) {
-            errors.age = 'Required';
-          }
+            if (!values.age) {
+              errors.age = 'Required';
+            }
 
-          return errors;
-        }}
-        onSubmit={(
-          { username, age, email, password },
-          { setSubmitting, setErrors }
-        ) => {
-          rest.signup({ username, age, email, password }).then((response) => {
-            delayIfDev(() => {
-              setSubmitting(false);
+            return errors;
+          }}
+          onSubmit={(
+            { username, age, email, password },
+            { setSubmitting, setErrors }
+          ) => {
+            rest.signup({ username, age, email, password }).then((response) => {
+              delayIfDev(() => {
+                setSubmitting(false);
 
-              if (!response) {
-                snacks.push('restGeneralError');
-                return;
-              }
+                if (!response) {
+                  snacks.push('restGeneralError');
+                  return;
+                }
 
-              if (response.state === 'fail') {
-                snacks.push('restGeneralError');
-                setErrors(response.errors);
-                return;
-              }
+                if (response.state === 'fail') {
+                  snacks.push('restGeneralError');
+                  setErrors(response.errors);
+                  return;
+                }
 
-              snacks.push('accountCreated');
-              setTimeout(() => {
-                history.push('/communities');
-              }, REDIRECT_TIMEOUT);
-            }, 5);
-          });
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }) => (
-          <form onSubmit={handleSubmit} className={classes.root}>
-            <Container>
+                snacks.push('accountCreated');
+                setTimeout(() => {
+                  history.push('/communities');
+                }, REDIRECT_TIMEOUT);
+              }, 5);
+            });
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          }) => (
+            <form onSubmit={handleSubmit} className={classes.root}>
               <Grid container direction="column">
                 <TextField
                   className={classes.input}
@@ -184,10 +184,11 @@ const SignUpFormView: FC<SignUpFormViewProps> = () => {
                   </Button>
                 </CircularProgressWrapper>
               </Grid>
-            </Container>
-          </form>
-        )}
-      </Formik>
+            </form>
+          )}
+        </Formik>
+      </Container>
+
       <Container>
         <Typography>
           Are you looking for{' '}
@@ -205,6 +206,10 @@ const useStyles = makeStyles((theme) =>
     },
     input: {
       marginBottom: theme.spacing(1),
+    },
+    formContainer: {
+      marginTop: theme.spacing(),
+      marginBottom: theme.spacing(),
     },
   })
 );
