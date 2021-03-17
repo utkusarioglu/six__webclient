@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -14,7 +14,8 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '_slices/user/user.slice';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Avatar from '@material-ui/core/Avatar';
-import CommunityJoinButtonView from '../community-join-button/CommunityJoinButton.view';
+import CommunityJoinButtonView from '_views/community-join-button/CommunityJoinButton.view';
+import Grid from '@material-ui/core/Grid';
 
 type CommunityCardCompactViewProps = AsSkeleton &
   Pick<CommunityState, 'name' | 'description' | 'id' | 'communityUrl' | 'ucs'>;
@@ -35,34 +36,30 @@ const CommunityCardCompactView: FC<CommunityCardCompactViewProps> = ({
   return (
     <Card className={classes.root}>
       <CardActionArea component={CommunitiesLink}>
-        {asSkeleton ? (
-          <Skeleton variant="rect" className={classes.media} />
-        ) : (
-          <CardMedia
-            className={classes.media}
-            image="/user-content/1.jpg"
-            title="Contemplative Reptile"
-          />
-        )}
-
-        <CardContent>
-          {asSkeleton ? (
-            <Skeleton variant="circle" className={classes.avatar}>
-              <Avatar className={classes.avatar} />
-            </Skeleton>
-          ) : (
-            <Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>
-          )}
-          <Typography align="center" gutterBottom variant="h5" component="h2">
-            {asSkeleton ? <Skeleton /> : name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {asSkeleton ? <Skeleton /> : description}
-          </Typography>
+        <CardContent className={classes.cardContent}>
+          <Grid container alignItems="center" wrap="nowrap">
+            {asSkeleton ? (
+              <Skeleton variant="circle" className={classes.avatar}>
+                <Avatar className={classes.avatar} />
+              </Skeleton>
+            ) : (
+              <Avatar className={classes.avatar}>
+                {name[0].toUpperCase()}
+              </Avatar>
+            )}
+            <Grid item className={classes.textGrid}>
+              <Typography variant="h6" component="h2">
+                {asSkeleton ? <Skeleton /> : name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {asSkeleton ? <Skeleton /> : description}
+              </Typography>
+            </Grid>
+          </Grid>
         </CardContent>
       </CardActionArea>
 
-      <CardActions className={classes.cardActions}>
+      <CardActions>
         {asSkeleton ? (
           <Skeleton width="100%" variant="rect" height="30px" />
         ) : (
@@ -89,7 +86,7 @@ const useStyles = makeStyles((theme) =>
     root: {
       marginLeft: 0,
       marginRight: 0,
-      marginBottom: theme.spacing(),
+      marginBottom: 1,
       borderRadius: 0,
 
       [theme.breakpoints.up('xs')]: {
@@ -102,13 +99,15 @@ const useStyles = makeStyles((theme) =>
       height: 100,
     },
     avatar: {
-      height: 80,
-      width: 80,
-      marginTop: -80,
-      marginBottom: theme.spacing(),
+      height: 60,
+      width: 60,
+      // marginBottom: theme.spacing(),
     },
-    cardActions: {
-      justifyContent: 'center',
+    textGrid: {
+      marginLeft: theme.spacing(2),
+    },
+    cardContent: {
+      paddingBottom: 0,
     },
   })
 );
