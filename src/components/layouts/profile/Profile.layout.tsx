@@ -1,14 +1,9 @@
-import ProfileBottomNavigationView from '_views/profile-bottom-navigation/ProfileBottomNavigation.view';
+import ProfileView from '_views/profile-details/ProfileDetails.view';
 
 const ProfileLayout = () => {
-  // this value should be a string literal union
-  const tabSelection = (selectionValue: string) => {
-    console.log('tabSelection', selectionValue);
-  };
-
   return (
     <>
-      <ProfileBottomNavigationView tabChangeFunction={tabSelection} />
+      <ProfileView />
     </>
   );
 };
