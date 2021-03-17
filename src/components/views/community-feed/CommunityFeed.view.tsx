@@ -3,7 +3,7 @@ import { selectCommunities } from '_slices/community-repo/community-repo.slice';
 import { emptyCommunity } from '_slices/community-repo/community-repo.slice.constants';
 import rest from '_services/rest/rest';
 import { delayIfDev } from '_helpers/dev/delayIfDev';
-import CommunityCardView from '../community-card/CommunityCard.view';
+import CommunityCardComfyView from '../community-card-comfy/CommunityCardComfy.view';
 
 import { NoCommunitiesView } from './NoCommunities.view';
 
@@ -32,7 +32,7 @@ const CommunityFeedView = () => {
     <>
       {communities &&
         communities.map((community) => (
-          <CommunityCardView
+          <CommunityCardComfyView
             {...{ key: community.id, asSkeleton: false, ...community }}
           />
         ))}
@@ -46,7 +46,7 @@ function skeletons() {
       {Array(3)
         .fill(null)
         .map((_, key) => (
-          <CommunityCardView
+          <CommunityCardComfyView
             {...{
               key,
               asSkeleton: true,

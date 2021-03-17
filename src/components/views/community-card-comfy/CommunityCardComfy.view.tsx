@@ -16,10 +16,10 @@ import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Avatar from '@material-ui/core/Avatar';
 import CommunityJoinButtonView from '../community-join-button/CommunityJoinButton.view';
 
-type CommunityCardViewProps = AsSkeleton &
+type CommunityCardComfyViewProps = AsSkeleton &
   Pick<CommunityState, 'name' | 'description' | 'id' | 'communityUrl' | 'ucs'>;
 
-const CommunityCardView: FC<CommunityCardViewProps> = ({
+const CommunityCardComfyView: FC<CommunityCardComfyViewProps> = ({
   asSkeleton,
   id,
   name,
@@ -78,7 +78,7 @@ const CommunityCardView: FC<CommunityCardViewProps> = ({
   );
 };
 
-export default CommunityCardView;
+export default CommunityCardComfyView;
 
 const useStyles = makeStyles((theme) =>
   createStyles({
