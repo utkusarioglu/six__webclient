@@ -1,4 +1,4 @@
-import type { FC, ChangeEvent } from 'react';
+import type { FC } from 'react';
 import { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import { useSelector } from 'react-redux';
@@ -14,15 +14,13 @@ import Link from '@material-ui/core/Link';
 import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
-import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-
-type SelectOnChange = (e: ChangeEvent<{ value: unknown }>) => void;
-
-interface PostFeedViewProps {
-  communitySlug?: string;
-}
+import {
+  PostFeedViewProps,
+  PostCardTypes,
+  SelectOnChange,
+} from './PostFeed.view.types';
+import CardDensitySelectView from '../card-density-select/CardDensitySelect.view';
 
 const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
   const classes = useStyles();
@@ -36,7 +34,7 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
       }
     });
   const [feedType, setFeedType] = useState('best');
-  const [cardType, setCardType] = useState('comfy');
+  const [cardType, setCardType] = useState<PostCardTypes>('comfy');
   // This is faulty logic
   if (!updatedAt) {
     getPosts();
@@ -56,7 +54,7 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
   };
 
   const selectCardTypeOnChange: SelectOnChange = (e) => {
-    const value = e.target.value as string;
+    const value = e.target.value as PostCardTypes;
     setCardType(value);
   };
 
@@ -74,18 +72,10 @@ const PostFeedView: FC<PostFeedViewProps> = ({ communitySlug }) => {
             <MenuItem value="top">Top</MenuItem>
           </Select>
 
-          <Select
-            value={cardType}
+          <CardDensitySelectView
+            cardType={cardType}
             onChange={selectCardTypeOnChange}
-            disableUnderline
-          >
-            <MenuItem value="comfy">
-              <ViewStreamIcon />
-            </MenuItem>
-            <MenuItem value="compact">
-              <FormatAlignJustifyIcon />
-            </MenuItem>
-          </Select>
+          />
         </Grid>
       </Container>
       <Container disableGutters className={classes.postCardContainer}>
