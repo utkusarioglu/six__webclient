@@ -23,7 +23,7 @@ import rest from '_services/rest/rest';
 import snacks from '_services/snacks/snacks';
 
 const communityCreateInitialValues: CommunityEp_create_req_body = {
-  name: 'cool community',
+  name: '',
   description: '',
   slug: '',
 };
