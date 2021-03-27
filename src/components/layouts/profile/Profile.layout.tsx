@@ -1,4 +1,4 @@
-import ProfileView from '_views/profile-details/ProfileDetails.view';
+import ProfileView from '_views/profile/Profile.view';
 
 const ProfileLayout = () => {
   return (

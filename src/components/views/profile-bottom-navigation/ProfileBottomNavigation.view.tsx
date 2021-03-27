@@ -1,47 +1,41 @@
 import type { FC } from 'react';
-import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import PersonIcon from '@material-ui/icons/Person';
 import NoteIcon from '@material-ui/icons/Note';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import domLinkHelper from '_helpers/dom-link/DomLink.helper';
 
 interface ProfileBottomNavigationViewProps {
-  tabChangeFunction: (newValue: string) => void;
+  activeTab: number;
+  tabChangeFunction: (newValue: number) => void;
 }
 
 const ProfileBottomNavigationView: FC<ProfileBottomNavigationViewProps> = ({
+  activeTab,
   tabChangeFunction,
 }) => {
   const classes = useStyles();
-  const [tabValue, setTabValue] = useState('overview');
-
-  const OverviewLink = domLinkHelper('/u/profile/overview');
-
-  // console.log(tabValue);
 
   return (
     <BottomNavigation
-      value={tabValue}
+      value={activeTab}
       onChange={(_event, newValue) => {
-        setTabValue(newValue);
+        tabChangeFunction(newValue);
       }}
       showLabels
       className={classes.root}
     >
       <BottomNavigationAction
-        component={OverviewLink}
         label="Overview"
         icon={<PersonIcon />}
-        value="overview"
+        value={0}
       />
-      <BottomNavigationAction label="Posts" icon={<NoteIcon />} value="posts" />
+      <BottomNavigationAction label="Posts" icon={<NoteIcon />} value={1} />
       <BottomNavigationAction
         label="Comments"
         icon={<ChatBubbleIcon />}
-        value="comments"
+        value={2}
       />
     </BottomNavigation>
   );
