@@ -309,7 +309,6 @@ const useStyles = makeStyles((theme) =>
     },
     tabs: {
       flexGrow: 1,
-      // backgroundColor: theme.palette.background.paper,
     },
   })
 );
