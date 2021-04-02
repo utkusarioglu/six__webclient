@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "six__public-api": ["../public-api/src"],
+      "six__public-api": ["../six__public-api/src"],
       "_config": ["src/config.ts"],
       "_types/*": ["src/@types/*"],
       "_helpers/*": ["src/components/helpers/*"],
