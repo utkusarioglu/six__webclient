@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import ProfileBottomNavigationView from '_views/profile-bottom-navigation/ProfileBottomNavigation.view';
 import { TabPanelView } from '_views/tab-panel/TabPanel.view';
-import { selectUser } from '_slices/user/user.slice';
-import { useSelector } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +8,6 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 
 const ProfileView = () => {
   const classes = useStyles();
-  const user = useSelector(selectUser);
 
   const [activeTab, setActiveTab] = useState(0);
 
